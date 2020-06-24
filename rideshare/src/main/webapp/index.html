@@ -6,13 +6,44 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload = "loadEntries();">
     <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
+      <h1>Rideshare App</h1>
+      <p>This is the rough draft of our rideshare app.</p>
       <p>Click here to get a random message:</p>
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="greeting-container"></div>
+
+    <form id="addride" action="/data" method="POST">
+        
+        <textarea name="name" placeholder="Enter Name"></textarea>
+        <br/><br/>
+        
+        <textarea name="capacity" placeholder="Enter Capacity" style="height:25px; width:20%"></textarea>
+
+        <input class="button" style="margin-left:10px" type="submit"/>
+
+    </form>
+
+    <form>
+          <label>Max # of rides:</label>
+            <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
+              <option value="" disabled selected>Choose</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+          </form>
+
+    <form>
+          <label>Sort:</label>
+            <select onchange="sortComments()" id="sort" name="sort" required style="width:15%">
+              <option value="" disabled selected>Choose</option>
+              <option value="alphabetical">By name alphabetical (A-Z)</option>
+              <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
+            </select>
+          </form>
+    <ul class="collection" id="entry-list"></ul>
     </div>
   </body>
 </html>
