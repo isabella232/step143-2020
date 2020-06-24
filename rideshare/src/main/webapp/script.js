@@ -23,7 +23,7 @@ function getMessages() {
   fetch('/data?maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
-      console.log(entry.title)
+      console.log(entry.name)
       entryListElement.appendChild(createEntryElement(entry));
     })
   });
@@ -40,6 +40,20 @@ function loadEntries() {
     })
   });
 }
+
+function sortComments() {
+  const sort = document.getElementById('sort');
+  console.log(sort.value)
+  document.getElementById('entry-list').innerHTML = "";
+  fetch('/data?sort=' + sort.value).then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      entryListElement.appendChild(createEntryElement(entry));
+    })
+  });
+}
+
 
 function createEntryElement(entry) {
   const entryElement = document.createElement('li');
