@@ -41,7 +41,7 @@ function loadEntries() {
   });
 }
 
-function sortComments() {
+function sortRides() {
   const sort = document.getElementById('sort');
   console.log(sort.value)
   document.getElementById('entry-list').innerHTML = "";
@@ -56,18 +56,38 @@ function sortComments() {
 
 
 function createEntryElement(entry) {
-  const entryElement = document.createElement('li');
+  const entryElement = document.createElement('tr');
   entryElement.className = 'entry collection-item';
 
-  const nameElement = document.createElement('span');
+  const nameElement = document.createElement('td');
   nameElement.innerText = entry.name;
 
-  const capacityElement = document.createElement('span');
+  const capacityElement = document.createElement('td');
   capacityElement.innerText = entry.capacity;
-  capacityElement.style.float = "right";
-  capacityElement.style.marginRight = "10px";
+ 
+
+  const currentRidersElement = document.createElement('td');
+  currentRidersElement.innerText = entry.currentRiders;
+
+  var joinRideButtonElement = document.createElement('button');
+  joinRideButtonElement.innerText = 'Join Ride!';
+  joinRideButtonElement.style.float = "right";
+  joinRideButtonElement.addEventListener('click', () => {
+    joinRide(entry);
+  });
+  
+
 
   entryElement.appendChild(nameElement);
+  entryElement.appendChild(currentRidersElement);
   entryElement.appendChild(capacityElement);
+  entryElement.appendChild(joinRideButtonElement);
   return entryElement;
 }
+
+function joinRide(entry) {
+  const params = new URLSearchParams();
+  params.append('id', entry.id);
+  fetch('/joinride', {method: 'POST', body: params});
+}
+

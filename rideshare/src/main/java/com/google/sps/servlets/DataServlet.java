@@ -37,17 +37,20 @@ public class DataServlet extends HttpServlet {
 
   /** Data holder for each individual ride */
   public class Ride {
+    public long id;
     public String name;
     public long capacity;
     public long currentRiders;
     
-    public Ride(String name, long capacity) {
+    public Ride(long id, String name, long capacity) {
+      this.id = id;
       this.name = name;
       this.capacity = capacity;
       this.currentRiders = 0;
     }
 
-    public Ride(String name, long capacity, long currentRiders) {
+    public Ride(long id, String name, long capacity, long currentRiders) {
+      this.id = id;
       this.name = name;
       this.capacity = capacity;
       this.currentRiders = currentRiders;
@@ -96,9 +99,11 @@ public class DataServlet extends HttpServlet {
 
     List<Ride> allRides = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
       long capacity = (long) entity.getProperty("capacity");
       String name = (String) entity.getProperty("name");
-      Ride ride = new Ride(name, capacity, 0);
+      long currentRiders = (long) entity.getProperty("currentRiders");
+      Ride ride = new Ride(id, name, capacity, currentRiders);
       allRides.add(ride);
 
       count++;
@@ -116,15 +121,13 @@ public class DataServlet extends HttpServlet {
   // A simple HTTP handler to extract text input from submitted web form and respond that context back to the user.
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    // UserService userService = UserServiceFactory.getUserService();
-    
-    // Must be logged in to post comments
     String name = request.getParameter("name");
     long capacity = Long.parseLong(request.getParameter("capacity"));
 
     Entity entryEntity = new Entity("Ride");
     entryEntity.setProperty("name", name);
     entryEntity.setProperty("capacity", capacity);
+    entryEntity.setProperty("currentRiders", 0);
     datastore.put(entryEntity);
 
     response.sendRedirect("/index.html");
