@@ -12,9 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
+function getLocationGPS() {
+    var arch = new google.maps.LatLng(28.624691, -90.184776);
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: arch});
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById('lat').innerHTML = position.coords.latitude;
+            document.getElementById('lng').innerHTML = position.coords.longitude;
+            var newCenter = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            var recenter = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: newCenter});
+            }     
+        )
+    }
+    else {
+        alert('Geolocation is not supported for this Browser/OS.');
+    }
+}
 
 function getMessages() {
   const commentCount = document.getElementById('maxcomments');
