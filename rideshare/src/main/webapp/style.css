@@ -1,9 +1,22 @@
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+html, body, #content {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+body {
+    margin: 0;
+    font-family: Verdana, Tahoma, sans-serif;
 }
 
-#greeting-container {
-  margin-top: 20px;
+#map {
+    float: right;
+    border: thin solid black;
+    margin-right: 5%;
+  	height: 50%;
+  	width: 50%;
+}
+
+#geolocation {
+    margin-top: 5%;
 }

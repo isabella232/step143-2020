@@ -12,17 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+function getLocationGPS() {
+    var arch = new google.maps.LatLng(28.624691, -90.184776);
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: arch});
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById('lat').innerHTML = position.coords.latitude;
+            document.getElementById('lng').innerHTML = position.coords.longitude;
+            var newCenter = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            var recenter = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: newCenter});
+            }     
+        )
+    }
+    else {
+        alert('Geolocation is not supported for this Browser/OS.');
+    }
 }

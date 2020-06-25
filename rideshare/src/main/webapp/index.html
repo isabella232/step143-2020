@@ -2,17 +2,18 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <meta name="viewport" content="width=device-width">
+    <title>Project Prototype</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=getLocationGPS" async defer></script>
     <script src="script.js"></script>
+    <script src="testmap.js"></script>
   </head>
-  <body>
-    <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
-    </div>
+  <body onload="getLocationGPS()">
+    <div id="map"></div>
+        <form id="geolocation">
+            <p>"Lat:"</p><div id="lat" name="lat"></div>
+            <p>"Long:"</p><div id="lng" name="lng"></div>
+	    </form>    
   </body>
 </html>
