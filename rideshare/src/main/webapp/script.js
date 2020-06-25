@@ -15,14 +15,59 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+function getMessages() {
+  const commentCount = document.getElementById('maxcomments');
+  console.log(commentCount.name)
+  document.getElementById('entry-list').innerHTML = "";
+  fetch('/data?maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      entryListElement.appendChild(createEntryElement(entry));
+    })
+  });
+}
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+function loadEntries() {
+  const commentCount = document.getElementById('maxcomments');
+  console.log(commentCount.value)
+  fetch('/data').then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      entryListElement.appendChild(createEntryElement(entry));
+    })
+  });
+}
+
+function sortComments() {
+  const sort = document.getElementById('sort');
+  console.log(sort.value)
+  document.getElementById('entry-list').innerHTML = "";
+  fetch('/data?sort=' + sort.value).then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      entryListElement.appendChild(createEntryElement(entry));
+    })
+  });
+}
+
+
+function createEntryElement(entry) {
+  const entryElement = document.createElement('li');
+  entryElement.className = 'entry collection-item';
+
+  const nameElement = document.createElement('span');
+  nameElement.innerText = entry.name;
+
+  const capacityElement = document.createElement('span');
+  capacityElement.innerText = entry.capacity;
+  capacityElement.style.float = "right";
+  capacityElement.style.marginRight = "10px";
+
+  entryElement.appendChild(nameElement);
+  entryElement.appendChild(capacityElement);
+  return entryElement;
 }
