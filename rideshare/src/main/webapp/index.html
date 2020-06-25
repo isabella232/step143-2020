@@ -39,13 +39,20 @@
 
       <form>
             <label>Sort:</label>
-              <select onchange="sortComments()" id="sort" name="sort" required style="width:15%">
+              <select onchange="sortRides()" id="sort" name="sort" required style="width:15%">
                 <option value="" disabled selected>Choose</option>
                 <option value="alphabetical">By name alphabetical (A-Z)</option>
                 <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
               </select>
       </form>
-      <ul class="collection" id="entry-list"></ul>
+      <br/>
+      <table style="width:100%" id="entry-list">
+        <tr>
+          <th>Name</th>
+          <th>Current # of Riders</th>
+          <th>Capacity</th>
+        </tr>
+      </table>
     </div>
   </body>
 </html>
