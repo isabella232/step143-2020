@@ -28,3 +28,79 @@ function getLocationGPS() {
         alert('Geolocation is not supported for this Browser/OS.');
     }
 }
+
+function getMessages() {
+  const commentCount = document.getElementById('maxcomments');
+  console.log(commentCount.name)
+  document.getElementById('entry-list').innerHTML = "";
+  fetch('/data?maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      entryListElement.appendChild(createEntryElement(entry));
+    })
+  });
+}
+
+function loadEntries() {
+  const commentCount = document.getElementById('maxcomments');
+  console.log(commentCount.value)
+  fetch('/data').then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      entryListElement.appendChild(createEntryElement(entry));
+    })
+  });
+}
+
+function sortRides() {
+  const sort = document.getElementById('sort');
+  console.log(sort.value)
+  document.getElementById('entry-list').innerHTML = "";
+  fetch('/data?sort=' + sort.value).then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      entryListElement.appendChild(createEntryElement(entry));
+    })
+  });
+}
+
+
+function createEntryElement(entry) {
+  const entryElement = document.createElement('tr');
+  entryElement.className = 'entry collection-item';
+
+  const nameElement = document.createElement('td');
+  nameElement.innerText = entry.name;
+
+  const capacityElement = document.createElement('td');
+  capacityElement.innerText = entry.capacity;
+ 
+
+  const currentRidersElement = document.createElement('td');
+  currentRidersElement.innerText = entry.currentRiders;
+
+  var joinRideButtonElement = document.createElement('button');
+  joinRideButtonElement.innerText = 'Join Ride!';
+  joinRideButtonElement.style.float = "right";
+  joinRideButtonElement.addEventListener('click', () => {
+    joinRide(entry);
+  });
+  
+
+
+  entryElement.appendChild(nameElement);
+  entryElement.appendChild(currentRidersElement);
+  entryElement.appendChild(capacityElement);
+  entryElement.appendChild(joinRideButtonElement);
+  return entryElement;
+}
+
+function joinRide(entry) {
+  const params = new URLSearchParams();
+  params.append('id', entry.id);
+  fetch('/joinride', {method: 'POST', body: params});
+}
+
