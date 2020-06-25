@@ -121,9 +121,6 @@ public class DataServlet extends HttpServlet {
   // A simple HTTP handler to extract text input from submitted web form and respond that context back to the user.
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    // UserService userService = UserServiceFactory.getUserService();
-    
-    // Must be logged in to post comments
     String name = request.getParameter("name");
     long capacity = Long.parseLong(request.getParameter("capacity"));
 

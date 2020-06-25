@@ -38,11 +38,15 @@ public class JoinRideServlet extends HttpServlet {
     try {
       Key rideEntityKey = KeyFactory.createKey("Ride", id);
       Entity rideEntity = datastore.get(rideEntityKey);
-      long newCapacity = 1 + (long) rideEntity.getProperty("currentRiders");
-      rideEntity.setProperty("currentRiders", newCapacity);
-      datastore.put(rideEntity);
-      
-      response.sendRedirect("/index.html");
+
+      if ((long) rideEntity.getProperty("capacity") <= (long) rideEntity.getProperty("currentRiders")) {
+        response.sendRedirect("/index.html");
+      } else {
+        long newCapacity = 1 + (long) rideEntity.getProperty("currentRiders");
+        rideEntity.setProperty("currentRiders", newCapacity);
+        datastore.put(rideEntity);
+        response.sendRedirect("/index.html");
+      }
     } catch (EntityNotFoundException e) {
 
     } 
