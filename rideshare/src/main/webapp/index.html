@@ -3,16 +3,71 @@
   <head>
     <meta charset="UTF-8" >
     <title>My Portfolio</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Rideshare Webapp</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=getLocationGPS" async defer></script>
     <script src="script.js"></script>
+    <script src="testmap.js"></script>
   </head>
-  <body>
+  <body onload = "loadEntries(); getLocationGPS();">
     <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+      <h1>Rideshare App</h1>
+      <p>This is the rough draft of our rideshare app.</p>
+      <a href="/login-signup.html">
+       <button>Sign Up / Login</button>
+      </a>
+      <h4>Post a ride below:</h4>
+      <br/> <!-- TODO (once merged with Ciara), INSERT MAP HERE WITH START AND END LOCATION INTERACTION -->
+      <div id="map"></div>
+        <form id="geolocation">
+            <p>"Lat:"</p><div id="lat" name="lat"></div>
+            <p>"Long:"</p><div id="lng" name="lng"></div>
+	    </form>   
+      <br/>
+      <h4>
+      <form id="addride" action="/data" method="POST">
+          <!-- TODO NOTE: This form will eventually be replaced by profile data stored by William. For now, Nathan 
+          is testing with user inputs. -->
+        
+          <textarea name="name" placeholder="Enter Name"></textarea>
+          <br/><br/>
+          
+          <textarea name="capacity" placeholder="Enter Capacity" style="height:25px; width:20%"></textarea>
+
+          <input class="button" style="margin-left:10px" type="submit"/>
+      </form>
+      <br/><br/>
+
+      <h4> Search for rides below: </h4>
+      <form>
+            <label>Max # of rides:</label>
+              <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
+                <option value="" disabled selected>Choose</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+              </select>
+      </form>
+
+      <form>
+            <label>Sort:</label>
+              <select onchange="sortRides()" id="sort" name="sort" required style="width:15%">
+                <option value="" disabled selected>Choose</option>
+                <option value="alphabetical">By name alphabetical (A-Z)</option>
+                <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
+              </select>
+      </form>
+      <br/>
+      <table style="width:100%" id="entry-list">
+        <tr>
+          <th>Name</th>
+          <th>Current # of Riders</th>
+          <th>Capacity</th>
+        </tr>
+      </table>
     </div>
   </body>
 </html>
