@@ -1,11 +1,51 @@
+/* html, body, #content {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    } */
+
 #content {
   margin-left: auto;
   margin-right: auto;
   width: 650px;
 }
 
-#greeting-container {
-  margin-top: 20px;
+body {
+    /* margin: 0; */
+    font-family: Verdana, Tahoma, sans-serif;
+}
+
+
+#map {
+    float: right;
+    border: thin solid black;
+    /* margin-right: 5%; */
+  	height: 300px;
+    width: 300px;
+}
+
+#geolocation {
+    margin-top: 5%;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  /* border: 1px solid #dddddd; */
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+tr:nth-child(odd) {
+  background-color: #eaeaea;
 }
 
 * {
