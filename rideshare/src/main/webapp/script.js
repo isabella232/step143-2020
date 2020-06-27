@@ -104,3 +104,19 @@ function joinRide(entry) {
   fetch('/joinride', {method: 'POST', body: params});
 }
 
+function loadUser(){
+    fetch('/loginStatus').then(response => response.text()).then((txt) => {
+    const loginElement = document.getElementById('LoginUsingGoogle');
+    console.log(txt)
+    loginElement.innerHTML = txt;
+    var loginForm = document.getElementById("loginForm");
+    var signup = document.getElementById("signup");
+    if (txt.includes("Login")) {
+      loginForm.style.display = "block";
+      signup.style.display = "none";
+      document.getElementById("LoginUsingGoogle").innerHTML = "<i>" + txt + "</i>";
+    } else{
+      loginForm.style.display = "none";
+      document.getElementById("additionalInfo").innerHTML = "<i>" + txt + "</i>";
+    }});
+}
