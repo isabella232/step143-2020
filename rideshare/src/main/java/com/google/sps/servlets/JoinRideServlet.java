@@ -51,13 +51,13 @@ public class JoinRideServlet extends HttpServlet {
       && !rideEntity.getProperty("riderList").equals(null)
       && !(((ArrayList<String>) rideEntity.getProperty("riderList")).contains(riderId)))
       || rideEntity.getProperty("riderList").equals(null)){
-        response.sendRedirect("/index.html");
         long newCapacity = 1 + (long) rideEntity.getProperty("currentRiders");
         ArrayList<String> newRiderList = rideEntity.getProperty("riderList").equals(null) ? new ArrayList<String>() : ((ArrayList<String>) rideEntity.getProperty("riderList"));
         newRiderList.add(riderId);
         rideEntity.setProperty("currentRiders", newCapacity);
         rideEntity.setProperty("riderList", newRiderList);
         datastore.put(rideEntity);
+        response.sendRedirect("/index.html");
       } else {
         response.sendRedirect("/index.html");
       }

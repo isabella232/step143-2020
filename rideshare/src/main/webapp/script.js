@@ -102,6 +102,7 @@ function joinRide(entry) {
   const params = new URLSearchParams();
   params.append('id', entry.id);
   fetch('/joinride', {method: 'POST', body: params});
+  location.reload();
 }
 
 function loadUser(){
