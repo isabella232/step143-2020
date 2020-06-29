@@ -204,10 +204,12 @@ function createRoute() {
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    document.getElementById('endlat').innerHTML = 41.8781;
+    document.getElementById('endlng').innerHTML = 87.6298;
     directionsService.route(
         {
             origin: start,
-            destination: "chicago, il",
+            destination: "chicago, IL",
             travelMode: 'DRIVING'
         },
         function(response, status) {

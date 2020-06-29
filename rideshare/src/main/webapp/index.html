@@ -10,9 +10,13 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=getLocationGPS" async defer></script>
     <script src="script.js"></script>
+    <style>
+        #addRoute {border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
+    </style>
   </head>
-  <body onload = "loadEntries(); getLocationGPS();">
+  <body onload = "loadEntries(); createRoute();">
     <div id="content">
+      
       <h1>Rideshare App</h1>
       <p>This is the rough draft of our rideshare app.</p>
       <a href="/login-signup.html ">
@@ -20,11 +24,15 @@
       </a>
       <h4>Post a ride below:</h4>
       <br/> <!-- TODO (once merged with Ciara), INSERT MAP HERE WITH START AND END LOCATION INTERACTION -->
-      <div id="map"></div>
+      <div id="addRoute"></div>
         <form id="geolocation">
-            <p>"Lat:"</p><div id="lat" name="lat"></div>
-            <p>"Long:"</p><div id="lng" name="lng"></div>
-	    </form>   
+            <p>"Start Lat:"</p><div id="lat" name="lat"></div>
+            <p>"Start Long:"</p><div id="lng" name="lng"></div>
+
+            <p>"End Lat:"</p><div id="endlat" name="lat"></div>
+            <p>"End Long:"</p><div id="endlng" name="lng"></div>
+        </form>    
+        <button id="getButton">Get Route</button> 
       <br/>
       <h4>
       <form id="addride" action="/data" method="POST">
@@ -62,7 +70,7 @@
       <br/>
       <table style="width:100%" id="entry-list">
         <tr>
-          <th>Name</th>
+          <th>Driver Info</th>
           <th>Current # of Riders</th>
           <th>Capacity</th>
         </tr>
