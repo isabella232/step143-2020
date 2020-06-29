@@ -54,11 +54,14 @@ public class DataServlet extends HttpServlet {
       this.riderList = riderList;
     }
 
-    public Ride(long id, String name, long capacity, long currentRiders) {
+    public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, String driverId, ArrayList<String> riderList) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
       this.currentRiders = currentRiders;
+      this.driverEmail = driverEmail;
+      this.driverId = driverId;
+      this.riderList = riderList;
     }
 
     public String getName() {
@@ -108,8 +111,11 @@ public class DataServlet extends HttpServlet {
       long capacity = (long) entity.getProperty("capacity");
       String name = (String) entity.getProperty("name");
       long currentRiders = (long) entity.getProperty("currentRiders");
+      String driverEmail = (String) entity.getProperty("driverEmail");
+      String driverId = (String) entity.getProperty("driverId");
+      ArrayList<String> riderList = (ArrayList<String>) entity.getProperty("riderList");
 
-      Ride ride = new Ride(id, name, capacity, currentRiders);
+      Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList);
       allRides.add(ride);
 
       count++;

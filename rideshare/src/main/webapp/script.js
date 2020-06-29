@@ -73,11 +73,10 @@ function createEntryElement(entry) {
   entryElement.className = 'entry collection-item';
 
   const nameElement = document.createElement('td');
-  nameElement.innerText = entry.name;
+  nameElement.innerHTML = entry.name + "<br/>" + entry.driverEmail;
 
   const capacityElement = document.createElement('td');
   capacityElement.innerText = entry.capacity;
- 
 
   const currentRidersElement = document.createElement('td');
   currentRidersElement.innerText = entry.currentRiders;
