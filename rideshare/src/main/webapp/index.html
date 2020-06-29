@@ -12,12 +12,26 @@
     <script src="script.js"></script>
     <script src="testmap.js"></script>
   </head>
-  <body onload = "loadEntries(); getLocationGPS();">
+<body onload = "loadEntries(); getLocationGPS(); loadUser();">
+    
+<div class="loginForm">  
+  <form id="loginForm" class="loginForm-content container">
+    <h2 text-allign="center">Welcome to Ridshare</h2>
+    
+    <div id="LoginUsingGoogle"></div>
+
+    <div class="container" style="background-color:#grey">
+      <button type="button" onclick="document.getElementById('loginForm').style.display='none'" class="cancelbtn">Cancel</button>
+    </div>
+  </form>
+</div>
+
+   <div id= "rideshareApp">    
     <div id="content">
       <h1>Rideshare App</h1>
       <p>This is the rough draft of our rideshare app.</p>
-      <a href="/login-signup.html ">
-       <button>Sign Up / Login</button>
+      <a href="/editAccount.html ">
+       <button>Edit Account Information</button>
       </a>
       <h4>Post a ride below:</h4>
       <br/> <!-- TODO (once merged with Ciara), INSERT MAP HERE WITH START AND END LOCATION INTERACTION -->
@@ -69,5 +83,7 @@
         </tr>
       </table>
     </div>
+   </div>
+   <div id ="logout"></div>
   </body>
 </html>
