@@ -104,31 +104,29 @@ function joinRide(entry) {
   fetch('/joinride', {method: 'POST', body: params});
 }
 
-//Update Live Location
+//Track live location
 const createMap = ({ lat, lng }) => {
   return new google.maps.Map(document.getElementById('testMap'), {
     center: { lat, lng },
     zoom: 15
-  });
+  })
 }
 
 const createMarker = ({ map, position }) => {
   return new google.maps.Marker({ map, position });
 }
 
-// Track and update user's location.
 const trackLocation = ({ onSuccess, onError = () => { } }) => {
   if (navigator.geolocation === false) {
     return alert('Geolocation is not supported for this Browser/OS.');
   }
 
-  // Use watchPosition instead.
   return navigator.geolocation.watchPosition(onSuccess, onError, {
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 0
-  });
-};
+  })
+}
 
 const getPositionErrorMessage = errMessage => {
   switch (errMessage) {
@@ -148,13 +146,29 @@ function init() {
   const map = createMap(initialPosition);
   const marker = createMarker({ map, position: initialPosition });
 
-  // Use the new trackLocation function.
   trackLocation({
     onSuccess: ({ coords: { latitude: lat, longitude: lng } }) => {
       marker.setPosition({ lat, lng });
       map.panTo({ lat, lng });
     },
     onError: err =>
-      alert(`Error: ${getPositionErrorMessage(err.code) || err.message}`)
-  });
+      alert(getPositionErrorMessage(err.errMessage))
+  })
+}
+
+function loadUser(){
+    fetch('/loginStatus').then(response => response.text()).then((txt) => {
+    const loginElement = document.getElementById('LoginUsingGoogle');
+    console.log(txt)
+    loginElement.innerHTML = txt;
+    var loginForm = document.getElementById("loginForm");
+    var signup = document.getElementById("signup");
+    if (txt.includes("Login")) {
+      loginForm.style.display = "block";
+      signup.style.display = "none";
+      document.getElementById("LoginUsingGoogle").innerHTML = "<i>" + txt + "</i>";
+    } else {
+      loginForm.style.display = "none";
+      document.getElementById("additionalInfo").innerHTML = "<i>" + txt + "</i>";
+    }});
 }

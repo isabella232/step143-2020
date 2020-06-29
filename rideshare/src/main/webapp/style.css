@@ -56,8 +56,9 @@ tr:nth-child(odd) {
   padding: 16px;
 }
 
-/* Add padding to registrer form */
-.register {
+/* display of information form */
+.information {
+  display: block; /* Hidden by default */
   padding: 16px;
   background-color: white;
 }
@@ -120,16 +121,16 @@ button:hover {
 
 /* The login form (display) */
 .loginForm {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
+  display: block; /* shown by default */
+  /* position: fixed; Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  overflow: auto; /* Enable scroll if needed*/
+  /* background-color: rgb(255,255,255); Fallback color */
+  /* background-color: rgba(0,0,0,0.4); Black w/ opacity */
   padding-top: 60px;
   padding: 16px;
 }
