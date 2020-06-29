@@ -41,12 +41,17 @@ public class DataServlet extends HttpServlet {
     public String name;
     public long capacity;
     public long currentRiders;
-    
-    public Ride(long id, String name, long capacity) {
+    public String driverEmail;
+    public String driverId;
+    public ArrayList<String> riderList;  
+    public Ride(long id, String name, long capacity, String driverEmail, String driverId, ArrayList<String> riderList) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
       this.currentRiders = 0;
+      this.driverEmail = driverEmail;
+      this.driverId = driverId;
+      this.riderList = riderList;
     }
 
     public Ride(long id, String name, long capacity, long currentRiders) {
@@ -103,6 +108,7 @@ public class DataServlet extends HttpServlet {
       long capacity = (long) entity.getProperty("capacity");
       String name = (String) entity.getProperty("name");
       long currentRiders = (long) entity.getProperty("currentRiders");
+
       Ride ride = new Ride(id, name, capacity, currentRiders);
       allRides.add(ride);
 
@@ -120,6 +126,11 @@ public class DataServlet extends HttpServlet {
 
   // A simple HTTP handler to extract text input from submitted web form and respond that context back to the user.
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    UserService userService = UserServiceFactory.getUserService();
+
+    String driverEmail = userService.getCurrentUser().getEmail();
+    String driverId = userService.getCurrentUser().getUserId();
     
     String name = request.getParameter("name");
     long capacity = Long.parseLong(request.getParameter("capacity"));
@@ -128,6 +139,9 @@ public class DataServlet extends HttpServlet {
     entryEntity.setProperty("name", name);
     entryEntity.setProperty("capacity", capacity);
     entryEntity.setProperty("currentRiders", 0);
+    entryEntity.setProperty("driverEmail", driverEmail);
+    entryEntity.setProperty("driverId", driverId);
+    entryEntity.setProperty("riderList", List.of(""));
     datastore.put(entryEntity);
 
     response.sendRedirect("/index.html");
