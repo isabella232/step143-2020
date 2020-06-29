@@ -141,7 +141,7 @@ const getPositionErrorMessage = errMessage => {
   }
 }
 
-function init() {
+function trackingMap() {
   const initialPosition = { lat: 59.325, lng: 18.069 };
   const map = createMap(initialPosition);
   const marker = createMarker({ map, position: initialPosition });
@@ -171,4 +171,52 @@ function loadUser(){
       loginForm.style.display = "none";
       document.getElementById("additionalInfo").innerHTML = "<i>" + txt + "</i>";
     }});
+}
+
+//Create Route from Start to Destination
+var start = {}
+
+function createRoute() {
+    var directionsService = new google.maps.DirectionsService();
+    var directionsRenderer = new google.maps.DirectionsRenderer();
+    var origin = new google.maps.LatLng(39.089581, -101.396101);
+    var map = new google.maps.Map(document.getElementById('addRoute'), {zoom: 7, center: origin});
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById('lat').innerHTML = position.coords.latitude;
+            document.getElementById('lng').innerHTML = position.coords.longitude;
+
+            start = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            }
+            var newCenter = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            }     
+        )
+    }
+
+    directionsRenderer.setMap(map);
+
+    function onClickHandler() {
+        calculateAndDisplayRoute(directionsService, directionsRenderer);
+    }
+    document.getElementById('getButton').addEventListener("click", onClickHandler);
+}
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    directionsService.route(
+        {
+            origin: start,
+            destination: "chicago, il",
+            travelMode: 'DRIVING'
+        },
+        function(response, status) {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(response);
+            } 
+            else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        }
+    )
 }
