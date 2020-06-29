@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=50%, initial-scale=1">
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Account Register Form -->
+<form id="signup" action="/signup" method="POST">
+  <div class="register">
+    <h1>Register</h1>
+    <p>Please fill in this form to create an account.</p>
+    <hr>
+
+<label for="firstName"><b>First Name</b></label>
+    <input type="text" placeholder="Enter First Name" name="firstName" id="firstName" >
+
+<label for="lastName"><b>Last Name</b></label>
+    <input type="text" placeholder="Enter Last Name" name="lastName" id="lastName" >
+   
+<label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" id="username" >
+
+<label for="capacity"><b>Car Capacity</b></label>
+    <input type="text" placeholder="Enter Car Capacity" name="capacity" id="capacity" >
+    
+<label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" id="email" >
+
+<label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" id="password" >
+
+<label for="password-repeat"><b>Repeat Password</b></label>
+    <input type="password" placeholder="Repeat Password" name="password-repeat" id="password-repeat" >
+    
+    <hr>
+
+    <button type="submit" class="button">Register</button>
+  </div>
+</form>
+
+<!-- Login To An Existing Account Pop Up Form -->
+<p class="signin">Already have an account? <button onclick="document.getElementById('loginForm').style.display='block'" style="width:auto;">Login</button></p>
+
+<div id="loginForm" class="loginForm">
+  
+  <form class="loginForm-content">
+
+    <div class="container">
+      <h2>Login</h2>
+
+      <label><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="usernmae" >
+
+      <label ><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" >
+        
+      <button class="button" type="submit">Login</button>
+    </div>
+
+    <div class="container" style="background-color:#grey">
+      <button type="button" onclick="document.getElementById('loginForm').style.display='none'" class="cancelbtn">Cancel</button>
+    </div>
+  </form>
+</div>
+
+
+
+</body>
+</html>
+

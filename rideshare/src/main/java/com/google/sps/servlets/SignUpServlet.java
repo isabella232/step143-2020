@@ -32,28 +32,19 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import java.util.*;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
+@WebServlet("/signup")
+public class SignUpServlet extends HttpServlet {
 
-  /** Data holder for each individual ride */
-  public class Ride {
+  /** Data holder for each individual Profile */
+  public class Profile {
     public long id;
     public String name;
     public long capacity;
-    public long currentRiders;
     
-    public Ride(long id, String name, long capacity) {
+    public Profile(long id, String name, long capacity) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
-      this.currentRiders = 0;
-    }
-
-    public Ride(long id, String name, long capacity, long currentRiders) {
-      this.id = id;
-      this.name = name;
-      this.capacity = capacity;
-      this.currentRiders = currentRiders;
     }
 
     public String getName() {
@@ -64,70 +55,19 @@ public class DataServlet extends HttpServlet {
       return capacity;
     }
 
-    public long getCurrentRiders() {
-      return currentRiders;
-    }
-
   }
 
-  public int maxcount = 3;
-
-  // all options: "newest (descending), oldest (ascending), alphabetical, reverse-alphabetical"
-  public String sort = "newest";
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  
-
-  /** Responds with a JSON array containing comments data. */
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    if (!(request.getParameter("sort") == null)) {
-      sort = request.getParameter("sort");
-    }
-    Query query;
-    if (sort.equals("alphabetical")) {
-      query = new Query("Ride").addSort("name", SortDirection.ASCENDING);
-    } else {
-      query = new Query("Ride").addSort("name", SortDirection.DESCENDING);
-    }
-    
-    PreparedQuery results = datastore.prepare(query);
-    int count = 0;
-
-    if (!(request.getParameter("maxcomments") == null)) {
-      maxcount = Integer.parseInt(request.getParameter("maxcomments"));
-    }
-
-    List<Ride> allRides = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
-      long capacity = (long) entity.getProperty("capacity");
-      String name = (String) entity.getProperty("name");
-      long currentRiders = (long) entity.getProperty("currentRiders");
-      Ride ride = new Ride(id, name, capacity, currentRiders);
-      allRides.add(ride);
-
-      count++;
-      if (count >= maxcount) {
-        break;
-      }
-    }
-
-    response.setContentType("application/json;");
-    Gson gson = new Gson();
-    String json = gson.toJson(allRides);
-    response.getWriter().println(json);
-  }
 
   // A simple HTTP handler to extract text input from submitted web form and respond that context back to the user.
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    String name = request.getParameter("name");
+    String name = request.getParameter("firstName");
     long capacity = Long.parseLong(request.getParameter("capacity"));
 
-    Entity entryEntity = new Entity("Ride");
+    Entity entryEntity = new Entity("Profile");
     entryEntity.setProperty("name", name);
     entryEntity.setProperty("capacity", capacity);
-    entryEntity.setProperty("currentRiders", 0);
     datastore.put(entryEntity);
 
     response.sendRedirect("/index.html");

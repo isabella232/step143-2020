@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Rideshare Webapp</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=init" async defer></script>
+    <script src="script.js"></script>
+    <script src="testmap.js"></script>
+    <style>
+        #testMap {border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
+    </style>
+  </head>
+  <body onload = "init();">
+    <div id="testMap"></div>
+    <form id="geolocation">
+        <p>"Lat:"</p><div id="lat" name="lat"></div>
+        <p>"Long:"</p><div id="lng" name="lng"></div>
+	</form> 
+  </body>
+</html>
