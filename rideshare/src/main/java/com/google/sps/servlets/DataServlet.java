@@ -105,7 +105,9 @@ public class DataServlet extends HttpServlet {
     } else if (sort.equals("reverse-alphabetical")){
       query = new Query("Ride").addSort("name", SortDirection.DESCENDING);
     } else {
-      query = new Query("Ride").addSort("start", SortDirection.ASCENDING);
+      GeoPt start = new GeoPt(Float.parseFloat(request.getParameter("startlat")), Float.parseFloat(request.getParameter("startlng")));
+      StContainsFilter radiusFilter = new StContainsFilter("start", new Query.GeoRegion.Circle(start, 10000.0));
+      query = new Query("Ride").setFilter(radiusFilter);
     }
     
     PreparedQuery results = datastore.prepare(query);
