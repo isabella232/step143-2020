@@ -98,13 +98,13 @@ public class DataServlet extends HttpServlet {
     if (!(request.getParameter("sort") == null)) {
       sort = request.getParameter("sort");
     }
-    System.out.println(sort);
     Query query;
     if (sort.equals("startdistance")) {
       GeoPt start = new GeoPt(Float.parseFloat(request.getParameter("startlat")), Float.parseFloat(request.getParameter("startlng")));
-      StContainsFilter radiusFilter = new StContainsFilter("start", new Query.GeoRegion.Circle(start, 10000.0));
+      double maxdistance = Double.parseDouble(request.getParameter("maxdistance"));
+      System.out.println(maxdistance);
+      StContainsFilter radiusFilter = new StContainsFilter("start", new Query.GeoRegion.Circle(start, maxdistance));
       query = new Query("Ride").setFilter(radiusFilter);
-
     } else if (sort.equals("reverse-alphabetical")){
       query = new Query("Ride").addSort("name", SortDirection.DESCENDING);
     } else {
