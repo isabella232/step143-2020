@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" >
-    <title>My Portfolio</title>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
     <title>Rideshare Webapp</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=getLocationGPS" async defer></script>
     <script src="script.js"></script>
-    <script src="testmap.js"></script>
+    <style>
+        #addRoute {border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
+    </style>
   </head>
-<body onload = "loadEntries(); getLocationGPS(); loadUser();">
+
+<body onload = "loadEntries(); createRoute(); loadUser();">
     
 <div class="loginForm">  
   <form id="loginForm" class="loginForm-content container">
@@ -28,6 +28,7 @@
 
    <div id= "rideshareApp">    
     <div id="content">
+      
       <h1>Rideshare App</h1>
       <p>This is the rough draft of our rideshare app.</p>
       <a href="/editAccount.html ">
@@ -35,16 +36,22 @@
       </a>
       <h4>Post a ride below:</h4>
       <br/> <!-- TODO (once merged with Ciara), INSERT MAP HERE WITH START AND END LOCATION INTERACTION -->
-      <div id="map"></div>
+      <div id="addRoute"></div>
         <form id="geolocation">
-            <p>"Lat:"</p><div id="lat" name="lat"></div>
-            <p>"Long:"</p><div id="lng" name="lng"></div>
-	    </form>   
+        </form>    
+        <button id="getButton">Get Route</button> 
       <br/>
       <h4>
       <form id="addride" action="/data" method="POST">
           <!-- TODO NOTE: This form will eventually be replaced by profile data stored by William. For now, Nathan 
           is testing with user inputs. -->
+            <p>"Start Lat:"</p><textarea id="lat" name="lat"></textarea>
+            <p>"Start Long:"</p><textarea id="lng" name="lng"></textarea>
+
+            <p>"End Lat:"</p><textarea id="endlat" name="endlat"></textarea>
+            <p>"End Long:"</p><textarea id="endlng" name="endlng"></textarea>
+
+            <br/><br/>
         
           <textarea name="name" placeholder="Enter Name"></textarea>
           <br/><br/>
@@ -77,7 +84,7 @@
       <br/>
       <table style="width:100%" id="entry-list">
         <tr>
-          <th>Name</th>
+          <th>Driver Info</th>
           <th>Current # of Riders</th>
           <th>Capacity</th>
         </tr>

@@ -41,19 +41,27 @@ public class DataServlet extends HttpServlet {
     public String name;
     public long capacity;
     public long currentRiders;
-    
-    public Ride(long id, String name, long capacity) {
+    public String driverEmail;
+    public String driverId;
+    public ArrayList<String> riderList;  
+    public Ride(long id, String name, long capacity, String driverEmail, String driverId, ArrayList<String> riderList) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
       this.currentRiders = 0;
+      this.driverEmail = driverEmail;
+      this.driverId = driverId;
+      this.riderList = riderList;
     }
 
-    public Ride(long id, String name, long capacity, long currentRiders) {
+    public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, String driverId, ArrayList<String> riderList) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
       this.currentRiders = currentRiders;
+      this.driverEmail = driverEmail;
+      this.driverId = driverId;
+      this.riderList = riderList;
     }
 
     public String getName() {
@@ -103,7 +111,11 @@ public class DataServlet extends HttpServlet {
       long capacity = (long) entity.getProperty("capacity");
       String name = (String) entity.getProperty("name");
       long currentRiders = (long) entity.getProperty("currentRiders");
-      Ride ride = new Ride(id, name, capacity, currentRiders);
+      String driverEmail = (String) entity.getProperty("driverEmail");
+      String driverId = (String) entity.getProperty("driverId");
+      ArrayList<String> riderList = (ArrayList<String>) entity.getProperty("riderList");
+
+      Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList);
       allRides.add(ride);
 
       count++;
@@ -120,14 +132,32 @@ public class DataServlet extends HttpServlet {
 
   // A simple HTTP handler to extract text input from submitted web form and respond that context back to the user.
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    UserService userService = UserServiceFactory.getUserService();
+
+    String driverEmail = userService.getCurrentUser().getEmail();
+    String driverId = userService.getCurrentUser().getUserId();
     
     String name = request.getParameter("name");
     long capacity = Long.parseLong(request.getParameter("capacity"));
+    ArrayList<Double> start = new ArrayList<Double>();
+    start.add(Double.parseDouble(request.getParameter("lat")));
+    start.add(Double.parseDouble(request.getParameter("lng")));
+    ArrayList<Double> end = new ArrayList<Double>();
+    end.add(Double.parseDouble(request.getParameter("endlat")));
+    end.add(Double.parseDouble(request.getParameter("endlng")));
+
 
     Entity entryEntity = new Entity("Ride");
     entryEntity.setProperty("name", name);
     entryEntity.setProperty("capacity", capacity);
     entryEntity.setProperty("currentRiders", 0);
+    entryEntity.setProperty("driverEmail", driverEmail);
+    entryEntity.setProperty("driverId", driverId);
+    entryEntity.setProperty("riderList", List.of(""));
+    entryEntity.setProperty("start", start);
+    entryEntity.setProperty("end", end);
+
     datastore.put(entryEntity);
 
     response.sendRedirect("/index.html");
