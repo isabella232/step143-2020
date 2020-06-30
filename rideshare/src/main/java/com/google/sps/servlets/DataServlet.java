@@ -140,6 +140,13 @@ public class DataServlet extends HttpServlet {
     
     String name = request.getParameter("name");
     long capacity = Long.parseLong(request.getParameter("capacity"));
+    ArrayList<Double> start = new ArrayList<Double>();
+    start.add(Double.parseDouble(request.getParameter("lat")));
+    start.add(Double.parseDouble(request.getParameter("lng")));
+    ArrayList<Double> end = new ArrayList<Double>();
+    end.add(Double.parseDouble(request.getParameter("endlat")));
+    end.add(Double.parseDouble(request.getParameter("endlng")));
+
 
     Entity entryEntity = new Entity("Ride");
     entryEntity.setProperty("name", name);
@@ -148,6 +155,9 @@ public class DataServlet extends HttpServlet {
     entryEntity.setProperty("driverEmail", driverEmail);
     entryEntity.setProperty("driverId", driverId);
     entryEntity.setProperty("riderList", List.of(""));
+    entryEntity.setProperty("start", start);
+    entryEntity.setProperty("end", end);
+
     datastore.put(entryEntity);
 
     response.sendRedirect("/index.html");
