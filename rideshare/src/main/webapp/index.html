@@ -75,18 +75,22 @@
       </form>
 
       <form>
+          <textarea id="closestartlat" name="closestartlat" placeholder="Enter Starting Latitude" style="height:25px; width:20%"></textarea>
+          <textarea id="closestartlng" name="closestartlng" placeholder="Enter Starting Longitude" style="height:25px; width:20%"></textarea>
             <label>Sort:</label>
               <select onchange="sortRides()" id="sort" name="sort" required style="width:15%">
                 <option value="" disabled selected>Choose</option>
                 <option value="alphabetical">By name alphabetical (A-Z)</option>
                 <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
-                <option value="distance">By name alphabetical (Z-A)</option>
+                <option value="startdistance">Closest (Start Location)</option>
               </select>
       </form>
       <br/>
       <table style="width:100%" id="entry-list">
         <tr>
           <th>Driver Info</th>
+          <th>From</th>
+          <th>To</th>
           <th>Current # of Riders</th>
           <th>Capacity</th>
         </tr>
