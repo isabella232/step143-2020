@@ -78,7 +78,7 @@ public class DataServlet extends HttpServlet {
 
   }
 
-  public int maxcount = 3;
+  public int maxcount = 5;
 
   // all options: "newest (descending), oldest (ascending), alphabetical, reverse-alphabetical"
   public String sort = "newest";

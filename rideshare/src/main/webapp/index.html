@@ -16,12 +16,12 @@
     
 <div class="loginForm">  
   <form id="loginForm" class="loginForm-content container">
-    <h2 text-allign="center">Welcome to Ridshare</h2>
+    <h2 text-allign="center">Welcome to Rideshare</h2>
     
     <div id="LoginUsingGoogle"></div>
 
     <div class="container" style="background-color:#grey">
-      <button type="button" onclick="document.getElementById('loginForm').style.display='none'" class="cancelbtn">Cancel</button>
+
     </div>
   </form>
 </div>
@@ -31,11 +31,12 @@
       
       <h1>Rideshare App</h1>
       <p>This is the rough draft of our rideshare app.</p>
+      <div id ="logout"></div>
       <a href="/editAccount.html ">
        <button>Edit Account Information</button>
       </a>
       <h4>Post a ride below:</h4>
-      <br/> <!-- TODO (once merged with Ciara), INSERT MAP HERE WITH START AND END LOCATION INTERACTION -->
+      <br/>
       <div id="addRoute"></div>
         <form id="geolocation">
         </form>    
@@ -79,6 +80,7 @@
                 <option value="" disabled selected>Choose</option>
                 <option value="alphabetical">By name alphabetical (A-Z)</option>
                 <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
+                <option value="distance">By name alphabetical (Z-A)</option>
               </select>
       </form>
       <br/>
@@ -91,6 +93,5 @@
       </table>
     </div>
    </div>
-   <div id ="logout"></div>
   </body>
 </html>
