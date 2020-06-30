@@ -83,7 +83,8 @@ public class DataServlet extends HttpServlet {
   // all options: "newest (descending), oldest (ascending), alphabetical, reverse-alphabetical"
   public String sort = "newest";
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  
+  UserService userService = UserServiceFactory.getUserService();
+
 
   /** Responds with a JSON array containing comments data. */
   @Override
