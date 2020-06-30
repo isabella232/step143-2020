@@ -26,16 +26,16 @@ public class LoginStatusServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
-      String urlToRedirectToAfterUserLogsOut = "/login-signup.html";
+      String urlToRedirectToAfterUserLogsOut = "/";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
       response.getWriter().println("<p>Hello " + userEmail + "!</p>");
-      response.getWriter().println("<p>Please fill in this form to create an account or <a href=\"" + logoutUrl + "\">logout</a>.</p>");
+      response.getWriter().println(" <a href=\"" + logoutUrl + "\"> <button> Logout </button> </a> ");
     } else {
-      String urlToRedirectToAfterUserLogsIn = "/login-signup.html";
+      String urlToRedirectToAfterUserLogsIn = "/";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
-      response.getWriter().println("<p>Login using <a href=\"" + loginUrl + "\">Google</a>.</p>");
+      response.getWriter().println("</br> <p>Login using <a href=\"" + loginUrl + "\">Google</a>.</p>");
     }
   }
 }

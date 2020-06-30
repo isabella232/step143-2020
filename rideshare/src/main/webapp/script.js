@@ -162,14 +162,14 @@ function loadUser(){
     console.log(txt)
     loginElement.innerHTML = txt;
     var loginForm = document.getElementById("loginForm");
-    var signup = document.getElementById("signup");
+    var rideshare = document.getElementById("rideshareApp");
     if (txt.includes("Login")) {
       loginForm.style.display = "block";
-      signup.style.display = "none";
+      rideshare.style.display = "none";
       document.getElementById("LoginUsingGoogle").innerHTML = "<i>" + txt + "</i>";
     } else {
       loginForm.style.display = "none";
-      document.getElementById("additionalInfo").innerHTML = "<i>" + txt + "</i>";
+      document.getElementById("logout").innerHTML = "<i>" + txt + "</i>";
     }});
 }
 
