@@ -87,8 +87,8 @@ public class DataServlet extends HttpServlet {
 
   public int maxcount = 5;
 
-  // all options: "newest (descending), oldest (ascending), alphabetical, reverse-alphabetical"
-  public String sort = "newest";
+  // all options: alphabetical, reverse-alphabetical, location"
+  public String sort = "alphabetical";
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   
 
@@ -100,14 +100,15 @@ public class DataServlet extends HttpServlet {
     }
     System.out.println(sort);
     Query query;
-    if (sort.equals("alphabetical")) {
-      query = new Query("Ride").addSort("name", SortDirection.ASCENDING);
-    } else if (sort.equals("reverse-alphabetical")){
-      query = new Query("Ride").addSort("name", SortDirection.DESCENDING);
-    } else {
+    if (sort.equals("startdistance")) {
       GeoPt start = new GeoPt(Float.parseFloat(request.getParameter("startlat")), Float.parseFloat(request.getParameter("startlng")));
       StContainsFilter radiusFilter = new StContainsFilter("start", new Query.GeoRegion.Circle(start, 10000.0));
       query = new Query("Ride").setFilter(radiusFilter);
+
+    } else if (sort.equals("reverse-alphabetical")){
+      query = new Query("Ride").addSort("name", SortDirection.DESCENDING);
+    } else {
+      query = new Query("Ride").addSort("name", SortDirection.ASCENDING);
     }
     
     PreparedQuery results = datastore.prepare(query);
