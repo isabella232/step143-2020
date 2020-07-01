@@ -90,7 +90,8 @@ public class DataServlet extends HttpServlet {
   // all options: alphabetical, reverse-alphabetical, location"
   public String sort = "alphabetical";
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  
+  UserService userService = UserServiceFactory.getUserService();
+
 
   /** Responds with a JSON array containing comments data. */
   @Override
