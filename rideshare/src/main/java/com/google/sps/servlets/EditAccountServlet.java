@@ -72,7 +72,7 @@ public class EditAccountServlet extends HttpServlet {
     // String firstName = request.getParameter("firstName");
     // String lastName = request.getParameter("lastName");
 
-    String name = request.getParameter("firstName");
+    String name = request.getParameter("name");
     long capacity = Long.parseLong(request.getParameter("capacity"));
     String driverEmail = userService.getCurrentUser().getEmail();
     String driverId = userService.getCurrentUser().getUserId();
