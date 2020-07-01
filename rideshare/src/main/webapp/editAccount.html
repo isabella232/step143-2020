@@ -5,7 +5,7 @@
     <script src="script.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body onload="loadUser()">
+<body onload="checkExists();">
 
 <!-- Account Edit Form -->
 <form id="editAccount" action="/edit" method="POST">
@@ -16,10 +16,10 @@
     <hr>
 
 <label for="name"><b>Name</b></label>
-    <input type="text" placeholder="Enter Name" name="name" id="name" required>
+    <input type="text" placeholder="Enter full name" name="name" id="name" required>
 
 <label for="capacity"><b>Car Capacity</b></label>
-    <input type="text" placeholder="Enter Car Capacity" name="capacity" id="capacity" required>
+    <input type="text" placeholder="Enter current car capacity" name="capacity" id="capacity" required>
     
 
     <hr>

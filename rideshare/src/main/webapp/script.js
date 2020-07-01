@@ -54,6 +54,17 @@ function loadEntries() {
   });
 }
 
+function checkExists() {
+  fetch('/edit').then(response => response.json()).then((entries) => {
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      document.getElementById("name").value = entry.name;
+      document.getElementById("capacity").value = entry.capacity;
+    })
+  });
+}
+
+
 function sortRides() {
   const sort = document.getElementById('sort');
   console.log(sort.value)
