@@ -54,6 +54,7 @@ function loadEntries() {
   });
 }
 
+//autofills if information is already there
 function checkExists() {
   fetch('/edit').then(response => response.json()).then((entries) => {
     entries.forEach((entry) => {
