@@ -32,6 +32,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import java.util.*;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/edit")
@@ -39,14 +40,12 @@ public class EditAccountServlet extends HttpServlet {
 
   /** Data holder for each individual Profile */
   public class Profile {
-    public long id;
     public String name;
     public long capacity;
     public String driverEmail;
     public String driverId;
     
-    public Profile(long id, String name, long capacity, String driverEmail, String driverId) {
-      this.id = id;
+    public Profile(String name, long capacity, String driverEmail, String driverId) {
       this.name = name;
       this.capacity = capacity;
       this.driverId = driverId;
@@ -66,13 +65,41 @@ public class EditAccountServlet extends HttpServlet {
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   UserService userService = UserServiceFactory.getUserService();
 
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    UserService userService = UserServiceFactory.getUserService();
+
+    String profileId = userService.getCurrentUser().getUserId();
+
+    try{
+      Key profileEntityKey = KeyFactory.createKey("Profile", profileId);
+      Entity profileEntity = datastore.get(profileEntityKey);
+
+      List<Profile> profileDetails = new ArrayList<>();
+      response.setContentType("application/json;");
+      if (profileEntity.getProperty("name").equals(null)) {
+        Gson gson = new Gson();
+        String json = gson.toJson(profileDetails);
+        response.getWriter().println(json);
+      } else {
+        String driverEmail = userService.getCurrentUser().getEmail();
+        Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId);
+        profileDetails.add(temp);
+        Gson gson = new Gson();
+        String json = gson.toJson(profileDetails);
+        response.getWriter().println(json);
+      }
+    } catch (EntityNotFoundException e) {
+    } 
+  }
+
   // A simple HTTP handler to extract text input from submitted web form and respond that context back to the user.
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     // String firstName = request.getParameter("firstName");
     // String lastName = request.getParameter("lastName");
 
-    String name = request.getParameter("firstName");
+    String name = request.getParameter("name");
     long capacity = Long.parseLong(request.getParameter("capacity"));
     String driverEmail = userService.getCurrentUser().getEmail();
     String driverId = userService.getCurrentUser().getUserId();
