@@ -110,6 +110,22 @@ function createEntryElement(entry) {
   joinRideButtonElement.addEventListener('click', () => {
     joinRide(entry);
   });
+
+  var rateButtonElement = document.createElement('button');
+  rateButtonElement.innerText = 'Rate Driver';
+  rateButtonElement.style.float = "right";
+  rateButtonElement.addEventListener('click', () => {
+    revealRate(entry);
+    window.location = "#ratingdiv"
+    // console.log(document);
+    // console.log(document.location)
+    // // location.assign("/rate.html");
+    // console.log("HELLO");
+    // document = "/rate.html";
+    // console.log(document);
+    // document.getElementById("profilerated").innerHTML = "Test";
+    // console.log(document.getElementById("profilerated").innerHTML);
+  });
   
 
 
@@ -119,13 +135,29 @@ function createEntryElement(entry) {
   entryElement.appendChild(currentRidersElement);
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(joinRideButtonElement);
+  entryElement.appendChild(rateButtonElement);
   return entryElement;
+}
+
+function revealRate(entry) {
+  document.getElementById("profilename").innerHTML = "Your rating for: " + "<br/><br/>" +
+  "<i>" + entry.name  + "<p id=\"profileId\">" + entry.driverId + "</p>" + "</i>";
+  document.getElementById("ratingbox").innerHTML = "<textarea id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\"></textarea>";
+  document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
 }
 
 function joinRide(entry) {
   const params = new URLSearchParams();
   params.append('id', entry.id);
   fetch('/joinride', {method: 'POST', body: params});
+  location.reload();
+}
+
+function rateDriver() {
+  const params = new URLSearchParams();
+  params.append('driverId', document.getElementById("profileId").innerHTML);
+  params.append('rating', document.getElementById("ratingbox"));
+  fetch('/ratedriver', {method: 'POST', body: params});
   location.reload();
 }
 

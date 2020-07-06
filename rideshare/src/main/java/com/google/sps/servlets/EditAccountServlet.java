@@ -44,12 +44,16 @@ public class EditAccountServlet extends HttpServlet {
     public long capacity;
     public String driverEmail;
     public String driverId;
+    public double rating;
+    public long numratings;
     
-    public Profile(String name, long capacity, String driverEmail, String driverId) {
+    public Profile(String name, long capacity, String driverEmail, String driverId, double rating, long numratings) {
       this.name = name;
       this.capacity = capacity;
       this.driverId = driverId;
       this.driverEmail = driverEmail;
+      this.rating = rating;
+      this.numratings = numratings;
     }
 
     public String getName() {
@@ -83,7 +87,9 @@ public class EditAccountServlet extends HttpServlet {
         response.getWriter().println(json);
       } else {
         String driverEmail = userService.getCurrentUser().getEmail();
-        Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId);
+        double rating = (double) profileEntity.getProperty("rating");
+        long numratings = (long) profileEntity.getProperty("numratings");
+        Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId, rating, numratings);
         profileDetails.add(temp);
         Gson gson = new Gson();
         String json = gson.toJson(profileDetails);
@@ -109,6 +115,8 @@ public class EditAccountServlet extends HttpServlet {
     entryEntity.setProperty("capacity", capacity);
     entryEntity.setProperty("driverId", driverId);
     entryEntity.setProperty("driverEmail", driverEmail);
+    entryEntity.setProperty("rating", 0);
+    entryEntity.setProperty("numratings", 0);
     datastore.put(entryEntity);
 
     response.sendRedirect("/index.html");
