@@ -12,23 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function getLocationGPS() {
-    var arch = new google.maps.LatLng(28.624691, -90.184776);
-    var map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: arch});
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            document.getElementById('lat').innerHTML = position.coords.latitude;
-            document.getElementById('lng').innerHTML = position.coords.longitude;
-            var newCenter = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            var recenter = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: newCenter});
-            }     
-        )
-    }
-    else {
-        alert('Geolocation is not supported for this Browser/OS.');
-    }
-}
-
 function getMessages() {
   const commentCount = document.getElementById('maxcomments');
   console.log(commentCount.name)
@@ -44,7 +27,7 @@ function getMessages() {
 
 function loadEntries() {
   const commentCount = document.getElementById('maxcomments');
-  console.log(commentCount.value)
+  //console.log(commentCount.value)
   fetch('/data').then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
@@ -104,6 +87,191 @@ function joinRide(entry) {
   location.reload();
 }
 
+function loadUser(){
+    fetch('/loginStatus').then(response => response.text()).then((txt) => {
+    const loginElement = document.getElementById('LoginUsingGoogle');
+    //console.log(txt)
+    loginElement.innerHTML = txt;
+    var loginForm = document.getElementById("loginForm");
+    var rideshare = document.getElementById("rideshareApp");
+    if (txt.includes("Login")) {
+      loginForm.style.display = "block";
+      rideshare.style.display = "none";
+      document.getElementById("LoginUsingGoogle").innerHTML = "<i>" + txt + "</i>";
+    } else {
+      loginForm.style.display = "none";
+      document.getElementById("logout").innerHTML = "<i>" + txt + "</i>";
+    }});
+}
+
+//Get location
+var map;
+var marker;
+var markers;
+var start;
+var startSearchBox;
+var endSearchBox;
+var directionsRenderer;
+var directionsService;
+
+function initMap(){
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer();
+    var mapCenter = new google.maps.LatLng(39.089581, -101.396101);
+
+    map = new google.maps.Map(document.getElementById('addRoute'), {
+        zoom: 7, 
+        center: mapCenter
+    })
+
+    directionsRenderer.setMap(map);
+        
+    document.getElementById("getButton").addEventListener("click", function() {
+        calculateAndDisplayRoute(directionsService, directionsRenderer);
+    })
+    autoComplete();
+}
+
+function removeMarkers(){
+    for(i = 0; i < markers.length; i++){
+        markers[i].setMap(null);
+    }
+}
+
+function getLocationGPS() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            start = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            }
+            map.setCenter(start);
+            map.setZoom(10)
+            marker = new google.maps.Marker({position: start, map: map});
+
+            var geocoder = new google.maps.Geocoder;
+            reverseLatLng(geocoder, start);
+            }     
+        )
+        
+    }
+    else {
+        alert('Geolocation is not supported for this Browser/OS.');
+    }
+}
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    directionsService.route(
+        {
+            origin: { query: document.getElementById("startAddress").value },
+            destination: { query: document.getElementById("endAddress").value },
+            travelMode: 'DRIVING'
+        },
+        function(response, status) {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(response);
+            } 
+            else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        }
+    )
+}
+
+//Geocoding
+function getLatLong(location) {
+    var geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({
+        'address': location
+    }, 
+        function(results, status) {
+            if (status === "OK") {
+                var coordinates = results[0].geometry.location;
+                return coordinates;
+            }
+        }
+    );
+}
+
+//Reverse Geocoding
+function reverseLatLng(geocoder, start) {
+    geocoder.geocode({'location': start}, function(results, status) {
+        if (status === 'OK') {
+            if (results[0]) {
+                document.getElementById("startAddress").value = results[0].formatted_address;
+            } 
+            else {
+                window.alert('No results found');
+            }
+        } 
+        else {
+            window.alert('Geocoder failed due to: ' + status);
+        }
+    });
+}
+
+//Search Location and place on map
+function autoComplete() {
+    //Create Search Box
+    startSearchBox = new google.maps.places.SearchBox(document.getElementById("startAddress"));
+    endSearchBox = new google.maps.places.SearchBox(document.getElementById("endAddress"));
+
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener("bounds_changed", function() {
+        startSearchBox.setBounds(map.getBounds());
+    })
+
+    startSearchBox.addListener("places_changed", function() {
+        returnPlace(startSearchBox);
+    })
+    endSearchBox.addListener("places_changed", function() {
+        returnPlace(endSearchBox);
+    })
+}
+
+function returnPlace(SearchBox) {
+    markers = [];
+    var places = SearchBox.getPlaces();
+
+        if (places.length == 0) {
+            return;
+        }
+
+        // Clear out the old markers.
+        markers.forEach(function(marker) {
+            marker.setMap(null);
+        });
+        markers = []; 
+
+        // For each place, get the icon, name and location.
+        var bounds = new google.maps.LatLngBounds();
+        places.forEach(function(place) {
+            if (!place.geometry) {
+                console.log("Returned place contains no geometry");
+                return;
+            }
+
+            // Create a marker for each place.
+            markers.push(new google.maps.Marker({
+                map: map,
+                title: place.name,
+                position: place.geometry.location
+            })
+            );
+
+            if (place.geometry.viewport) {
+                // Only geocodes have viewport.
+                bounds.union(place.geometry.viewport);
+            } 
+            else {
+                bounds.extend(place.geometry.location);
+            }
+        });
+        
+    map.fitBounds(bounds);
+}
+
 //Track live location
 const createMap = ({ lat, lng }) => {
   return new google.maps.Map(document.getElementById('testMap'), {
@@ -143,82 +311,15 @@ const getPositionErrorMessage = errMessage => {
 
 function trackingMap() {
   const initialPosition = { lat: 59.325, lng: 18.069 };
-  const map = createMap(initialPosition);
-  const marker = createMarker({ map, position: initialPosition });
+  const trackmap = createMap(initialPosition);
+  const trackmarker = createMarker({ trackmap, position: initialPosition });
 
   trackLocation({
     onSuccess: ({ coords: { latitude: lat, longitude: lng } }) => {
-      marker.setPosition({ lat, lng });
-      map.panTo({ lat, lng });
+      trackmarker.setPosition({ lat, lng });
+      trackmap.panTo({ lat, lng });
     },
     onError: err =>
       alert(getPositionErrorMessage(err.errMessage))
   })
-}
-
-function loadUser(){
-    fetch('/loginStatus').then(response => response.text()).then((txt) => {
-    const loginElement = document.getElementById('LoginUsingGoogle');
-    console.log(txt)
-    loginElement.innerHTML = txt;
-    var loginForm = document.getElementById("loginForm");
-    var rideshare = document.getElementById("rideshareApp");
-    if (txt.includes("Login")) {
-      loginForm.style.display = "block";
-      rideshare.style.display = "none";
-      document.getElementById("LoginUsingGoogle").innerHTML = "<i>" + txt + "</i>";
-    } else {
-      loginForm.style.display = "none";
-      document.getElementById("logout").innerHTML = "<i>" + txt + "</i>";
-    }});
-}
-
-//Create Route from Start to Destination
-var start = {}
-
-function createRoute() {
-    var directionsService = new google.maps.DirectionsService();
-    var directionsRenderer = new google.maps.DirectionsRenderer();
-    var origin = new google.maps.LatLng(39.089581, -101.396101);
-    var map = new google.maps.Map(document.getElementById('addRoute'), {zoom: 7, center: origin});
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            document.getElementById('lat').innerHTML = position.coords.latitude;
-            document.getElementById('lng').innerHTML = position.coords.longitude;
-
-            start = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            }
-            var newCenter = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            }     
-        )
-    }
-
-    directionsRenderer.setMap(map);
-
-    function onClickHandler() {
-        calculateAndDisplayRoute(directionsService, directionsRenderer);
-    }
-    document.getElementById('getButton').addEventListener("click", onClickHandler);
-}
-
-function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-    document.getElementById('endlat').innerHTML = 41.8781;
-    document.getElementById('endlng').innerHTML = 87.6298;
-    directionsService.route(
-        {
-            origin: start,
-            destination: "chicago, IL",
-            travelMode: 'DRIVING'
-        },
-        function(response, status) {
-            if (status === 'OK') {
-                directionsRenderer.setDirections(response);
-            } 
-            else {
-                window.alert('Directions request failed due to ' + status);
-            }
-        }
-    )
 }
