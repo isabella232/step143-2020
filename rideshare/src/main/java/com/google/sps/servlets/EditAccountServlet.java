@@ -85,8 +85,6 @@ public class EditAccountServlet extends HttpServlet {
     datastore.put(entryEntity);
 
     response.sendRedirect("/index.html");
-
-   
     
   }
 }
