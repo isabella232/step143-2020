@@ -38,7 +38,6 @@ public class RateDriverServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String driverId = request.getParameter("driverId").trim();
-    System.out.println(driverId);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
 
@@ -51,7 +50,7 @@ public class RateDriverServlet extends HttpServlet {
 
       long newnumratings = numratings + 1;
       double newrating = (Double.parseDouble(request.getParameter("rating")) + (rating * numratings)) / newnumratings;
-      System.out.println(newrating);
+
       profileEntity.setProperty("rating", newrating);
       profileEntity.setProperty("numratings", newnumratings);
       datastore.put(profileEntity);

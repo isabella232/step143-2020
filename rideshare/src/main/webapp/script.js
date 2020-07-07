@@ -90,7 +90,7 @@ function createEntryElement(entry) {
   entryElement.className = 'entry collection-item';
 
   const nameElement = document.createElement('td');
-  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
+  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")" + "<br/><br/>" + entry.rating + "/" + "5.0" + "<br/>" + "(" + entry.numratings + "ratings)";
 
   const startElement = document.createElement('td');
   startElement.innerText = entry.start;
@@ -140,8 +140,8 @@ function createEntryElement(entry) {
 }
 
 function revealRate(entry) {
-  document.getElementById("profilename").innerHTML = "Your rating for: " + "<br/><br/>" +
-  "<i>" + entry.name  + "<p id=\"profileId\">" + entry.driverId + "</p>" + "</i>";
+  document.getElementById("profilename").innerHTML = "Your rating for: " + 
+  "<i>" + entry.name  + "</i>" + "<p> Driver ID: " + "<span id=\"profileId\">" + entry.driverId + "</span>" + "</p>" + "</i>";
   document.getElementById("ratingbox").innerHTML = "<textarea id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\"></textarea>";
   document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
 }
