@@ -39,7 +39,7 @@ function loadEntries() {
 
 //autofills if information is already there
 function checkExists() {
-  fetch('/edit').then(response => response.json()).then((entries) => {
+  fetch('/edit?type=1').then(response => response.json()).then((entries) => {
     entries.forEach((entry) => {
       console.log(entry.name)
       document.getElementById("name").value = entry.name;
@@ -68,12 +68,34 @@ function sortRides() {
 }
 
 
+function getRating(entry) {
+   fetch('/edit?type=' + entry.driverId).then(response => response.json()).then((entries) => {
+    rating = entries[0].rating;
+    return rating;
+  })
+}
+
+
+function getNumRatings(entry) {
+   fetch('/edit?type=' + entry.driverId).then(response => response.json()).then((entries) => {
+    numratings = entries[0].numratings;
+    return numratings;
+    
+    })
+}
+
+
+
 function createEntryElement(entry) {
   const entryElement = document.createElement('tr');
   entryElement.className = 'entry collection-item';
 
   const nameElement = document.createElement('td');
-  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")" + "<br/><br/>" + entry.rating + "/" + "5.0" + "<br/>" + "(" + entry.numratings + "ratings)";
+  console.log(getRating(entry));
+  var rating = getRating(entry);
+  var numratings = getNumRatings(entry);
+  getNumRatings(entry);
+  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")" + "<br/><br/>" + rating + "/" + "5.0" + "<br/>" + "(" + numratings + " ratings)";
 
   const startElement = document.createElement('td');
   startElement.innerText = entry.start;
@@ -100,18 +122,8 @@ function createEntryElement(entry) {
   rateButtonElement.addEventListener('click', () => {
     revealRate(entry);
     window.location = "#ratingdiv"
-    // console.log(document);
-    // console.log(document.location)
-    // // location.assign("/rate.html");
-    // console.log("HELLO");
-    // document = "/rate.html";
-    // console.log(document);
-    // document.getElementById("profilerated").innerHTML = "Test";
-    // console.log(document.getElementById("profilerated").innerHTML);
   });
   
-
-
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
   entryElement.appendChild(endElement);
@@ -125,7 +137,7 @@ function createEntryElement(entry) {
 function revealRate(entry) {
   document.getElementById("profilename").innerHTML = "Your rating for: " + 
   "<i>" + entry.name  + "</i>" + "<p> Driver ID: " + "<span id=\"profileId\">" + entry.driverId + "</span>" + "</p>" + "</i>";
-  document.getElementById("ratingbox").innerHTML = "<textarea id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\"></textarea>";
+  document.getElementById("ratingbox").innerHTML = "<input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\"></textarea>";
   document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
 }
 
