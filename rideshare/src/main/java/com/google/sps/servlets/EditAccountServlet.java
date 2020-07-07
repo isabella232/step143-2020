@@ -40,6 +40,7 @@ public class EditAccountServlet extends HttpServlet {
 
   /** Data holder for each individual Profile */
   public class Profile {
+    public long id;
     public String name;
     public long capacity;
     public String driverEmail;
@@ -48,6 +49,7 @@ public class EditAccountServlet extends HttpServlet {
     public long numratings;
     
     public Profile(String name, long capacity, String driverEmail, String driverId, double rating, long numratings) {
+      this.id = id;
       this.name = name;
       this.capacity = capacity;
       this.driverId = driverId;
@@ -70,13 +72,14 @@ public class EditAccountServlet extends HttpServlet {
   UserService userService = UserServiceFactory.getUserService();
 
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    long id = entity.getKey().getId();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
 
     String profileId = userService.getCurrentUser().getUserId();
 
     try{
-      Key profileEntityKey = KeyFactory.createKey("Profile", profileId);
+      Key profileEntityKey = KeyFactory.createKey("Profile", id);
       Entity profileEntity = datastore.get(profileEntityKey);
 
       List<Profile> profileDetails = new ArrayList<>();
@@ -111,6 +114,7 @@ public class EditAccountServlet extends HttpServlet {
     String driverId = userService.getCurrentUser().getUserId();
 
     Entity entryEntity = new Entity("Profile", driverId);
+    entryEntity.setProperty("id", id);
     entryEntity.setProperty("name", name);
     entryEntity.setProperty("capacity", capacity);
     entryEntity.setProperty("driverId", driverId);
