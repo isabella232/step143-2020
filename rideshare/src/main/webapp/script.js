@@ -143,6 +143,8 @@ function rateDriver() {
   fetch('/ratedriver', {method: 'POST', body: params});
   location.reload();
 
+}
+
 function loadUser(){
     fetch('/loginStatus').then(response => response.text()).then((txt) => {
     const loginElement = document.getElementById('LoginUsingGoogle');
