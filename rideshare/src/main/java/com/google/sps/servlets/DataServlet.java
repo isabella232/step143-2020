@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -29,6 +31,10 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.StContainsFilter;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.GeoPt;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import java.util.*;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -44,6 +50,8 @@ public class DataServlet extends HttpServlet {
     public String driverEmail;
     public String driverId;
     public ArrayList<String> riderList;  
+    public String start;
+    public String end;
     public Ride(long id, String name, long capacity, String driverEmail, String driverId, ArrayList<String> riderList) {
       this.id = id;
       this.name = name;
@@ -54,7 +62,7 @@ public class DataServlet extends HttpServlet {
       this.riderList = riderList;
     }
 
-    public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, String driverId, ArrayList<String> riderList) {
+    public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
@@ -62,6 +70,8 @@ public class DataServlet extends HttpServlet {
       this.driverEmail = driverEmail;
       this.driverId = driverId;
       this.riderList = riderList;
+      this.start = start.toString();
+      this.end = end.toString();
     }
 
     public String getName() {
@@ -78,12 +88,13 @@ public class DataServlet extends HttpServlet {
 
   }
 
-  public int maxcount = 3;
+  public int maxcount = 5;
 
-  // all options: "newest (descending), oldest (ascending), alphabetical, reverse-alphabetical"
-  public String sort = "newest";
+  // all options: alphabetical, reverse-alphabetical, location"
+  public String sort = "alphabetical";
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  
+  UserService userService = UserServiceFactory.getUserService();
+
 
   /** Responds with a JSON array containing comments data. */
   @Override
@@ -92,10 +103,16 @@ public class DataServlet extends HttpServlet {
       sort = request.getParameter("sort");
     }
     Query query;
-    if (sort.equals("alphabetical")) {
-      query = new Query("Ride").addSort("name", SortDirection.ASCENDING);
-    } else {
+    if (sort.equals("startdistance")) {
+      GeoPt start = new GeoPt(Float.parseFloat(request.getParameter("startlat")), Float.parseFloat(request.getParameter("startlng")));
+      double maxdistance = Double.parseDouble(request.getParameter("maxdistance"));
+      System.out.println(maxdistance);
+      StContainsFilter radiusFilter = new StContainsFilter("start", new Query.GeoRegion.Circle(start, maxdistance));
+      query = new Query("Ride").setFilter(radiusFilter);
+    } else if (sort.equals("reverse-alphabetical")){
       query = new Query("Ride").addSort("name", SortDirection.DESCENDING);
+    } else {
+      query = new Query("Ride").addSort("name", SortDirection.ASCENDING);
     }
     
     PreparedQuery results = datastore.prepare(query);
@@ -114,8 +131,10 @@ public class DataServlet extends HttpServlet {
       String driverEmail = (String) entity.getProperty("driverEmail");
       String driverId = (String) entity.getProperty("driverId");
       ArrayList<String> riderList = (ArrayList<String>) entity.getProperty("riderList");
+      GeoPt start = (GeoPt) entity.getProperty("start");
+      GeoPt end = (GeoPt) entity.getProperty("end");
 
-      Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList);
+      Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end);
       allRides.add(ride);
 
       count++;
@@ -138,29 +157,40 @@ public class DataServlet extends HttpServlet {
     String driverEmail = userService.getCurrentUser().getEmail();
     String driverId = userService.getCurrentUser().getUserId();
     
-    String name = request.getParameter("name");
-    long capacity = Long.parseLong(request.getParameter("capacity"));
-    ArrayList<Double> start = new ArrayList<Double>();
-    start.add(Double.parseDouble(request.getParameter("lat")));
-    start.add(Double.parseDouble(request.getParameter("lng")));
-    ArrayList<Double> end = new ArrayList<Double>();
-    end.add(Double.parseDouble(request.getParameter("endlat")));
-    end.add(Double.parseDouble(request.getParameter("endlng")));
+    //String name = request.getParameter("name");
+    //long capacity = Long.parseLong(request.getParameter("capacity"));
+    try{
+      Entity rideEntity = datastore.get(KeyFactory.createKey("Profile", driverId));
+      String name = (String) rideEntity.getProperty("name");
+      long capacity = (long) rideEntity.getProperty("capacity");
+
+      GeoPt start = new GeoPt(Float.parseFloat(request.getParameter("lat")), Float.parseFloat(request.getParameter("lng")));
+      GeoPt end = new GeoPt(Float.parseFloat(request.getParameter("endlat")), Float.parseFloat(request.getParameter("endlng")));
 
 
-    Entity entryEntity = new Entity("Ride");
-    entryEntity.setProperty("name", name);
-    entryEntity.setProperty("capacity", capacity);
-    entryEntity.setProperty("currentRiders", 0);
-    entryEntity.setProperty("driverEmail", driverEmail);
-    entryEntity.setProperty("driverId", driverId);
-    entryEntity.setProperty("riderList", List.of(""));
-    entryEntity.setProperty("start", start);
-    entryEntity.setProperty("end", end);
 
-    datastore.put(entryEntity);
+      Entity entryEntity = new Entity("Ride");
+      entryEntity.setProperty("name", name);
+      entryEntity.setProperty("capacity", capacity);
+      entryEntity.setProperty("currentRiders", 0);
+      entryEntity.setProperty("driverEmail", driverEmail);
+      entryEntity.setProperty("driverId", driverId);
+      entryEntity.setProperty("riderList", List.of(""));
+      entryEntity.setProperty("start", start);
+      entryEntity.setProperty("end", end);
 
-    response.sendRedirect("/index.html");
+      datastore.put(entryEntity);
+
+      response.sendRedirect("/index.html");
+    } catch (EntityNotFoundException e) {
+
+    } 
+    // ArrayList<Double> start = new ArrayList<Double>();
+    // start.add(Double.parseDouble(request.getParameter("lat")));
+    // start.add(Double.parseDouble(request.getParameter("lng")));
+    // ArrayList<Double> end = new ArrayList<Double>();
+    // end.add(Double.parseDouble(request.getParameter("endlat")));
+    // end.add(Double.parseDouble(request.getParameter("endlng")));
     
   }
 }

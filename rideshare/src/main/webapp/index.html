@@ -50,14 +50,8 @@
                     <p>"End Lat:"</p><textarea id="endlat" name="endlat"></textarea>
                     <p>"End Long:"</p><textarea id="endlng" name="endlng"></textarea>
 
-                    <br/><br/> 
 
-                    <textarea name="name" placeholder="Enter Name"></textarea>
-                    <br/><br/>
-                    <textarea name="capacity" placeholder="Enter Capacity" style="height:25px; width:20%"></textarea>
-                    <input class="button" style="margin-left:10px" type="submit"/>
-                </form>
-                <br/><br/>
+                    <br/><br/> 
 
                 <h4> Search for rides below: </h4>
                 <form>
@@ -80,15 +74,33 @@
                 </form>
                 <br/>
 
-                <table style="width:100%" id="entry-list">
-                    <tr>
-                        <th>Driver Info</th>
-                        <th>Current # of Riders</th>
-                        <th>Capacity</th>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div id ="logout"></div>
-    </body>
+      <br/>
+
+      <p> Note: About 1 degree at the equator is 111,319.5 meters </p>
+
+      <form>
+          <textarea id="closestartlat" name="closestartlat" placeholder="Enter Starting Latitude" style="height:25px; width:200px"></textarea>
+          <textarea id="closestartlng" name="closestartlng" placeholder="Enter Starting Longitude" style="height:25px; width:200px"></textarea>
+          <textarea id="maxdistance" name = "maxdistance" placeholder="Enter Max Distance from Start Point (Meters)" style="height: 50px; width:200px"></textarea>
+            <label>Sort:</label>
+              <select onchange="sortRides()" id="sort" name="sort" required style="width:20%">
+                <option value="" disabled selected>Choose</option>
+                <option value="alphabetical">By name alphabetical (A-Z)</option>
+                <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
+                <option value="startdistance">Closest (Start Location)</option>
+              </select>
+      </form>
+      <br/>
+      <table style="width:100%" id="entry-list">
+        <tr>
+          <th>Driver Info</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Current # of Riders</th>
+          <th>Capacity</th>
+        </tr>
+      </table>
+    </div>
+   </div>
+  </body>
 </html>

@@ -37,11 +37,28 @@ function loadEntries() {
   });
 }
 
+//autofills if information is already there
+function checkExists() {
+  fetch('/edit').then(response => response.json()).then((entries) => {
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      document.getElementById("name").value = entry.name;
+      document.getElementById("capacity").value = entry.capacity;
+    })
+  });
+}
+
+
 function sortRides() {
   const sort = document.getElementById('sort');
   console.log(sort.value)
-  document.getElementById('entry-list').innerHTML = "";
-  fetch('/data?sort=' + sort.value).then(response => response.json()).then((entries) => {
+  const startlat = document.getElementById('closestartlat');
+  console.log(startlat.value)
+  const startlng = document.getElementById('closestartlng');
+  const maxdistance = document.getElementById('maxdistance');
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
+  fetch('/data?sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
       console.log(entry.name)
@@ -56,7 +73,13 @@ function createEntryElement(entry) {
   entryElement.className = 'entry collection-item';
 
   const nameElement = document.createElement('td');
-  nameElement.innerHTML = entry.name + "<br/>" + entry.driverEmail;
+  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
+
+  const startElement = document.createElement('td');
+  startElement.innerText = entry.start;
+
+  const endElement = document.createElement('td');
+  endElement.innerText = entry.end;
 
   const capacityElement = document.createElement('td');
   capacityElement.innerText = entry.capacity;
@@ -74,6 +97,8 @@ function createEntryElement(entry) {
 
 
   entryElement.appendChild(nameElement);
+  entryElement.appendChild(startElement);
+  entryElement.appendChild(endElement);
   entryElement.appendChild(currentRidersElement);
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(joinRideButtonElement);
