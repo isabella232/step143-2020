@@ -37,7 +37,8 @@ public class RateDriverServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    long driverId= Long.parseLong(request.getParameter("driverId").trim());
+    String driverId = request.getParameter("driverId").trim();
+    System.out.println(driverId);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
 
@@ -46,6 +47,7 @@ public class RateDriverServlet extends HttpServlet {
       Entity profileEntity = datastore.get(profileEntityKey);
       double rating = (double) profileEntity.getProperty("rating");
       long numratings = (long) profileEntity.getProperty("numratings");
+      System.out.println(rating);
 
       long newnumratings = numratings + 1;
       double newrating = (Double.parseDouble(request.getParameter("rating")) + (rating * numratings)) / newnumratings;
@@ -56,6 +58,7 @@ public class RateDriverServlet extends HttpServlet {
       response.sendRedirect("/index.html");
 
     } catch (EntityNotFoundException e) {
+      System.out.println("ERROR");
 
     } 
   }

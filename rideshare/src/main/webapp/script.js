@@ -156,7 +156,7 @@ function joinRide(entry) {
 function rateDriver() {
   const params = new URLSearchParams();
   params.append('driverId', document.getElementById("profileId").innerHTML);
-  params.append('rating', document.getElementById("ratingbox"));
+  params.append('rating', document.getElementById("ratingtext").value);
   fetch('/ratedriver', {method: 'POST', body: params});
   location.reload();
 }
