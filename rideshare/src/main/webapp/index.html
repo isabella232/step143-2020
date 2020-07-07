@@ -1,73 +1,78 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Rideshare Webapp</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=getLocationGPS" async defer></script>
-    <script src="script.js"></script>
-    <style>
-        #addRoute {border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
-    </style>
-  </head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Rideshare Webapp</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=initMap&libraries=places" async defer></script>        
+        <style>
+            #addRoute {border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
+        </style>
+    </head>
 
-<body onload = "loadEntries(); createRoute(); loadUser();">
+    <body onload = "loadEntries(); loadUser();">
+        <div class="loginForm">  
+            <form id="loginForm" class="loginForm-content container">
+                <h2 text-align="center">Welcome to Rideshare</h2>
     
-<div class="loginForm">  
-  <form id="loginForm" class="loginForm-content container">
-    <h2 text-allign="center">Welcome to Rideshare</h2>
-    
-    <div id="LoginUsingGoogle"></div>
+                <div id="LoginUsingGoogle"></div>
 
-    <div class="container" style="background-color:#grey">
+                <div class="container" style="background-color:#grey">
+                <button type="button" onclick="document.getElementById('loginForm').style.display='none'" class="cancelbtn">Cancel</button>
+                </div>
+            </form>
+        </div>
 
-    </div>
-  </form>
-</div>
+        <div id= "rideshareApp">    
+            <div id="content">
+                <h1>Rideshare App</h1>
+                <p>This is the rough draft of our rideshare app.</p>
+                <a href="/editAccount.html "> <button>Edit Account Information</button> </a>
 
-   <div id= "rideshareApp">    
-    <div id="content">
-      
-      <h1>Rideshare App</h1>
-      <p>This is the rough draft of our rideshare app.</p>
-      <div id ="logout"></div>
-      <a href="/editAccount.html ">
-       <button>Edit Account Information</button>
-      </a>
-      <h4>Post a ride below:</h4>
-      <br/>
-      <div id="addRoute"></div>
-        <form id="geolocation">
-        </form>    
-        <button id="getButton">Get Route</button> 
-      <br/>
-      <h4>
-      <form id="addride" action="/data" method="POST">
-          <!-- TODO NOTE: This form will eventually be replaced by profile data stored by William. For now, Nathan 
-          is testing with user inputs. -->
-            <p>"Start Lat:"</p><textarea id="lat" name="lat"></textarea>
-            <p>"Start Long:"</p><textarea id="lng" name="lng"></textarea>
+                <h4>Post a ride below:</h4>
+                <br/> <!-- Functional Search Boxes -->
+                <div id="addRoute"></div>
+                <br/>
+                <button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
+                <input type="text" id="startAddress" >
+                <input type="text" id="endAddress" >
+                <form id="geolocation"> 
+                    <button id="getButton" type="button">Get Route</button>
+                </form>   
 
-            <p>"End Lat:"</p><textarea id="endlat" name="endlat"></textarea>
-            <p>"End Long:"</p><textarea id="endlng" name="endlng"></textarea>
+                <form id="addride" action="/data" method="POST">
+                    <!-- TODO NOTE: This form is not used to get location -->
+                    <p>"Start Lat:"</p><textarea id="lat" name="lat"></textarea>
+                    <p>"Start Long:"</p><textarea id="lng" name="lng"></textarea>
 
-            <br/><br/>
+                    <p>"End Lat:"</p><textarea id="endlat" name="endlat"></textarea>
+                    <p>"End Long:"</p><textarea id="endlng" name="endlng"></textarea>
 
-          <input class="button" style="margin-left:10px" type="submit"/>
-      </form>
-      <br/><br/>
 
-      <h4> Search for rides below: </h4>
-      <form>
-            <label>Max # of rides:</label>
-              <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
-                <option value="" disabled selected>Choose</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-              </select>
-      </form>
+                    <br/><br/> 
+
+                <h4> Search for rides below: </h4>
+                <form>
+                    <label>Max # of rides:</label>
+                    <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
+                        <option value="" disabled selected>Choose</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                </form>
+
+                <form>
+                    <label>Sort:</label>
+                    <select onchange="sortRides()" id="sort" name="sort" required style="width:15%">
+                        <option value="" disabled selected>Choose</option>
+                        <option value="alphabetical">By name alphabetical (A-Z)</option>
+                        <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
+                    </select>
+                </form>
+                <br/>
 
       <br/>
 
