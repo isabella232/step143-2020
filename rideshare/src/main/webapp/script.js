@@ -197,9 +197,12 @@ function loadUser(){
 var map;
 var marker;
 var markers;
-var start;
+var endAddress;
+var start = {};
+var end;
 var startSearchBox;
 var endSearchBox;
+var geocoder;
 var directionsRenderer;
 var directionsService;
 
@@ -212,7 +215,7 @@ function initMap(){
         zoom: 7, 
         center: mapCenter
     })
-
+    geocoder = new google.maps.Geocoder();
     directionsRenderer.setMap(map);
         
     document.getElementById("getButton").addEventListener("click", function() {
@@ -259,6 +262,10 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
         function(response, status) {
             if (status === 'OK') {
                 directionsRenderer.setDirections(response);
+                var startAddress = document.getElementById("startAddress").value;
+                var endAddress = document.getElementById("endAddress").value;
+                getLatLng(startAddress, endAddress);
+                
             } 
             else {
                 window.alert('Directions request failed due to ' + status);
@@ -268,19 +275,28 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
 }
 
 //Geocoding
-function getLatLong(location) {
-    var geocoder = new google.maps.Geocoder();
+function getLatLng(startAddress, endAddress) {
+    var addressArray = [startAddress, endAddress];
+    
+    geocoder.geocode({
+        'address': addressArray[0]
+    }, 
+    function(results, status) {
+        if (status === "OK") {
+            document.getElementById("lat").value = results[0].geometry.location.lat();
+            document.getElementById("lng").value = results[0].geometry.location.lng();
+        }
+    })
 
     geocoder.geocode({
-        'address': location
+        'address': addressArray[1]
     }, 
-        function(results, status) {
-            if (status === "OK") {
-                var coordinates = results[0].geometry.location;
-                return coordinates;
-            }
+    function(results, status) {
+        if (status === "OK") {
+            document.getElementById("endlat").value = results[0].geometry.location.lat();
+            document.getElementById("endlng").value = results[0].geometry.location.lng();
         }
-    );
+    })
 }
 
 //Reverse Geocoding
