@@ -55,7 +55,6 @@ function loadEntries() {
 function checkExists() {
   fetch('/edit?type=1').then(response => response.json()).then((entries) => {
     entries.forEach((entry) => {
-      console.log(entry.name)
       document.getElementById("name").value = entry.name;
       document.getElementById("capacity").value = entry.capacity;
     })
@@ -74,13 +73,14 @@ function checkExists() {
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
   fetch('/data?sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
+    var element = 1;
     entries.forEach((entry) => {
-      console.log(entry.name)
       var temp = createEntryElement(entry);
       getRating(entry).then(rating =>  {
-        console.log(rating);
         temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
         entryListElement.appendChild(temp);
+        element += 1;
+
       });
     })
   });
@@ -88,8 +88,6 @@ function checkExists() {
 
 function appendRatings() {
   var table = document.getElementById("entry-list");
-  console.log(table);
-  console.log(table.rows.length)
   for (var i = 1; i < table.rows.length; i++) {
     console.log(table.rows[i].cells[0].innerHTML);
     table.rows[i].cells[0].innerHTML = table.rows[i].cells[0].innerHTML + "HELLO";
