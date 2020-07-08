@@ -20,7 +20,7 @@
                 <div id="LoginUsingGoogle"></div>
  
                 <div class="container" style="background-color:#grey">
-                <button type="button" onclick="document.getElementById('loginForm').style.display='none'" class="cancelbtn">Cancel</button>
+          
                 </div>
             </form>
         </div>
@@ -29,6 +29,7 @@
             <div id="content">
                 <h1>Rideshare App</h1>
                 <p>This is the rough draft of our rideshare app.</p>
+                <div id = "logout"></div>
                 <a href="/editAccount.html "> <button>Edit Account Information</button> </a>
  
                 <h4>Post a ride below:</h4>
@@ -49,13 +50,8 @@
  
                     <p>"End Lat:"</p><textarea id="endlat" name="endlat"></textarea>
                     <p>"End Long:"</p><textarea id="endlng" name="endlng"></textarea>
- 
-                    <br/><br/> 
- 
-                    <textarea name="name" placeholder="Enter Name"></textarea>
-                    <br/><br/>
-                    <textarea name="capacity" placeholder="Enter Capacity" style="height:25px; width:20%"></textarea>
-                    <input class="button" style="margin-left:10px" type="submit"/>
+
+                    <button class="button" type="submit"/> Post Ride </button>       
                 </form>
                 <br/><br/>
  
@@ -67,15 +63,6 @@
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="20">20</option>
-                    </select>
-                </form>
- 
-                <form>
-                    <label>Sort:</label>
-                    <select onchange="sortRides()" id="sort" name="sort" required style="width:15%">
-                        <option value="" disabled selected>Choose</option>
-                        <option value="alphabetical">By name alphabetical (A-Z)</option>
-                        <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
                     </select>
                 </form>
                 <br/>
@@ -94,6 +81,7 @@
                 <option value="startdistance">Closest (Start Location)</option>
               </select>
       </form>
+      <!-- <button onclick="appendRatings();"> See Ratings </button> -->
       <br/>
       <table style="width:100%" id="entry-list">
         <tr>
@@ -111,6 +99,5 @@
       <p id="submitrating"></p>
     </div>
    </div>
-   <div id ="logout"></div>
   </body>
 </html>
