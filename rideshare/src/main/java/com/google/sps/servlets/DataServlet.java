@@ -52,6 +52,7 @@ public class DataServlet extends HttpServlet {
     public ArrayList<String> riderList;  
     public String start;
     public String end;
+
     public Ride(long id, String name, long capacity, String driverEmail, String driverId, ArrayList<String> riderList) {
       this.id = id;
       this.name = name;
@@ -62,7 +63,8 @@ public class DataServlet extends HttpServlet {
       this.riderList = riderList;
     }
 
-    public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end) {
+    public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, 
+    String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
