@@ -14,13 +14,18 @@
 
 function getMessages() {
   const commentCount = document.getElementById('maxcomments');
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   console.log(commentCount.name)
-  document.getElementById('entry-list').innerHTML = "";
   fetch('/data?maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
       console.log(entry.name)
-      entryListElement.appendChild(createEntryElement(entry));
+      var temp = createEntryElement(entry);
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
+      });
     })
   });
 }
@@ -32,14 +37,23 @@ function loadEntries() {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
       console.log(entry.name)
-      entryListElement.appendChild(createEntryElement(entry));
+      var temp = createEntryElement(entry);
+      // temp.cells[0] = temp.cells[0] + getRating(entry).then(function(result) {
+      //   return result
+      // })
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
+      });
+      
     })
   });
 }
 
 //autofills if information is already there
 function checkExists() {
-  fetch('/edit').then(response => response.json()).then((entries) => {
+  fetch('/edit?type=1').then(response => response.json()).then((entries) => {
     entries.forEach((entry) => {
       console.log(entry.name)
       document.getElementById("name").value = entry.name;
@@ -49,7 +63,7 @@ function checkExists() {
 }
 
 
-function sortRides() {
+ function sortRides() {
   const sort = document.getElementById('sort');
   console.log(sort.value)
   const startlat = document.getElementById('closestartlat');
@@ -62,10 +76,37 @@ function sortRides() {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
       console.log(entry.name)
-      entryListElement.appendChild(createEntryElement(entry));
+      var temp = createEntryElement(entry);
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
+      });
     })
   });
 }
+
+function appendRatings() {
+  var table = document.getElementById("entry-list");
+  console.log(table);
+  console.log(table.rows.length)
+  for (var i = 1; i < table.rows.length; i++) {
+    console.log(table.rows[i].cells[0].innerHTML);
+    table.rows[i].cells[0].innerHTML = table.rows[i].cells[0].innerHTML + "HELLO";
+  }
+}
+
+// stores rating and numratings as an array to use when loading rides
+async function getRating(entry) {
+  let response = await fetch('/edit?type=' + entry.driverId);
+  let results = await response.json();
+  return [results[0].rating, results[0].numratings];
+  // fetch('/edit?type=' + entry.driverId).then(response => response.json()).then((entries) => {
+  //   console.log(entries[0].rating);
+  //   return entries[0].rating;
+  // })
+}
+
 
 
 function createEntryElement(entry) {
@@ -73,7 +114,7 @@ function createEntryElement(entry) {
   entryElement.className = 'entry collection-item';
 
   const nameElement = document.createElement('td');
-  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")" + "<br/><br/>" + entry.rating + "/" + "5.0" + "<br/>" + "(" + entry.numratings + "ratings)";
+  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
 
   const startElement = document.createElement('td');
   startElement.innerText = entry.start;
@@ -100,18 +141,8 @@ function createEntryElement(entry) {
   rateButtonElement.addEventListener('click', () => {
     revealRate(entry);
     window.location = "#ratingdiv"
-    // console.log(document);
-    // console.log(document.location)
-    // // location.assign("/rate.html");
-    // console.log("HELLO");
-    // document = "/rate.html";
-    // console.log(document);
-    // document.getElementById("profilerated").innerHTML = "Test";
-    // console.log(document.getElementById("profilerated").innerHTML);
   });
   
-
-
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
   entryElement.appendChild(endElement);
@@ -125,7 +156,7 @@ function createEntryElement(entry) {
 function revealRate(entry) {
   document.getElementById("profilename").innerHTML = "Your rating for: " + 
   "<i>" + entry.name  + "</i>" + "<p> Driver ID: " + "<span id=\"profileId\">" + entry.driverId + "</span>" + "</p>" + "</i>";
-  document.getElementById("ratingbox").innerHTML = "<textarea id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\"></textarea>";
+  document.getElementById("ratingbox").innerHTML = "<input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\"></textarea>";
   document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
 }
 
