@@ -14,13 +14,18 @@
 
 function getMessages() {
   const commentCount = document.getElementById('maxcomments');
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   console.log(commentCount.name)
-  document.getElementById('entry-list').innerHTML = "";
   fetch('/data?maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
       console.log(entry.name)
-      entryListElement.appendChild(createEntryElement(entry));
+      var temp = createEntryElement(entry);
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
+      });
     })
   });
 }
