@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -30,21 +32,24 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import java.util.*;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/signup")
-public class SignUpServlet extends HttpServlet {
+@WebServlet("/edit")
+public class EditAccountServlet extends HttpServlet {
 
   /** Data holder for each individual Profile */
   public class Profile {
-    public long id;
     public String name;
     public long capacity;
+    public String driverEmail;
+    public String driverId;
     
-    public Profile(long id, String name, long capacity) {
-      this.id = id;
+    public Profile(String name, long capacity, String driverEmail, String driverId) {
       this.name = name;
       this.capacity = capacity;
+      this.driverId = driverId;
+      this.driverEmail = driverEmail;
     }
 
     public String getName() {
@@ -58,19 +63,57 @@ public class SignUpServlet extends HttpServlet {
   }
 
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  UserService userService = UserServiceFactory.getUserService();
+
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    UserService userService = UserServiceFactory.getUserService();
+
+    String profileId = userService.getCurrentUser().getUserId();
+
+    try{
+      Key profileEntityKey = KeyFactory.createKey("Profile", profileId);
+      Entity profileEntity = datastore.get(profileEntityKey);
+
+      List<Profile> profileDetails = new ArrayList<>();
+      response.setContentType("application/json;");
+      if (profileEntity.getProperty("name").equals(null)) {
+        Gson gson = new Gson();
+        String json = gson.toJson(profileDetails);
+        response.getWriter().println(json);
+      } else {
+        String driverEmail = userService.getCurrentUser().getEmail();
+        Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId);
+        profileDetails.add(temp);
+        Gson gson = new Gson();
+        String json = gson.toJson(profileDetails);
+        response.getWriter().println(json);
+      }
+    } catch (EntityNotFoundException e) {
+    } 
+  }
 
   // A simple HTTP handler to extract text input from submitted web form and respond that context back to the user.
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
-    String name = request.getParameter("firstName");
-    long capacity = Long.parseLong(request.getParameter("capacity"));
 
-    Entity entryEntity = new Entity("Profile");
+    // String firstName = request.getParameter("firstName");
+    // String lastName = request.getParameter("lastName");
+
+    String name = request.getParameter("name");
+    long capacity = Long.parseLong(request.getParameter("capacity"));
+    String driverEmail = userService.getCurrentUser().getEmail();
+    String driverId = userService.getCurrentUser().getUserId();
+
+    Entity entryEntity = new Entity("Profile", driverId);
     entryEntity.setProperty("name", name);
     entryEntity.setProperty("capacity", capacity);
+    entryEntity.setProperty("driverId", driverId);
+    entryEntity.setProperty("driverEmail", driverEmail);
     datastore.put(entryEntity);
 
     response.sendRedirect("/index.html");
+
+   
     
   }
 }
