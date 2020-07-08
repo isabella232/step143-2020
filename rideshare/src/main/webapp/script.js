@@ -54,6 +54,18 @@ function loadEntries() {
   });
 }
 
+//autofills if information is already there
+function checkExists() {
+  fetch('/edit').then(response => response.json()).then((entries) => {
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      document.getElementById("name").value = entry.name;
+      document.getElementById("capacity").value = entry.capacity;
+    })
+  });
+}
+
+
 function sortRides() {
   const sort = document.getElementById('sort');
   console.log(sort.value)
@@ -184,6 +196,15 @@ function loadUser(){
       loginForm.style.display = "none";
       document.getElementById("logout").innerHTML = "<i>" + txt + "</i>";
     }});
+}
+
+function loadProfile(){
+    fetch('/profile').then(response => response.text()).then((txt) => {
+    const loginElement = document.getElementById('profile');
+    console.log(txt)
+    loginElement.innerHTML = txt;
+    document.getElementById("profile").innerHTML = "<i>" + txt + "</i>";
+    })
 }
 
 //Create Route from Start to Destination

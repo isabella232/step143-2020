@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -32,6 +34,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Query.StContainsFilter;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.GeoPt;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import java.util.*;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -154,32 +157,40 @@ public class DataServlet extends HttpServlet {
     String driverEmail = userService.getCurrentUser().getEmail();
     String driverId = userService.getCurrentUser().getUserId();
     
-    String name = request.getParameter("name");
-    long capacity = Long.parseLong(request.getParameter("capacity"));
+    //String name = request.getParameter("name");
+    //long capacity = Long.parseLong(request.getParameter("capacity"));
+    try{
+      Entity rideEntity = datastore.get(KeyFactory.createKey("Profile", driverId));
+      String name = (String) rideEntity.getProperty("name");
+      long capacity = (long) rideEntity.getProperty("capacity");
+
+      GeoPt start = new GeoPt(Float.parseFloat(request.getParameter("lat")), Float.parseFloat(request.getParameter("lng")));
+      GeoPt end = new GeoPt(Float.parseFloat(request.getParameter("endlat")), Float.parseFloat(request.getParameter("endlng")));
+
+
+
+      Entity entryEntity = new Entity("Ride");
+      entryEntity.setProperty("name", name);
+      entryEntity.setProperty("capacity", capacity);
+      entryEntity.setProperty("currentRiders", 0);
+      entryEntity.setProperty("driverEmail", driverEmail);
+      entryEntity.setProperty("driverId", driverId);
+      entryEntity.setProperty("riderList", List.of(""));
+      entryEntity.setProperty("start", start);
+      entryEntity.setProperty("end", end);
+
+      datastore.put(entryEntity);
+
+      response.sendRedirect("/index.html");
+    } catch (EntityNotFoundException e) {
+
+    } 
     // ArrayList<Double> start = new ArrayList<Double>();
     // start.add(Double.parseDouble(request.getParameter("lat")));
     // start.add(Double.parseDouble(request.getParameter("lng")));
     // ArrayList<Double> end = new ArrayList<Double>();
     // end.add(Double.parseDouble(request.getParameter("endlat")));
     // end.add(Double.parseDouble(request.getParameter("endlng")));
-    GeoPt start = new GeoPt(Float.parseFloat(request.getParameter("lat")), Float.parseFloat(request.getParameter("lng")));
-    GeoPt end = new GeoPt(Float.parseFloat(request.getParameter("endlat")), Float.parseFloat(request.getParameter("endlng")));
-
-
-
-    Entity entryEntity = new Entity("Ride");
-    entryEntity.setProperty("name", name);
-    entryEntity.setProperty("capacity", capacity);
-    entryEntity.setProperty("currentRiders", 0);
-    entryEntity.setProperty("driverEmail", driverEmail);
-    entryEntity.setProperty("driverId", driverId);
-    entryEntity.setProperty("riderList", List.of(""));
-    entryEntity.setProperty("start", start);
-    entryEntity.setProperty("end", end);
-
-    datastore.put(entryEntity);
-
-    response.sendRedirect("/index.html");
     
   }
 }
