@@ -188,6 +188,7 @@ function initMap(){
     directionsRenderer.setMap(map);
         
     document.getElementById("getButton").addEventListener("click", function() {
+        removeMarkers();
         calculateAndDisplayRoute(directionsService, directionsRenderer);
     })
     autoComplete();
@@ -207,8 +208,15 @@ function getLocationGPS() {
                 lng: position.coords.longitude
             }
             map.setCenter(start);
-            map.setZoom(10)
-            marker = new google.maps.Marker({position: start, map: map});
+            map.setZoom(10);
+
+            markers = [];
+            removeMarkers();
+            markers.push(new google.maps.Marker({
+                map: map,
+                position: start
+            })
+            )
 
             var geocoder = new google.maps.Geocoder;
             reverseLatLng(geocoder, start);
@@ -297,9 +305,11 @@ function autoComplete() {
     })
 
     startSearchBox.addListener("places_changed", function() {
+        removeMarkers();
         returnPlace(startSearchBox);
     })
     endSearchBox.addListener("places_changed", function() {
+        removeMarkers();
         returnPlace(endSearchBox);
     })
 }
@@ -332,7 +342,7 @@ function returnPlace(SearchBox) {
                 title: place.name,
                 position: place.geometry.location
             })
-            );
+            )
 
             if (place.geometry.viewport) {
                 // Only geocodes have viewport.
