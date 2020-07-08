@@ -32,7 +32,16 @@ function loadEntries() {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
       console.log(entry.name)
-      entryListElement.appendChild(createEntryElement(entry));
+      var temp = createEntryElement(entry);
+      // temp.cells[0] = temp.cells[0] + getRating(entry).then(function(result) {
+      //   return result
+      // })
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
+      });
+      
     })
   });
 }
@@ -49,7 +58,7 @@ function checkExists() {
 }
 
 
-async function sortRides() {
+ function sortRides() {
   const sort = document.getElementById('sort');
   console.log(sort.value)
   const startlat = document.getElementById('closestartlat');
@@ -63,14 +72,11 @@ async function sortRides() {
     entries.forEach((entry) => {
       console.log(entry.name)
       var temp = createEntryElement(entry);
-      temp.cells[0] = temp.cells[0] + getRating(entry).then(function(result) {
-        return result
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
       });
-      console.log(getRating(entry).then(function(result) {
-        return result
-      }));
-      entryListElement.appendChild(temp)
-      
     })
   });
 }
@@ -85,21 +91,16 @@ function appendRatings() {
   }
 }
 
-
+// stores rating and numratings as an array to use when loading rides
 async function getRating(entry) {
   let response = await fetch('/edit?type=' + entry.driverId);
   let results = await response.json();
-  return results[0].rating;
+  return [results[0].rating, results[0].numratings];
+  // fetch('/edit?type=' + entry.driverId).then(response => response.json()).then((entries) => {
+  //   console.log(entries[0].rating);
+  //   return entries[0].rating;
+  // })
 }
-
-
-// function getNumRatings(entry) {
-//    fetch('/edit?type=' + entry.driverId).then(response => response.json()).then((entries) => {
-//     numratings = entries[0].numratings;
-//     return numratings;
-    
-//     })
-// }
 
 
 
@@ -108,15 +109,7 @@ function createEntryElement(entry) {
   entryElement.className = 'entry collection-item';
 
   const nameElement = document.createElement('td');
-  var rating = "";
-  var numratings = "";
-  // var rating = getRating(entry).then(function(result) {
-  //   console.log(result);
-  // });
-  // console.log(rating);
-  // var numratings = getNumRatings(entry);
-  // getNumRatings(entry);
-  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")" + "<br/><br/>" + rating + " / " + "5.0" + "<br/>" + "(" + numratings + " ratings)";
+  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
 
   const startElement = document.createElement('td');
   startElement.innerText = entry.start;
