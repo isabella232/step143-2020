@@ -129,6 +129,7 @@ function reverseDisplay(geocoder, start, id) {
         else {
             // window.alert('Geocoder failed due to: ' + status);
             // returnval = "ERROR";
+            console.log("Query Error:" + status);
         }
     });
 }
