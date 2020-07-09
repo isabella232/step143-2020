@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body onload="checkExists();">
-
 <!-- Account Edit Form -->
 <form id="editAccount" action="/edit" method="POST">
   <div class="information">
@@ -14,24 +13,25 @@
     <div id="editAccount"></div>
     <p>The form is still in testing stage.</p>
     <hr>
-
 <label for="firstName"><b>First Name</b></label>
     <input type="text" placeholder="Enter First Name" name="firstName" id="firstName" required>
 
 <label for="lastName"><b>Last Name</b></label>
     <input type="text" placeholder="Enter Last Name" name="lastName" id="lastName" >
+    <div id="edditAccount"></div>
+
+    <hr>
+
+<label for="name"><b>Name</b></label>
+    <input type="text" placeholder="Enter full name" name="name" id="name" required>
 
 <label for="capacity"><b>Car Capacity</b></label>
     <input type="text" placeholder="Enter current car capacity" name="capacity" id="capacity" required>
     
     <hr>
-
     <a href="/index.html"><button type="submit" class="button">Save</button></a>
   </div>
 </form>
-
 <a href= "/index.html"> <button class="cancelbtn"> CANCEL </button> </a>
-
 </body>
 </html>
-
