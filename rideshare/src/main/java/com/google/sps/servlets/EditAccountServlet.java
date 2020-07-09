@@ -108,9 +108,6 @@ public class EditAccountServlet extends HttpServlet {
   // A simple HTTP handler to extract text input from submitted web form and respond that context back to the user.
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    // String firstName = request.getParameter("firstName");
-    // String lastName = request.getParameter("lastName");
-
     String name = request.getParameter("name");
     long capacity = Long.parseLong(request.getParameter("capacity"));
     String driverEmail = userService.getCurrentUser().getEmail();
@@ -126,8 +123,6 @@ public class EditAccountServlet extends HttpServlet {
     datastore.put(entryEntity);
 
     response.sendRedirect("/index.html");
-
-   
     
   }
 }

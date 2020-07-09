@@ -193,6 +193,17 @@ function loadUser(){
     }});
 }
 
+function loadProfile(){
+    fetch('/profile').then(response => response.text()).then((txt) => {
+    const loginElement = document.getElementById('profile');
+    console.log(txt)
+    loginElement.innerHTML = txt;
+    document.getElementById("profile").innerHTML = "<i>" + txt + "</i>";
+    })
+}
+
+//Create Route from Start to Destination
+var start = {}
 //Get location
 var map;
 var marker;
