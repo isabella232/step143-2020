@@ -112,22 +112,26 @@ async function getRating(entry) {
 }
 
 //Reverse Geocoding Display in table
-function reverseDisplay(geocoder, start) {
-    geocoder.geocode({'location': start}, function(results, status) {
+function reverseDisplay(geocoder, start, id) {
+  var returnval = "";
+      geocoder.geocode({'location': start}, function(results, status) {
         if (status === 'OK') {
             if (results[0]) {
-             return results[0].formatted_address;
+              console.log(results[0].formatted_address);
+              var loc = document.getElementById(id);
+              loc.innerHTML = results[0].formatted_address + "<br/><br/>" + loc.innerHTML; 
             } 
             else {
                 window.alert('No results found');
+                returnval = "NOT FOUND";
             }
         } 
         else {
-            window.alert('Geocoder failed due to: ' + status);
+            // window.alert('Geocoder failed due to: ' + status);
+            // returnval = "ERROR";
         }
     });
 }
-
 
 
 function createEntryElement(entry) {
@@ -138,15 +142,22 @@ function createEntryElement(entry) {
   nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
 
   const startElement = document.createElement('td');
+  startElement.id = entry.id + "start";
   var geocoder = new google.maps.Geocoder;
   start = {
               lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
               lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
             }
-  console.log(reverseDisplay(geocoder, start))
-  startElement.innerText = entry.start + reverseDisplay(geocoder, start);
+  reverseDisplay(geocoder, start, entry.id + "start");
+  startElement.innerText = entry.start;
 
   const endElement = document.createElement('td');
+  endElement.id = entry.id + "end";
+  end = {
+              lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
+              lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
+            }
+  reverseDisplay(geocoder, end, entry.id + "end");
   endElement.innerText = entry.end;
 
   const capacityElement = document.createElement('td');
