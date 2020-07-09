@@ -46,7 +46,6 @@ public class RateDriverServlet extends HttpServlet {
       Entity profileEntity = datastore.get(profileEntityKey);
       double rating = (double) profileEntity.getProperty("rating");
       long numratings = (long) profileEntity.getProperty("numratings");
-      System.out.println(rating);
 
       long newnumratings = numratings + 1;
       double newrating = (Double.parseDouble(request.getParameter("rating")) + (rating * numratings)) / newnumratings;
@@ -58,7 +57,6 @@ public class RateDriverServlet extends HttpServlet {
 
     } catch (EntityNotFoundException e) {
       System.out.println("ERROR");
-
     } 
   }
 }

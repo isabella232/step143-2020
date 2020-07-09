@@ -73,12 +73,12 @@ public class EditAccountServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
     String profileId;
-    if (request.getParameter("type") == "1") {
+    if (request.getParameter("type").equals("1")) {
       profileId = userService.getCurrentUser().getUserId();
     } else {
+      // type is set to ID
       profileId = request.getParameter("type");
     }
-    System.out.println(request.getParameter("type"));
 
     try{
       Key profileEntityKey = KeyFactory.createKey("Profile", profileId);
@@ -95,7 +95,6 @@ public class EditAccountServlet extends HttpServlet {
         double rating = (double) profileEntity.getProperty("rating");
         long numratings = (long) profileEntity.getProperty("numratings");
         Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId, rating, numratings);
-        System.out.println(rating);
         profileDetails.add(temp);
         Gson gson = new Gson();
         String json = gson.toJson(profileDetails);
