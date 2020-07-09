@@ -111,6 +111,23 @@ async function getRating(entry) {
   // })
 }
 
+//Reverse Geocoding Display in table
+function reverseDisplay(geocoder, start) {
+    geocoder.geocode({'location': start}, function(results, status) {
+        if (status === 'OK') {
+            if (results[0]) {
+             return results[0].formatted_address;
+            } 
+            else {
+                window.alert('No results found');
+            }
+        } 
+        else {
+            window.alert('Geocoder failed due to: ' + status);
+        }
+    });
+}
+
 
 
 function createEntryElement(entry) {
@@ -121,7 +138,13 @@ function createEntryElement(entry) {
   nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
 
   const startElement = document.createElement('td');
-  startElement.innerText = entry.start;
+  var geocoder = new google.maps.Geocoder;
+  start = {
+              lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
+              lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
+            }
+  console.log(reverseDisplay(geocoder, start))
+  startElement.innerText = entry.start + reverseDisplay(geocoder, start);
 
   const endElement = document.createElement('td');
   endElement.innerText = entry.end;
@@ -241,6 +264,7 @@ function getLocationGPS() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             }
+            console.log(start);
             map.setCenter(start);
             map.setZoom(10)
             marker = new google.maps.Marker({position: start, map: map});
