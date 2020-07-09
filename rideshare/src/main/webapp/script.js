@@ -64,25 +64,31 @@ function checkExists() {
 
  function sortRides() {
   const sort = document.getElementById('sort');
-  console.log(sort.value)
   const startlat = document.getElementById('closestartlat');
-  console.log(startlat.value)
   const startlng = document.getElementById('closestartlng');
   const maxdistance = document.getElementById('maxdistance');
   document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
+  var hold = [];
   fetch('/data?sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
-    var element = 1;
     entries.forEach((entry) => {
-      var temp = createEntryElement(entry);
-      getRating(entry).then(rating =>  {
-        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
-        entryListElement.appendChild(temp);
-        element += 1;
-
+     //var temp = createEntryElement(entry);
+      console.log(entry.name);
+      hold.push(entry);
+        // .then(rating =>  {
+        // temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        // entryListElement.appendChild(temp);
       });
-    })
+    console.log(hold);
+    hold.reduce((p, fn) => { 
+      return p.then(() => {
+        return getRating(fn).then(rating =>  {
+          temp = createEntryElement(fn);
+          temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+          entryListElement.appendChild(temp);
+      })});
+    }, Promise.resolve());
   });
 }
 
