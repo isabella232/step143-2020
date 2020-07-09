@@ -63,8 +63,8 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
         if (profileEntity.getProperty("name").equals(null)) {
             response.getWriter().println("<h6>If nothing is visible, try updating your " + "<a href=\"" + "/editAccount.html" + "\"> <p> information </p> </a><h6>");
         } else {
-            response.getWriter().println(profileEntity.getProperty("name"));
-            response.getWriter().println("<p>Hello " + userEmail + "!</p>");
+            response.getWriter().println("<h1>" + name + "</h1> </br>");
+            response.getWriter().println("<p>" + userEmail + "!</p>");
             response.getWriter().println("<p>welcome to your profile page "+ name +".</p>");
             response.getWriter().println("<p>your current car capacity is " + capacity + "!</p>");
 
