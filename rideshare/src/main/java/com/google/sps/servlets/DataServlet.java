@@ -53,6 +53,7 @@ public class DataServlet extends HttpServlet {
     public String start;
     public String end;
     public String ridedate;
+    public String ridetime;
 
     public Ride(long id, String name, long capacity, String driverEmail, String driverId, ArrayList<String> riderList) {
       this.id = id;
@@ -65,7 +66,7 @@ public class DataServlet extends HttpServlet {
     }
 
     public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, 
-    String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end, String ridedate) {
+    String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end, String ridedate, String ridetime) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
@@ -76,6 +77,7 @@ public class DataServlet extends HttpServlet {
       this.start = start.toString();
       this.end = end.toString();
       this.ridedate = ridedate;
+      this.ridetime = ridetime;
     }
 
     public String getName() {
@@ -141,8 +143,9 @@ public class DataServlet extends HttpServlet {
       GeoPt start = (GeoPt) entity.getProperty("start");
       GeoPt end = (GeoPt) entity.getProperty("end");
       String ridedate = (String) entity.getProperty("ridedate");
+      String ridetime = (String) entity.getProperty("ridetime");
 
-      Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end, ridedate);
+      Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end, ridedate, ridetime);
       allRides.add(ride);
 
       count++;
@@ -176,6 +179,7 @@ public class DataServlet extends HttpServlet {
       GeoPt end = new GeoPt(Float.parseFloat(request.getParameter("endlat")), Float.parseFloat(request.getParameter("endlng")));
 
       String ridedate = request.getParameter("ridedate");
+      String ridetime = request.getParameter("ridetime");
 
 
       Entity entryEntity = new Entity("Ride");
@@ -188,6 +192,7 @@ public class DataServlet extends HttpServlet {
       entryEntity.setProperty("start", start);
       entryEntity.setProperty("end", end);
       entryEntity.setProperty("ridedate", ridedate);
+      entryEntity.setProperty("ridetime", ridetime);
 
       datastore.put(entryEntity);
 

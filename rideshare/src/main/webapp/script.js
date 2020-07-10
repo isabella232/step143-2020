@@ -183,7 +183,7 @@ function createEntryElement(entry) {
   });
 
   var dateElement = document.createElement('td');
-  dateElement.innerText = entry.ridedate;
+  dateElement.innerHTML = entry.ridedate + "<br/>" + entry.ridetime;
   
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
