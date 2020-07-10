@@ -14,7 +14,7 @@
 
 function getMessages() {
   const commentCount = document.getElementById('maxcomments');
-  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   console.log(commentCount.name)
   fetch('/data?maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
@@ -67,7 +67,7 @@ function checkExists() {
   const startlat = document.getElementById('closestartlat');
   const startlng = document.getElementById('closestartlng');
   const maxdistance = document.getElementById('maxdistance');
-  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
   var hold = [];
   fetch('/data?sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
@@ -181,10 +181,14 @@ function createEntryElement(entry) {
     revealRate(entry);
     window.location = "#ratingdiv"
   });
+
+  var dateElement = document.createElement('td');
+  dateElement.innerText = entry.ridedate;
   
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
   entryElement.appendChild(endElement);
+  entryElement.appendChild(dateElement);
   entryElement.appendChild(currentRidersElement);
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(joinRideButtonElement);

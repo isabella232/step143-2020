@@ -52,6 +52,10 @@
  
                     <p>"End Lat:"</p><textarea id="endlat" name="endlat"></textarea>
                     <p>"End Long:"</p><textarea id="endlng" name="endlng"></textarea>
+                    <br/><br/>
+
+                    <label for="ridedate">Date</label>
+                    <input type="date" id="ridedate" name="ridedate">
 
                     <button class="button" type="submit"/> Post Ride </button>       
                 </form>
@@ -81,6 +85,8 @@
                 <option value="alphabetical">By name alphabetical (A-Z)</option>
                 <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
                 <option value="startdistance">Closest (Start Location)</option>
+                <option value="date">Soonest Dates</option>
+                <option value="fardate">Latest Dates</option>
               </select>
       </form>
       <!-- <button onclick="appendRatings();"> See Ratings </button> -->
@@ -90,6 +96,7 @@
           <th>Driver Info</th>
           <th>From</th>
           <th>To</th>
+          <th>Ride Date</th>
           <th>Current # of Riders</th>
           <th>Capacity</th>
         </tr>
