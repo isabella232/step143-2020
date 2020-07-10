@@ -55,7 +55,6 @@ function loadEntries() {
 function checkExists() {
   fetch('/edit?type=1').then(response => response.json()).then((entries) => {
     entries.forEach((entry) => {
-      console.log(entry.name)
       document.getElementById("name").value = entry.name;
       document.getElementById("capacity").value = entry.capacity;
     })
@@ -65,31 +64,36 @@ function checkExists() {
 
  function sortRides() {
   const sort = document.getElementById('sort');
-  console.log(sort.value)
   const startlat = document.getElementById('closestartlat');
-  console.log(startlat.value)
   const startlng = document.getElementById('closestartlng');
   const maxdistance = document.getElementById('maxdistance');
   document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
+  var hold = [];
   fetch('/data?sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
-      console.log(entry.name)
-      var temp = createEntryElement(entry);
-      getRating(entry).then(rating =>  {
-        console.log(rating);
-        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
-        entryListElement.appendChild(temp);
+     //var temp = createEntryElement(entry);
+      console.log(entry.name);
+      hold.push(entry);
+        // .then(rating =>  {
+        // temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        // entryListElement.appendChild(temp);
       });
-    })
+    console.log(hold);
+    hold.reduce((p, fn) => { 
+      return p.then(() => {
+        return getRating(fn).then(rating =>  {
+          temp = createEntryElement(fn);
+          temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+          entryListElement.appendChild(temp);
+      })});
+    }, Promise.resolve());
   });
 }
 
 function appendRatings() {
   var table = document.getElementById("entry-list");
-  console.log(table);
-  console.log(table.rows.length)
   for (var i = 1; i < table.rows.length; i++) {
     console.log(table.rows[i].cells[0].innerHTML);
     table.rows[i].cells[0].innerHTML = table.rows[i].cells[0].innerHTML + "HELLO";
@@ -107,6 +111,27 @@ async function getRating(entry) {
   // })
 }
 
+//Reverse Geocoding Display in table
+function reverseDisplay(geocoder, start, id) {
+  var returnval = "";
+      geocoder.geocode({'location': start}, function(results, status) {
+        if (status === 'OK') {
+            if (results[0]) {
+              console.log(results[0].formatted_address);
+              var loc = document.getElementById(id);
+              loc.innerHTML = results[0].formatted_address + "<br/><br/>" + loc.innerHTML; 
+            } 
+            else {
+                window.alert('No results found');
+                returnval = "NOT FOUND";
+            }
+        } 
+        else {
+            // window.alert('Geocoder failed due to: ' + status);
+            // returnval = "ERROR";
+        }
+    });
+}
 
 
 function createEntryElement(entry) {
@@ -117,9 +142,22 @@ function createEntryElement(entry) {
   nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
 
   const startElement = document.createElement('td');
+  startElement.id = entry.id + "start";
+  var geocoder = new google.maps.Geocoder;
+  start = {
+              lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
+              lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
+            }
+  reverseDisplay(geocoder, start, entry.id + "start");
   startElement.innerText = entry.start;
 
   const endElement = document.createElement('td');
+  endElement.id = entry.id + "end";
+  end = {
+              lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
+              lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
+            }
+  reverseDisplay(geocoder, end, entry.id + "end");
   endElement.innerText = entry.end;
 
   const capacityElement = document.createElement('td');
@@ -193,6 +231,17 @@ function loadUser(){
     }});
 }
 
+function loadProfile(){
+    fetch('/profile').then(response => response.text()).then((txt) => {
+    const loginElement = document.getElementById('profile');
+    console.log(txt)
+    loginElement.innerHTML = txt;
+    document.getElementById("profile").innerHTML = "<i>" + txt + "</i>";
+    })
+}
+
+//Create Route from Start to Destination
+var start = {}
 //Get location
 var map;
 var marker;
@@ -238,6 +287,7 @@ function getLocationGPS() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             }
+            console.log(start);
             map.setCenter(start);
             map.setZoom(10);
 
