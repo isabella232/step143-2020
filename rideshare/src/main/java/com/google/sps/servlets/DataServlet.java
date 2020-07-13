@@ -188,7 +188,7 @@ public class DataServlet extends HttpServlet {
       entryEntity.setProperty("currentRiders", 0);
       entryEntity.setProperty("driverEmail", driverEmail);
       entryEntity.setProperty("driverId", driverId);
-      entryEntity.setProperty("riderList", List.of(""));
+      entryEntity.setProperty("riderList", new ArrayList<String>());
       entryEntity.setProperty("start", start);
       entryEntity.setProperty("end", end);
       entryEntity.setProperty("ridedate", ridedate);
