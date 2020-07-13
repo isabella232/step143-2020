@@ -46,6 +46,8 @@ public class JoinRideServlet extends HttpServlet {
       Entity rideEntity = datastore.get(rideEntityKey);
       String riderId = userService.getCurrentUser().getUserId();
 
+      System.out.println(rideEntity.getProperty("riderList"));
+
       if ((((long) rideEntity.getProperty("capacity") > (long) rideEntity.getProperty("currentRiders"))
       && !riderId.equals((String) rideEntity.getProperty("driverId"))
       && !rideEntity.getProperty("riderList").equals(null)

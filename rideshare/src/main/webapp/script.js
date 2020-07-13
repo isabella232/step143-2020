@@ -199,7 +199,11 @@ function createEntryElement(entry) {
 function revealRate(entry) {
   document.getElementById("profilename").innerHTML = "Your rating for: " + 
   "<i>" + entry.name  + "</i>" + "<p> Driver ID: " + "<span id=\"profileId\">" + entry.driverId + "</span>" + "</p>" + "</i>";
-  document.getElementById("ratingbox").innerHTML = "<input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\"></textarea>";
+  document.getElementById("ratingbox").innerHTML = 
+  "<h3> Move slider accordingly (farthest left = 1, farthest right = 5)</h3>" +
+  "<div class=\"slidecontainer\"><input type=\"range\" min=\"1\" max=\"5\" value=\"3\" class=\"slider\" id=\"ratingtext\"></div>";
+
+// <input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\">";
   document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
 }
 
