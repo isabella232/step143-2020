@@ -52,6 +52,8 @@ public class DataServlet extends HttpServlet {
     public ArrayList<String> riderList;  
     public String start;
     public String end;
+    public String ridedate;
+    public String ridetime;
 
     public Ride(long id, String name, long capacity, String driverEmail, String driverId, ArrayList<String> riderList) {
       this.id = id;
@@ -64,7 +66,7 @@ public class DataServlet extends HttpServlet {
     }
 
     public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, 
-    String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end) {
+    String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end, String ridedate, String ridetime) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
@@ -74,6 +76,8 @@ public class DataServlet extends HttpServlet {
       this.riderList = riderList;
       this.start = start.toString();
       this.end = end.toString();
+      this.ridedate = ridedate;
+      this.ridetime = ridetime;
     }
 
     public String getName() {
@@ -112,6 +116,10 @@ public class DataServlet extends HttpServlet {
       query = new Query("Ride").setFilter(radiusFilter);
     } else if (sort.equals("reverse-alphabetical")){
       query = new Query("Ride").addSort("name", SortDirection.DESCENDING);
+    } else if (sort.equals("date")) {
+      query = new Query("Ride").addSort("ridedate", SortDirection.ASCENDING);
+    } else if (sort.equals("fardate")) {
+      query = new Query("Ride").addSort("ridedate", SortDirection.DESCENDING);  
     } else {
       query = new Query("Ride").addSort("name", SortDirection.ASCENDING);
     }
@@ -134,8 +142,10 @@ public class DataServlet extends HttpServlet {
       ArrayList<String> riderList = (ArrayList<String>) entity.getProperty("riderList");
       GeoPt start = (GeoPt) entity.getProperty("start");
       GeoPt end = (GeoPt) entity.getProperty("end");
+      String ridedate = (String) entity.getProperty("ridedate");
+      String ridetime = (String) entity.getProperty("ridetime");
 
-      Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end);
+      Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end, ridedate, ridetime);
       allRides.add(ride);
 
       count++;
@@ -168,6 +178,8 @@ public class DataServlet extends HttpServlet {
       GeoPt start = new GeoPt(Float.parseFloat(request.getParameter("lat")), Float.parseFloat(request.getParameter("lng")));
       GeoPt end = new GeoPt(Float.parseFloat(request.getParameter("endlat")), Float.parseFloat(request.getParameter("endlng")));
 
+      String ridedate = request.getParameter("ridedate");
+      String ridetime = request.getParameter("ridetime");
 
 
       Entity entryEntity = new Entity("Ride");
@@ -179,6 +191,8 @@ public class DataServlet extends HttpServlet {
       entryEntity.setProperty("riderList", List.of(""));
       entryEntity.setProperty("start", start);
       entryEntity.setProperty("end", end);
+      entryEntity.setProperty("ridedate", ridedate);
+      entryEntity.setProperty("ridetime", ridetime);
 
       datastore.put(entryEntity);
 
