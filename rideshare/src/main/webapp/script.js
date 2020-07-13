@@ -250,7 +250,7 @@ var start = {}
 //Get location
 var map;
 var marker;
-var markers;
+var markers = [];
 var endAddress;
 var start = {};
 var end;
