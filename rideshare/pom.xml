@@ -85,7 +85,7 @@
         <version>2.2.0</version>
         <configuration>
           <!-- TODO: set project ID. -->
-          <deploy.projectId>wseawright-step</deploy.projectId>
+          <deploy.projectId>nnakamitsu-step</deploy.projectId>
           <deploy.version>1</deploy.version>
         </configuration>
       </plugin>
