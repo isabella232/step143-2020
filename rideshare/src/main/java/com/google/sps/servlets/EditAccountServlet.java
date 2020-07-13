@@ -108,6 +108,7 @@ public class EditAccountServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     String name = request.getParameter("name");
+    name = name.substring(0,1).toUpperCase() + name.substring(1);
     long capacity = Long.parseLong(request.getParameter("capacity"));
     String driverEmail = userService.getCurrentUser().getEmail();
     String driverId = userService.getCurrentUser().getUserId();
