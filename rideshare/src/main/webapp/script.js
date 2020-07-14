@@ -275,6 +275,7 @@ function initMap(){
     document.getElementById("getButton").addEventListener("click", function() {
         removeMarkers();
         calculateAndDisplayRoute(directionsService, directionsRenderer);
+        getDistance();
     })
     autoComplete();
 }
@@ -441,6 +442,42 @@ function returnPlace(SearchBox) {
         
     map.fitBounds(bounds);
 
+}
+
+//Show distance of route
+function getDistance() {
+    var origin = document.getElementById("startAddress").value;
+    var destination = document.getElementById("endAddress").value;
+
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+        {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.IMPERIAL
+        }, callback)
+
+        function callback(response, status) {
+            if (status == 'OK') {
+                var origins = response.originAddresses;
+                var destinations = response.destinationAddresses;
+
+                var distanceTag = document.getElementById("distance");
+                var etaTag = document.getElementById("eta");
+
+                distanceTag.innerHTML = "";
+                etaTag.innerHTML = "";
+
+                for (var i = 0; i < origins.length; i++) {
+                    var results = response.rows[i].elements;
+                    for (var j = 0; j < results.length; j++) {
+                        distanceTag.innerHTML += results[j].distance.text;
+                        etaTag.innerHTML += results[j].duration.text;
+                    }
+                }
+            }
+        }
 }
 
 //Track live location
