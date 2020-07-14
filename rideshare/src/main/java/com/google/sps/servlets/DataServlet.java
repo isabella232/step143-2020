@@ -54,6 +54,8 @@ public class DataServlet extends HttpServlet {
     public String end;
     public String ridedate;
     public String ridetime;
+    public String price;
+    public String paymentMethod;
 
     public Ride(long id, String name, long capacity, String driverEmail, String driverId, ArrayList<String> riderList) {
       this.id = id;
@@ -66,7 +68,8 @@ public class DataServlet extends HttpServlet {
     }
 
     public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, 
-    String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end, String ridedate, String ridetime) {
+    String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end, String ridedate, String ridetime, String price,
+    String paymentMethod) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
@@ -78,6 +81,8 @@ public class DataServlet extends HttpServlet {
       this.end = end.toString();
       this.ridedate = ridedate;
       this.ridetime = ridetime;
+      this.price = price;
+      this.paymentMethod = paymentMethod;
     }
 
     public String getName() {
@@ -144,8 +149,10 @@ public class DataServlet extends HttpServlet {
       GeoPt end = (GeoPt) entity.getProperty("end");
       String ridedate = (String) entity.getProperty("ridedate");
       String ridetime = (String) entity.getProperty("ridetime");
+      String price = (String) entity.getProperty("price");
+      String paymentMethod = (String) entity.getProperty("paymentMethod");
 
-      Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end, ridedate, ridetime);
+      Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end, ridedate, ridetime, price, paymentMethod);
       allRides.add(ride);
 
       count++;
@@ -182,6 +189,12 @@ public class DataServlet extends HttpServlet {
       String ridetime = request.getParameter("ridetime");
 
 
+      String price = request.getParameter("price");
+      String paymentMethod = request.getParameter("paymentMethod");
+      System.out.println(request.getParameter("price"));
+      System.out.println(price);
+
+
       Entity entryEntity = new Entity("Ride");
       entryEntity.setProperty("name", name);
       entryEntity.setProperty("capacity", capacity);
@@ -195,11 +208,14 @@ public class DataServlet extends HttpServlet {
       entryEntity.setProperty("end", end);
       entryEntity.setProperty("ridedate", ridedate);
       entryEntity.setProperty("ridetime", ridetime);
-
+      entryEntity.setProperty("price", price);
+      entryEntity.setProperty("paymentMethod", paymentMethod);
+      
       datastore.put(entryEntity);
-
       response.sendRedirect("/index.html");
+
     } catch (EntityNotFoundException e) {
+      throw new Error("Error: You need to edit account information before posting a ride");
 
     } 
     // ArrayList<Double> start = new ArrayList<Double>();

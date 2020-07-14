@@ -72,13 +72,28 @@
                     <br/><br/>
 
                     <label for="ridedate">Date</label>
-                    <input type="date" id="ridedate" name="ridedate">
+                    <input required type="date" id="ridedate" name="ridedate">
 
                     <br/><br/>
 
                     <label for="appt">Select a time:</label>
-                    <input type="time" id="ridetime" name="ridetime">
+                    <input required type="time" id="ridetime" name="ridetime">
 
+                    <br/><br/>
+
+                    <label for "price"> Select a price per seat ($): </label>
+                    <input required type="number" id="price" name="price" min="0">
+
+                    <br/><br/>
+
+                    <label>Payment method:</label>
+                    <select id="paymentMethod" name="paymentMethod" required style="width:20%">
+                      <option value="" disabled selected>Choose</option>
+                      <option value="cash">Cash</option>
+                      <option value="paypal">Paypal</option>
+                      <option value="venmo">Venmo</option>
+                      <option value="credit card">Credit Card</option>
+                    </select>
 
                     <button class="button" type="submit"/> Post Ride </button>       
                 </form>
@@ -120,6 +135,8 @@
           <th>From</th>
           <th>To</th>
           <th>Ride Date</th>
+          <th>Price($)</th>
+          <th>Payment Method</th>
           <th>Current # of Riders</th>
           <th>Capacity</th>
         </tr>
