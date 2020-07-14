@@ -16,7 +16,7 @@ function getMessages() {
   const commentCount = document.getElementById('maxcomments');
   document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   console.log(commentCount.name)
-  fetch('/data?maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
+  fetch('/data?type=table&maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
       console.log(entry.name)
@@ -33,7 +33,7 @@ function getMessages() {
 function loadEntries() {
   const commentCount = document.getElementById('maxcomments');
   //console.log(commentCount.value)
-  fetch('/data').then(response => response.json()).then((entries) => {
+  fetch('/data?type=table').then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
       console.log(entry.name)
@@ -48,6 +48,19 @@ function loadEntries() {
       });
       
     })
+  });
+  fetch('/data?type=myrides').then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('myrides');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      var temp = createEntryElement(entry);
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
+      });
+    })
+
   });
 }
 
@@ -70,7 +83,7 @@ function checkExists() {
   document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
   var hold = [];
-  fetch('/data?sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
+  fetch('/data?type=table&sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
      //var temp = createEntryElement(entry);

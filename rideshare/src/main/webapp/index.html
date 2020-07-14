@@ -51,7 +51,7 @@
                 <a href="/profilePage.html"><button> View Profile </button></a>
 
  
-                <h4>Post a ride below:</h4>
+                <h3>Post a ride below:</h3>
                 <br/> <!-- Functional Search Boxes -->
                 <div id="addRoute"></div>
                 <br/>
@@ -99,7 +99,7 @@
                 </form>
                 <br/><br/>
  
-                <h4> Search for rides below: </h4>
+                <h3> Search for rides below: </h3>
                 <form>
                     <label>Max # of rides:</label>
                     <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
@@ -130,6 +130,19 @@
       <!-- <button onclick="appendRatings();"> See Ratings </button> -->
       <br/>
       <table style="width:100%" id="entry-list">
+        <tr>
+          <th>Driver Info</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Ride Date</th>
+          <th>Price($)</th>
+          <th>Payment Method</th>
+          <th>Current # of Riders</th>
+          <th>Capacity</th>
+        </tr>
+      </table>
+      <h3> My Rides: </h3>
+      <table style="width:100%" id="myrides">
         <tr>
           <th>Driver Info</th>
           <th>From</th>
