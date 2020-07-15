@@ -58,6 +58,8 @@ public class DataServlet extends HttpServlet {
     public String paymentMethod;
     public String startAddress;
     public String endAddress;
+    public String distance;
+    public String eta;
 
     public Ride(long id, String name, long capacity, String driverEmail, String driverId, ArrayList<String> riderList) {
       this.id = id;
@@ -71,7 +73,7 @@ public class DataServlet extends HttpServlet {
 
     public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, 
     String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end, String ridedate, String ridetime, String price,
-    String paymentMethod, String startAddress, String endAddress) {
+    String paymentMethod, String startAddress, String endAddress, String distance, String eta) {
       this.id = id;
       this.name = name;
       this.capacity = capacity;
@@ -87,6 +89,8 @@ public class DataServlet extends HttpServlet {
       this.paymentMethod = paymentMethod;
       this.startAddress = startAddress;
       this.endAddress = endAddress;
+      this.distance = distance;
+      this.eta = eta;
     }
 
     public String getName() {
@@ -166,8 +170,10 @@ public class DataServlet extends HttpServlet {
           String paymentMethod = (String) entity.getProperty("paymentMethod");
           String startAddress = (String) entity.getProperty("startAddress");
           String endAddress = (String) entity.getProperty("endAddress");
+          String distance = (String) entity.getProperty("distance");
+          String eta = (String) entity.getProperty("eta");
 
-          Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end, ridedate, ridetime, price, paymentMethod, startAddress, endAddress);
+          Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end, ridedate, ridetime, price, paymentMethod, startAddress, endAddress, distance, eta);
           allRides.add(ride);
 
           count++;
@@ -206,8 +212,10 @@ public class DataServlet extends HttpServlet {
           String paymentMethod = (String) entity.getProperty("paymentMethod");
           String startAddress = (String) entity.getProperty("startAddress");
           String endAddress = (String) entity.getProperty("endAddress");
+          String distance = (String) entity.getProperty("distance");
+          String eta = (String) entity.getProperty("eta");
 
-          Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end, ridedate, ridetime, price, paymentMethod, startAddress, endAddress);
+          Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end, ridedate, ridetime, price, paymentMethod, startAddress, endAddress, distance, eta);
           allRides.add(ride);
        }
        } catch (EntityNotFoundException e) {
@@ -248,6 +256,10 @@ public class DataServlet extends HttpServlet {
       String paymentMethod = request.getParameter("paymentMethod");
       String startAddress = request.getParameter("startAddress");
       String endAddress = request.getParameter("endAddress");
+      System.out.println("Hello" + request.getParameter("distance"));
+      String distance = request.getParameter("distance");
+      String eta = request.getParameter("eta");
+
       
 
 
@@ -269,6 +281,9 @@ public class DataServlet extends HttpServlet {
       entryEntity.setProperty("paymentMethod", paymentMethod);
       entryEntity.setProperty("startAddress", startAddress);
       entryEntity.setProperty("endAddress", endAddress);
+      entryEntity.setProperty("distance", distance);
+      entryEntity.setProperty("eta", eta);
+      
       
       datastore.put(entryEntity);
 

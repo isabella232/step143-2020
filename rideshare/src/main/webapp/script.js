@@ -14,7 +14,7 @@
 
 function getMessages() {
   const commentCount = document.getElementById('maxcomments');
-  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   console.log(commentCount.name)
   fetch('/data?type=table&maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
@@ -80,7 +80,7 @@ function checkExists() {
   const startlat = document.getElementById('closestartlat');
   const startlng = document.getElementById('closestartlng');
   const maxdistance = document.getElementById('maxdistance');
-  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
   var hold = [];
   fetch('/data?type=table&sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
@@ -198,6 +198,9 @@ function createEntryElementNoJoin(entry) {
   var dateElement = document.createElement('td');
   dateElement.innerHTML = entry.ridedate + "<br/>" + entry.ridetime;
 
+  var distanceTimeElement = document.createElement('td');
+  distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
+
   var priceElement = document.createElement('td');
   priceElement.innerHTML = "$" + entry.price;
 
@@ -207,6 +210,7 @@ function createEntryElementNoJoin(entry) {
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
   entryElement.appendChild(endElement);
+  entryElement.appendChild(distanceTimeElement);
   entryElement.appendChild(dateElement);
   entryElement.appendChild(priceElement);
   entryElement.appendChild(paymentMethodElement);
@@ -277,9 +281,13 @@ function createEntryElement(entry) {
   var paymentMethodElement = document.createElement('td');
   paymentMethodElement.innerHTML = entry.paymentMethod;
   
+  var distanceTimeElement = document.createElement('td');
+  distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
+  
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
   entryElement.appendChild(endElement);
+  entryElement.appendChild(distanceTimeElement);
   entryElement.appendChild(dateElement);
   entryElement.appendChild(priceElement);
   entryElement.appendChild(paymentMethodElement);
