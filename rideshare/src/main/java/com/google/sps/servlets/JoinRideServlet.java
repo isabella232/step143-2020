@@ -45,6 +45,10 @@ public class JoinRideServlet extends HttpServlet {
       Key rideEntityKey = KeyFactory.createKey("Ride", id);
       Entity rideEntity = datastore.get(rideEntityKey);
       String riderId = userService.getCurrentUser().getUserId();
+      Key profileEntityKey = KeyFactory.createKey("Profile", riderId);
+      Entity profileEntity = datastore.get(profileEntityKey);
+
+      System.out.println(rideEntity.getProperty("riderList"));
 
       if ((((long) rideEntity.getProperty("capacity") > (long) rideEntity.getProperty("currentRiders"))
       && !riderId.equals((String) rideEntity.getProperty("driverId"))
@@ -57,6 +61,10 @@ public class JoinRideServlet extends HttpServlet {
         rideEntity.setProperty("currentRiders", newCapacity);
         rideEntity.setProperty("riderList", newRiderList);
         datastore.put(rideEntity);
+        ArrayList<Long> newMyRides = profileEntity.getProperty("myRides").equals(null) ? new ArrayList<Long>() : ((ArrayList<Long>) profileEntity.getProperty("myRides"));
+        newMyRides.add(id);
+        profileEntity.setProperty("myRides", newMyRides);
+        datastore.put(profileEntity);
         response.sendRedirect("/index.html");
       } else {
         response.sendRedirect("/index.html");
