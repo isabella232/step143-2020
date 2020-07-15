@@ -142,7 +142,6 @@ public class DataServlet extends HttpServlet {
 
       
         for (Entity entity : results.asIterable()) {
-          System.out.println(entity.getProperty("id"));
           long id = entity.getKey().getId();
 
           Entity profEntity = datastore.get(KeyFactory.createKey("Ride", id));
@@ -239,8 +238,7 @@ public class DataServlet extends HttpServlet {
 
       String price = request.getParameter("price");
       String paymentMethod = request.getParameter("paymentMethod");
-      System.out.println(request.getParameter("price"));
-      System.out.println(price);
+      
 
 
       Entity entryEntity = new Entity("Ride");

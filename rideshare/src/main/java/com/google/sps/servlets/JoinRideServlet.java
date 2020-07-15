@@ -48,8 +48,6 @@ public class JoinRideServlet extends HttpServlet {
       Key profileEntityKey = KeyFactory.createKey("Profile", riderId);
       Entity profileEntity = datastore.get(profileEntityKey);
 
-      System.out.println(rideEntity.getProperty("riderList"));
-
       if ((((long) rideEntity.getProperty("capacity") > (long) rideEntity.getProperty("currentRiders"))
       && !riderId.equals((String) rideEntity.getProperty("driverId"))
       && !rideEntity.getProperty("riderList").equals(null)
