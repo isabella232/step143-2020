@@ -170,3 +170,26 @@ button:hover {
     display: inline-block;
     width: 74%;
 }
+
+/*LatLng boxes */
+#topInfo {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#bottomInfo {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.taSize {
+    margin-top: 2%;
+    width: 200px;
+    height: 20px;
+    resize: none;
+    position: static;
+}
+
+#endAddress {
+    margin-bottom: -10%;
+}
