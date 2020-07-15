@@ -155,22 +155,22 @@ function createEntryElementNoJoin(entry) {
   nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
 
   const startElement = document.createElement('td');
-  startElement.id = entry.id + "start";
+  startElement.id = entry.id + "start2";
   var geocoder = new google.maps.Geocoder;
   start = {
               lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
               lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
             }
-  reverseDisplay(geocoder, start, entry.id + "start");
+  reverseDisplay(geocoder, start, entry.id + "start2");
   startElement.innerText = entry.start;
 
   const endElement = document.createElement('td');
-  endElement.id = entry.id + "end";
+  endElement.id = entry.id + "end2";
   end = {
               lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
               lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
             }
-  reverseDisplay(geocoder, end, entry.id + "end");
+  reverseDisplay(geocoder, end, entry.id + "end2");
   endElement.innerText = entry.end;
 
   const capacityElement = document.createElement('td');
