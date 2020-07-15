@@ -226,23 +226,25 @@ function createEntryElement(entry) {
   nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
 
   const startElement = document.createElement('td');
-  startElement.id = entry.id + "start";
-  var geocoder = new google.maps.Geocoder;
-  start = {
-              lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
-              lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
-            }
-  reverseDisplay(geocoder, start, entry.id + "start");
-  startElement.innerText = entry.start;
+  // startElement.id = entry.id + "start";
+  // var geocoder = new google.maps.Geocoder;
+  // start = {
+  //             lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
+  //             lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, start, entry.id + "start");
+  // startElement.innerText = entry.start;
+  startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
 
   const endElement = document.createElement('td');
-  endElement.id = entry.id + "end";
-  end = {
-              lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
-              lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
-            }
-  reverseDisplay(geocoder, end, entry.id + "end");
-  endElement.innerText = entry.end;
+  // endElement.id = entry.id + "end";
+  // end = {
+  //             lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
+  //             lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, end, entry.id + "end");
+  // endElement.innerText = entry.end;
+  endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
 
   const capacityElement = document.createElement('td');
   capacityElement.innerText = entry.capacity;

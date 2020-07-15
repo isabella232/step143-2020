@@ -35,15 +35,22 @@
                   <li>After you have logged in using Google, the first step is to edit your account information to be accurate</li>
                   <li>To post a ride:
                     <ol>
-                      <li> Either click "Use GPS", enter starting location address in the query, or manually enter a pair of start coordinates </li>
-                      <li> Enter an end location address in the query, or manually enter a pair of end coordinates </li>
+                      <li> Either click "Use GPS", enter starting location address in the query, or manually enter an address</li>
+                      <li> Enter an end location address in the query</li>
                       <li> Click "Get Route" to display the desired route on the map </li>
                       <li> Select a date and time for the ride </li>
+                      <li> Select a price per seat and payment method for the ride </li>
                       <li> Click "Post Ride" to finalize ride data </li>
                     </ol>
                   </li>
                   <li>
                     To join a ride, simply click the join ride button for the desired listing below!
+                  </li>
+                  <li>
+                    To rate a driver, simply click the rate driver button for the desired driver listing below!
+                    <ul>
+                      <li> Note: You can only rate a driver once </li>
+                      </ul>
                   </li>
                 </ol>
                 
@@ -55,14 +62,20 @@
                 <br/> <!-- Functional Search Boxes -->
                 <div id="addRoute"></div>
                 <br/>
-                <button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
-                <input type="text" id="startAddress" placeholder="Enter Start Address" >
-                <input type="text" id="endAddress" placeholder="Enter End Address">
+                <!-- <button id="useGPS" onclick="getLocationGPS();">Use GPS</button> -->
+                <!-- <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
+                <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address"> -->
                 <form id="geolocation"> 
-                    <button id="getButton" type="button">Get Route</button>
+                    <!-- <button id="getButton" type="button">Get Route</button> -->
                 </form>   
  
                 <form id="addride" action="/data" method="POST">
+                <button type=button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
+                <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
+                <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address">
+                <br/><br/>
+                <button id="getButton" type="button" form="geolocation">Get Route</button>
+                <br/><br/>
                     <div id="topInfo">
                         <p>Start Lat: </p><textarea id="lat" name="lat" class="taSize"></textarea>
                         <p>End Lat: </p><textarea id="endlat" name="endlat" class="taSize"></textarea>
