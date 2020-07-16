@@ -256,7 +256,6 @@ public class DataServlet extends HttpServlet {
       String paymentMethod = request.getParameter("paymentMethod");
       String startAddress = request.getParameter("startAddress");
       String endAddress = request.getParameter("endAddress");
-      System.out.println("Hello" + request.getParameter("distance"));
       String distance = request.getParameter("distance");
       String eta = request.getParameter("eta");
 
