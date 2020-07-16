@@ -51,7 +51,7 @@
                 <a href="/profilePage.html"><button> View Profile </button></a>
 
  
-                <h4>Post a ride below:</h4>
+                <h3>Post a ride below:</h3>
                 <br/> <!-- Functional Search Boxes -->
                 <div id="addRoute"></div>
                 <br/>
@@ -63,28 +63,48 @@
                 </form>   
  
                 <form id="addride" action="/data" method="POST">
-                    <!-- TODO NOTE: This form is not used to get location -->
-                    <p>"Start Lat:"</p><textarea id="lat" name="lat"></textarea>
-                    <p>"Start Long:"</p><textarea id="lng" name="lng"></textarea>
- 
-                    <p>"End Lat:"</p><textarea id="endlat" name="endlat"></textarea>
-                    <p>"End Long:"</p><textarea id="endlng" name="endlng"></textarea>
+                    <div id="topInfo">
+                        <p>Start Lat: </p><textarea id="lat" name="lat" class="taSize"></textarea>
+                        <p>End Lat: </p><textarea id="endlat" name="endlat" class="taSize"></textarea>
+                        <p>Distance: </p><p id="distance"></p>
+                    </div>
+
+                    <div id="bottomInfo">
+                        <p>Start Long: </p><textarea id="lng" name="lng" class="taSize"></textarea>
+                        <p>End Long: </p><textarea id="endlng" name="endlng" class="taSize"></textarea>
+                        <p>Estimated Time: </p><p id="eta"></p>
+                    </div>
                     <br/><br/>
 
                     <label for="ridedate">Date</label>
-                    <input type="date" id="ridedate" name="ridedate">
+                    <input required type="date" id="ridedate" name="ridedate">
 
                     <br/><br/>
 
                     <label for="appt">Select a time:</label>
-                    <input type="time" id="ridetime" name="ridetime">
+                    <input required type="time" id="ridetime" name="ridetime">
 
+                    <br/><br/>
+
+                    <label for "price"> Select a price per seat ($): </label>
+                    <input required type="number" id="price" name="price" min="0">
+
+                    <br/><br/>
+
+                    <label>Payment method:</label>
+                    <select id="paymentMethod" name="paymentMethod" required style="width:20%">
+                      <option value="" disabled selected>Choose</option>
+                      <option value="Cash">Cash</option>
+                      <option value="Paypal">Paypal</option>
+                      <option value="Venmo">Venmo</option>
+                      <option value="Check">Check</option>
+                    </select>
 
                     <button class="button" type="submit"/> Post Ride </button>       
                 </form>
                 <br/><br/>
  
-                <h4> Search for rides below: </h4>
+                <h3> Search for rides below: </h3>
                 <form>
                     <label>Max # of rides:</label>
                     <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
@@ -120,6 +140,21 @@
           <th>From</th>
           <th>To</th>
           <th>Ride Date</th>
+          <th>Price($)</th>
+          <th>Payment Method</th>
+          <th>Current # of Riders</th>
+          <th>Capacity</th>
+        </tr>
+      </table>
+      <h3> My Rides: </h3>
+      <table style="width:100%" id="myrides">
+        <tr>
+          <th>Driver Info</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Ride Date</th>
+          <th>Price($)</th>
+          <th>Payment Method</th>
           <th>Current # of Riders</th>
           <th>Capacity</th>
         </tr>
