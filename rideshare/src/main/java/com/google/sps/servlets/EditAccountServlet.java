@@ -128,35 +128,50 @@ public class EditAccountServlet extends HttpServlet {
   // A simple HTTP handler to extract text input from submitted web form and respond that context back to the user.
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    String name = request.getParameter("name");
-    name = name.substring(0,1).toUpperCase() + name.substring(1);
-    long capacity = Long.parseLong(request.getParameter("capacity"));
-    String driverEmail = userService.getCurrentUser().getEmail();
-    String driverId = userService.getCurrentUser().getUserId();
-    String uploadUrl = request.getParameter("uploadUrl");
-    // String uploadUrl = blobstoreService.createUploadUrl("/my-form-handler"); For future image uploads 
+    try {
+      String name = request.getParameter("name");
+      name = name.substring(0,1).toUpperCase() + name.substring(1);
+      long capacity = Long.parseLong(request.getParameter("capacity"));
+      String driverEmail = userService.getCurrentUser().getEmail();
+      String driverId = userService.getCurrentUser().getUserId();
+      String uploadUrl = request.getParameter("uploadUrl");
+
+      Key profileEntityKey = KeyFactory.createKey("Profile", driverId);
+      Entity profileEntity = datastore.get(profileEntityKey);
+
+      profileEntity.setProperty("name", name);
+      profileEntity.setProperty("capacity", capacity);
+
+      datastore.put(profileEntity);
+      response.sendRedirect("/index.html");
 
 
+    } catch (EntityNotFoundException e) {
+      String name = request.getParameter("name");
+      name = name.substring(0,1).toUpperCase() + name.substring(1);
+      long capacity = Long.parseLong(request.getParameter("capacity"));
+      String driverEmail = userService.getCurrentUser().getEmail();
+      String driverId = userService.getCurrentUser().getUserId();
 
-    ArrayList<String> usersRated = new ArrayList<String>();
-    usersRated.add("");
-    ArrayList<String> myRides = new ArrayList<String>();
-    myRides.add("");
+      ArrayList<String> usersRated = new ArrayList<String>();
+      usersRated.add("");
+      ArrayList<String> myRides = new ArrayList<String>();
+      myRides.add("");
 
-    Entity entryEntity = new Entity("Profile", driverId);
-    entryEntity.setProperty("name", name);
-    entryEntity.setProperty("capacity", capacity);
-    entryEntity.setProperty("driverId", driverId);
-    entryEntity.setProperty("driverEmail", driverEmail);
-    entryEntity.setProperty("rating", 0.0);
-    entryEntity.setProperty("numratings", 0);
-    entryEntity.setProperty("uploadUrl", uploadUrl);
-    entryEntity.setProperty("usersRated", usersRated);
-    entryEntity.setProperty("myRides", myRides);
-    datastore.put(entryEntity);
+      Entity entryEntity = new Entity("Profile", driverId);
+      entryEntity.setProperty("name", name);
+      entryEntity.setProperty("capacity", capacity);
+      entryEntity.setProperty("driverId", driverId);
+      entryEntity.setProperty("driverEmail", driverEmail);
+      entryEntity.setProperty("rating", 0.0);
+      entryEntity.setProperty("numratings", 0);
+      entryEntity.setProperty("uploadUrl", uploadUrl);
+      entryEntity.setProperty("usersRated", usersRated);
+      entryEntity.setProperty("myRides", myRides);
+      datastore.put(entryEntity);
 
-
-    response.sendRedirect("/index.html");
+      response.sendRedirect("/index.html");
+    } 
     
   }
 }

@@ -32,8 +32,8 @@ import java.util.*;
 
 
 /** Servlet responsible for deleting tasks. */
-@WebServlet("/joinride")
-public class JoinRideServlet extends HttpServlet {
+@WebServlet("/leaveride")
+public class LeaveRideServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -48,19 +48,15 @@ public class JoinRideServlet extends HttpServlet {
       Key profileEntityKey = KeyFactory.createKey("Profile", riderId);
       Entity profileEntity = datastore.get(profileEntityKey);
 
-      if ((((long) rideEntity.getProperty("capacity") > (long) rideEntity.getProperty("currentRiders"))
-      && !riderId.equals((String) rideEntity.getProperty("driverId"))
-      && !rideEntity.getProperty("riderList").equals(null)
-      && !(((ArrayList<String>) rideEntity.getProperty("riderList")).contains(riderId)))
-      || rideEntity.getProperty("riderList").equals(null)){
-        long newCapacity = 1 + (long) rideEntity.getProperty("currentRiders");
-        ArrayList<String> newRiderList = rideEntity.getProperty("riderList").equals(null) ? new ArrayList<String>() : ((ArrayList<String>) rideEntity.getProperty("riderList"));
-        newRiderList.add(riderId);
+      if (!rideEntity.getProperty("riderList").equals(null)) {
+        long newCapacity = (long) rideEntity.getProperty("currentRiders") - 1;
+        ArrayList<String> newRiderList = (ArrayList<String>) rideEntity.getProperty("riderList");
+        newRiderList.remove(riderId);
         rideEntity.setProperty("currentRiders", newCapacity);
         rideEntity.setProperty("riderList", newRiderList);
         datastore.put(rideEntity);
-        ArrayList<Long> newMyRides = profileEntity.getProperty("myRides").equals(null) ? new ArrayList<Long>() : ((ArrayList<Long>) profileEntity.getProperty("myRides"));
-        newMyRides.add(id);
+        ArrayList<Long> newMyRides = (ArrayList<Long>) profileEntity.getProperty("myRides");
+        newMyRides.remove(id);
         profileEntity.setProperty("myRides", newMyRides);
         datastore.put(profileEntity);
         response.sendRedirect("/index.html");
