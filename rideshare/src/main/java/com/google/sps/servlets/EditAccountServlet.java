@@ -152,6 +152,7 @@ public class EditAccountServlet extends HttpServlet {
       long capacity = Long.parseLong(request.getParameter("capacity"));
       String driverEmail = userService.getCurrentUser().getEmail();
       String driverId = userService.getCurrentUser().getUserId();
+      String uploadUrl = request.getParameter("uploadUrl");
 
       ArrayList<String> usersRated = new ArrayList<String>();
       usersRated.add("");
