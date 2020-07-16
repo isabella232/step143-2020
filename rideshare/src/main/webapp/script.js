@@ -14,9 +14,9 @@
 
 function getMessages() {
   const commentCount = document.getElementById('maxcomments');
-  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   console.log(commentCount.name)
-  fetch('/data?maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
+  fetch('/data?type=table&maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
       console.log(entry.name)
@@ -33,7 +33,7 @@ function getMessages() {
 function loadEntries() {
   const commentCount = document.getElementById('maxcomments');
   //console.log(commentCount.value)
-  fetch('/data').then(response => response.json()).then((entries) => {
+  fetch('/data?type=table').then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
       console.log(entry.name)
@@ -48,6 +48,19 @@ function loadEntries() {
       });
       
     })
+  });
+  fetch('/data?type=myrides').then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('myrides');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      var temp = createEntryElement(entry);
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
+      });
+    })
+
   });
 }
 
@@ -67,10 +80,10 @@ function checkExists() {
   const startlat = document.getElementById('closestartlat');
   const startlng = document.getElementById('closestartlng');
   const maxdistance = document.getElementById('maxdistance');
-  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
   var hold = [];
-  fetch('/data?sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
+  fetch('/data?type=table&sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
      //var temp = createEntryElement(entry);
@@ -184,11 +197,19 @@ function createEntryElement(entry) {
 
   var dateElement = document.createElement('td');
   dateElement.innerHTML = entry.ridedate + "<br/>" + entry.ridetime;
+
+  var priceElement = document.createElement('td');
+  priceElement.innerHTML = "$" + entry.price;
+
+  var paymentMethodElement = document.createElement('td');
+  paymentMethodElement.innerHTML = entry.paymentMethod;
   
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
   entryElement.appendChild(endElement);
   entryElement.appendChild(dateElement);
+  entryElement.appendChild(priceElement);
+  entryElement.appendChild(paymentMethodElement);
   entryElement.appendChild(currentRidersElement);
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(joinRideButtonElement);
@@ -199,7 +220,11 @@ function createEntryElement(entry) {
 function revealRate(entry) {
   document.getElementById("profilename").innerHTML = "Your rating for: " + 
   "<i>" + entry.name  + "</i>" + "<p> Driver ID: " + "<span id=\"profileId\">" + entry.driverId + "</span>" + "</p>" + "</i>";
-  document.getElementById("ratingbox").innerHTML = "<input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\"></textarea>";
+  document.getElementById("ratingbox").innerHTML = 
+  "<h3> Move slider accordingly (farthest left = 1, farthest right = 5)</h3>" +
+  "<div class=\"slidecontainer\"><input type=\"range\" min=\"1\" max=\"5\" value=\"3\" class=\"slider\" id=\"ratingtext\"></div>";
+
+// <input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\">";
   document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
 }
 
@@ -293,6 +318,7 @@ function initMap(){
     document.getElementById("getButton").addEventListener("click", function() {
         removeMarkers();
         calculateAndDisplayRoute(directionsService, directionsRenderer);
+        getDistance();
     })
     autoComplete();
 }
@@ -459,6 +485,42 @@ function returnPlace(SearchBox) {
         
     map.fitBounds(bounds);
 
+}
+
+//Show distance of route
+function getDistance() {
+    var origin = document.getElementById("startAddress").value;
+    var destination = document.getElementById("endAddress").value;
+
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+        {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.IMPERIAL
+        }, callback)
+
+        function callback(response, status) {
+            if (status == 'OK') {
+                var origins = response.originAddresses;
+                var destinations = response.destinationAddresses;
+
+                var distanceTag = document.getElementById("distance");
+                var etaTag = document.getElementById("eta");
+
+                distanceTag.innerHTML = "";
+                etaTag.innerHTML = "";
+
+                for (var i = 0; i < origins.length; i++) {
+                    var results = response.rows[i].elements;
+                    for (var j = 0; j < results.length; j++) {
+                        distanceTag.innerHTML += results[j].distance.text;
+                        etaTag.innerHTML += results[j].duration.text;
+                    }
+                }
+            }
+        }
 }
 
 //Track live location

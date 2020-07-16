@@ -40,20 +40,29 @@ public class RateDriverServlet extends HttpServlet {
     String driverId = request.getParameter("driverId").trim();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
+    String currentUserId = userService.getCurrentUser().getUserId();
 
     try {
       Key profileEntityKey = KeyFactory.createKey("Profile", driverId);
       Entity profileEntity = datastore.get(profileEntityKey);
-      double rating = (double) profileEntity.getProperty("rating");
-      long numratings = (long) profileEntity.getProperty("numratings");
+      
+      ArrayList<String> usersRated = (ArrayList<String>) profileEntity.getProperty("usersRated");
+      if (usersRated.contains(currentUserId)) {
+        throw new Error("You can only rate a single driver once");
+      } else{
+        double rating = (double) profileEntity.getProperty("rating");
+        long numratings = (long) profileEntity.getProperty("numratings");
 
-      long newnumratings = numratings + 1;
-      double newrating = (Double.parseDouble(request.getParameter("rating")) + (rating * numratings)) / newnumratings;
+        long newnumratings = numratings + 1;
+        double newrating = (Double.parseDouble(request.getParameter("rating")) + (rating * numratings)) / newnumratings;
 
-      profileEntity.setProperty("rating", newrating);
-      profileEntity.setProperty("numratings", newnumratings);
-      datastore.put(profileEntity);
-      response.sendRedirect("/index.html");
+        profileEntity.setProperty("rating", newrating);
+        profileEntity.setProperty("numratings", newnumratings);
+        usersRated.add(currentUserId);
+        profileEntity.setProperty("usersRated", usersRated);
+        datastore.put(profileEntity);
+        response.sendRedirect("/index.html");
+      }
 
     } catch (EntityNotFoundException e) {
       System.out.println("ERROR");
