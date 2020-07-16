@@ -186,7 +186,7 @@ public class DataServlet extends HttpServlet {
       } catch (EntityNotFoundException e) {
       throw new Error("Mistake");
     } 
-    } else {
+    } else if (type.equals("myrides")) {
        try{
         String userId = userService.getCurrentUser().getUserId();
         Entity profileEntity = datastore.get(KeyFactory.createKey("Profile", userId));
@@ -222,7 +222,42 @@ public class DataServlet extends HttpServlet {
        }
        } catch (EntityNotFoundException e) {
       throw new Error("Entity not found updating myRides");
-    } 
+      }
+    } else {
+      try{
+        String userId = userService.getCurrentUser().getUserId();
+        Entity profileEntity = datastore.get(KeyFactory.createKey("Profile", userId));
+
+        Filter containsFilter = new Query.FilterPredicate("driverId", Query.FilterOperator.EQUAL, userId);
+        query = new Query("Ride").setFilter(containsFilter);
+
+        PreparedQuery results = datastore.prepare(query);
+
+        for (Entity entity : results.asIterable()) {
+          long id = entity.getKey().getId();
+          long capacity = (long) entity.getProperty("capacity");
+          String name = (String) entity.getProperty("name");
+          long currentRiders = (long) entity.getProperty("currentRiders");
+          String driverEmail = (String) entity.getProperty("driverEmail");
+          String driverId = (String) entity.getProperty("driverId");
+          ArrayList<String> riderList = (ArrayList<String>) entity.getProperty("riderList");
+          GeoPt start = (GeoPt) entity.getProperty("start");
+          GeoPt end = (GeoPt) entity.getProperty("end");
+          String ridedate = (String) entity.getProperty("ridedate");
+          String ridetime = (String) entity.getProperty("ridetime");
+          String price = (String) entity.getProperty("price");
+          String paymentMethod = (String) entity.getProperty("paymentMethod");
+          String startAddress = (String) entity.getProperty("startAddress");
+          String endAddress = (String) entity.getProperty("endAddress");
+          String distance = (String) entity.getProperty("distance");
+          String eta = (String) entity.getProperty("eta");
+
+          Ride ride = new Ride(id, name, capacity, currentRiders, driverEmail, driverId, riderList, start, end, ridedate, ridetime, price, paymentMethod, startAddress, endAddress, distance, eta);
+          allRides.add(ride);
+       }
+       } catch (EntityNotFoundException e) {
+      throw new Error("Entity not found updating driverrides");
+      }
     }
       
 
