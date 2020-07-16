@@ -70,6 +70,7 @@ function checkExists() {
     entries.forEach((entry) => {
       document.getElementById("name").value = entry.name;
       document.getElementById("capacity").value = entry.capacity;
+      document.getElementById("uploadUrl").value = entry.uploadUrl;
     })
   });
 }

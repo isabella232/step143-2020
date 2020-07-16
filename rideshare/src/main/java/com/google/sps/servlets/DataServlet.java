@@ -137,6 +137,8 @@ public class DataServlet extends HttpServlet {
           query = new Query("Ride").addSort("ridedate", SortDirection.ASCENDING);
         } else if (sort.equals("fardate")) {
           query = new Query("Ride").addSort("ridedate", SortDirection.DESCENDING);  
+        } else if (sort.equals("price")){
+          query = new Query("Ride").addSort("price", SortDirection.ASCENDING);
         } else {
           query = new Query("Ride").addSort("name", SortDirection.ASCENDING);
         }
