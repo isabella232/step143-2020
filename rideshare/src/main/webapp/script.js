@@ -62,6 +62,19 @@ function loadEntries() {
     })
 
   });
+  fetch('/data?type=driverrides').then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('driverrides');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      var temp = createEntryElementRemove(entry);
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
+      });
+    })
+
+  });
 }
 
 //autofills if information is already there
@@ -70,6 +83,7 @@ function checkExists() {
     entries.forEach((entry) => {
       document.getElementById("name").value = entry.name;
       document.getElementById("capacity").value = entry.capacity;
+      document.getElementById("uploadUrl").value = entry.uploadUrl;
     })
   });
 }
@@ -147,6 +161,85 @@ function reverseDisplay(geocoder, start, id) {
     });
 }
 
+function removeRide(entry) {
+  const params = new URLSearchParams();
+  params.append('id', entry.id);
+  fetch('/deleteride', {method: 'POST', body: params});
+  location.reload();
+}
+
+function createEntryElementRemove(entry) {
+  const entryElement = document.createElement('tr');
+  entryElement.className = 'entry collection-item';
+
+  const startElement = document.createElement('td');
+  // startElement.id = entry.id + "start";
+  // var geocoder = new google.maps.Geocoder;
+  // start = {
+  //             lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
+  //             lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, start, entry.id + "start");
+  // startElement.innerText = entry.start;
+  startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
+
+  const endElement = document.createElement('td');
+  // endElement.id = entry.id + "end";
+  // end = {
+  //             lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
+  //             lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, end, entry.id + "end");
+  // endElement.innerText = entry.end;
+  endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
+
+  const capacityElement = document.createElement('td');
+  capacityElement.innerText = entry.capacity;
+
+  const currentRidersElement = document.createElement('td');
+  currentRidersElement.innerText = entry.currentRiders;
+
+  var removeRideButtonElement = document.createElement('button');
+  removeRideButtonElement.innerText = 'Delete Ride!';
+  removeRideButtonElement.style.float = "right";
+  removeRideButtonElement.style.backgroundColor = "#CF5300";
+  removeRideButtonElement.addEventListener('click', () => {
+    removeRide(entry);
+  });
+
+  var rateButtonElement = document.createElement('button');
+  rateButtonElement.innerText = 'Rate Driver';
+  rateButtonElement.style.float = "right";
+  rateButtonElement.addEventListener('click', () => {
+    revealRate(entry);
+    window.location = "#ratingdiv"
+  });
+
+  var dateElement = document.createElement('td');
+  dateElement.innerHTML = entry.ridedate + "<br/>" + entry.ridetime;
+
+  var distanceTimeElement = document.createElement('td');
+  distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
+
+  var priceElement = document.createElement('td');
+  priceElement.innerHTML = "$" + entry.price;
+
+  var paymentMethodElement = document.createElement('td');
+  paymentMethodElement.innerHTML = entry.paymentMethod;
+  
+  entryElement.appendChild(startElement);
+  entryElement.appendChild(endElement);
+  entryElement.appendChild(distanceTimeElement);
+  entryElement.appendChild(dateElement);
+  entryElement.appendChild(priceElement);
+  entryElement.appendChild(paymentMethodElement);
+  entryElement.appendChild(currentRidersElement);
+  entryElement.appendChild(capacityElement);
+  entryElement.appendChild(removeRideButtonElement);
+  entryElement.appendChild(rateButtonElement);
+  return entryElement;
+}
+
 function createEntryElementNoJoin(entry) {
   const entryElement = document.createElement('tr');
   entryElement.className = 'entry collection-item';
@@ -155,23 +248,25 @@ function createEntryElementNoJoin(entry) {
   nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
 
   const startElement = document.createElement('td');
-  startElement.id = entry.id + "start2";
-  var geocoder = new google.maps.Geocoder;
-  start = {
-              lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
-              lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
-            }
-  reverseDisplay(geocoder, start, entry.id + "start2");
-  startElement.innerText = entry.start;
+  // startElement.id = entry.id + "start";
+  // var geocoder = new google.maps.Geocoder;
+  // start = {
+  //             lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
+  //             lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, start, entry.id + "start");
+  // startElement.innerText = entry.start;
+  startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
 
   const endElement = document.createElement('td');
-  endElement.id = entry.id + "end2";
-  end = {
-              lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
-              lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
-            }
-  reverseDisplay(geocoder, end, entry.id + "end2");
-  endElement.innerText = entry.end;
+  // endElement.id = entry.id + "end";
+  // end = {
+  //             lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
+  //             lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, end, entry.id + "end");
+  // endElement.innerText = entry.end;
+  endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
 
   const capacityElement = document.createElement('td');
   capacityElement.innerText = entry.capacity;

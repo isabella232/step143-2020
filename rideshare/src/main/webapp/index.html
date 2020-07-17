@@ -149,7 +149,9 @@
                 <option value="startdistance">Closest (Start Location)</option>
                 <option value="date">Soonest Dates</option>
                 <option value="fardate">Latest Dates</option>
-              </select> 
+                <option value="price">Price(Low to High)</option>
+              </select>
+
       </form>
       <!-- <button onclick="appendRatings();"> See Ratings </button> -->
       <br/>
@@ -166,10 +168,23 @@
           <th>Capacity</th>
         </tr>
       </table>
-      <h3> My Current Rides: </h3>
+      <h3> My Current Rides (as a Rider): </h3>
       <table style="width:100%" id="myrides">
         <tr>
           <th>Driver Info</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Distance</th>
+          <th>Ride Date</th>
+          <th>Price($)</th>
+          <th>Payment Method</th>
+          <th>Current # of Riders</th>
+          <th>Capacity</th>
+        </tr>
+      </table>
+      <h3> Rides I'm Driving: </h3>
+      <table style="width:100%" id="driverrides">
+        <tr>
           <th>From</th>
           <th>To</th>
           <th>Distance</th>

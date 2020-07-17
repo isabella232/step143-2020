@@ -60,8 +60,9 @@ public class EditAccountServlet extends HttpServlet {
     public long numratings;
     public ArrayList<String> usersRated;
     public ArrayList<Long> myRides;
+    public String uploadUrl;
     
-    public Profile(String name, long capacity, String driverEmail, String driverId, double rating, long numratings, ArrayList<String> usersRated, ArrayList<Long> myRides) {
+    public Profile(String name, long capacity, String driverEmail, String driverId, double rating, long numratings, ArrayList<String> usersRated, ArrayList<Long> myRides, String uploadUrl) {
       this.name = name;
       this.capacity = capacity;
       this.driverId = driverId;
@@ -70,6 +71,7 @@ public class EditAccountServlet extends HttpServlet {
       this.numratings = numratings;
       this.usersRated = usersRated;
       this.myRides = myRides;
+      this.uploadUrl = uploadUrl;
     }
 
     public String getName() {
@@ -114,8 +116,9 @@ public class EditAccountServlet extends HttpServlet {
         long numratings = (long) profileEntity.getProperty("numratings");
         ArrayList<String> usersRated = (ArrayList<String>) profileEntity.getProperty("usersRated");
         ArrayList<Long> myRides = (ArrayList<Long>) profileEntity.getProperty("myRides");
+        String uploadUrl = (String) profileEntity.getProperty("uploadUrl");
 
-        Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId, rating, numratings, usersRated, myRides);
+        Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId, rating, numratings, usersRated, myRides, uploadUrl);
         profileDetails.add(temp);
         Gson gson = new Gson();
         String json = gson.toJson(profileDetails);
@@ -141,6 +144,7 @@ public class EditAccountServlet extends HttpServlet {
 
       profileEntity.setProperty("name", name);
       profileEntity.setProperty("capacity", capacity);
+      profileEntity.setProperty("uploadUrl", uploadUrl);
 
       datastore.put(profileEntity);
       response.sendRedirect("/index.html");
