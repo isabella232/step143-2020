@@ -127,6 +127,8 @@
                         <option value="20">20</option>
                     </select>
                 </form>
+
+                <div id="sortMap"></div>
                 <br/>
 
       <p> Note: About 1 degree at the equator is 111,319.5 meters </p>
@@ -134,9 +136,13 @@
       <form>
           <textarea id="closestartlat" name="closestartlat" placeholder="Enter Starting Latitude" style="height:25px; width:200px"></textarea>
           <textarea id="closestartlng" name="closestartlng" placeholder="Enter Starting Longitude" style="height:25px; width:200px"></textarea>
+          <div id="sortByAddress">
+            <h5 id="searchboxInfo">Search by location: </h5>
+            <input type="text" id="sortRidesBox" name="sortRidesSearchbox" placeholder="Enter Address">
+          </div>
           <textarea id="maxdistance" name = "maxdistance" placeholder="Enter Max Distance from Start Point (Meters)" style="height: 50px; width:200px"></textarea>
             <label>Sort:</label>
-              <select onchange="sortRides()" id="sort" name="sort" required style="width:20%">
+              <select id="sort" name="sort" onchange="sortRides()" required style="width:20%">
                 <option value="" disabled selected>Choose</option>
                 <option value="alphabetical">By name alphabetical (A-Z)</option>
                 <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
@@ -145,6 +151,7 @@
                 <option value="fardate">Latest Dates</option>
                 <option value="price">Price(Low to High)</option>
               </select>
+
       </form>
       <!-- <button onclick="appendRatings();"> See Ratings </button> -->
       <br/>

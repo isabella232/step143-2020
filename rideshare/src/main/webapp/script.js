@@ -475,6 +475,7 @@ function loadProfile(){
 var start = {}
 //Get location
 var map;
+var sortMap;
 var marker;
 var markers = [];
 var endAddress;
@@ -482,6 +483,7 @@ var start = {};
 var end;
 var startSearchBox;
 var endSearchBox;
+var sortRidesSearchBox;
 var geocoder;
 var directionsRenderer;
 var directionsService;
@@ -492,6 +494,11 @@ function initMap(){
     var mapCenter = new google.maps.LatLng(39.089581, -101.396101);
 
     map = new google.maps.Map(document.getElementById('addRoute'), {
+        zoom: 7, 
+        center: mapCenter
+    })
+
+    sortMap = new google.maps.Map(document.getElementById('sortMap'), {
         zoom: 7, 
         center: mapCenter
     })
@@ -558,7 +565,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
                 
             } 
             else {
-                window.alert('Directions request failed due to ' + status);
+                window.alert('Please enter valid address');
             }
         }
     )
@@ -611,6 +618,7 @@ function autoComplete() {
     //Create Search Box
     startSearchBox = new google.maps.places.SearchBox(document.getElementById("startAddress"));
     endSearchBox = new google.maps.places.SearchBox(document.getElementById("endAddress"));
+    sortRidesSearchBox = new google.maps.places.SearchBox(document.getElementById("sortRidesBox"));
 
     // Bias the SearchBox results towards current map's viewport.
     map.addListener("bounds_changed", function() {
@@ -624,6 +632,18 @@ function autoComplete() {
     endSearchBox.addListener("places_changed", function() {
         removeMarkers();
         returnPlace(endSearchBox);
+    })
+
+    sortRidesSearchBox.addListener("places_changed", function() {
+        geocoder.geocode({
+            'address': document.getElementById("sortRidesBox").value
+        }, 
+        function(results, status) {
+            if (status === "OK") {
+                document.getElementById("closestartlat").value = results[0].geometry.location.lat();
+                document.getElementById("closestartlng").value = results[0].geometry.location.lng();
+            }
+        })
     })
 }
 
