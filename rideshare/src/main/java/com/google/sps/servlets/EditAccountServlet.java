@@ -137,7 +137,6 @@ public class EditAccountServlet extends HttpServlet {
     // String uploadUrl = blobstoreService.createUploadUrl("/my-form-handler"); For future image uploads 
 
 
-
     ArrayList<String> usersRated = new ArrayList<String>();
     usersRated.add("");
     ArrayList<String> myRides = new ArrayList<String>();
@@ -153,9 +152,23 @@ public class EditAccountServlet extends HttpServlet {
     entryEntity.setProperty("uploadUrl", uploadUrl);
     entryEntity.setProperty("usersRated", usersRated);
     entryEntity.setProperty("myRides", myRides);
+    
     datastore.put(entryEntity);
-
     response.sendRedirect("/index.html");
+
+    try {
+      Key profileEntityKey = KeyFactory.createKey("Profile", driverId);
+      Entity profileEntity = datastore.get(profileEntityKey);
+
+      profileEntity.setProperty("name", name);
+      profileEntity.setProperty("capacity", capacity);
+
+      datastore.put(profileEntity);
+      response.sendRedirect("/index.html");
+
+
+    } catch (EntityNotFoundException e) {
+    } 
     
   }
 }

@@ -90,7 +90,6 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
             response.getWriter().println("<p>" + userEmail + "!</p>");
             response.getWriter().println("<p>welcome to your profile page "+ name +".</p>");
             response.getWriter().println("<p>your current car capacity is " + capacity + "!</p>");
-            response.getWriter().println("<p>" + uploadUrl + "</p>");
 
         }
     }catch (EntityNotFoundException e) {} 

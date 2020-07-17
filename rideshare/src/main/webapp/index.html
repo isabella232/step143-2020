@@ -13,66 +13,79 @@
     </head>
  
     <body onload = "loadEntries(); loadUser();">
+        
         <div class="loginForm">  
             <form id="loginForm" class="loginForm-content container">
-                <h2 text-align="center">Welcome to Rideshare</h2>
+                <h1 style="text-align:center;">Welcome to Rideshare</h1>
     
                 <div id="LoginUsingGoogle"></div>
+                <button onclick="guestMode()">Guest Mode</button>
  
-                <div class="container" style="background-color:#grey">
-          
-                </div>
+                <div class="container" style="background-color:#grey"></div>
             </form>
         </div>
 
         <div id= "rideshareApp">    
             <div id="content">
                 <h1>Rideshare App</h1>
-                <p>This is the rough draft of our rideshare app.</p>
                 <div id = "logout"></div>
+                <p>Welcome to our Rideshare App intended for college students who desire a more streamlined process of finding a carpool ride!</p>
                 <h2> Instructions </h2>
                 <ol>
                   <li>After you have logged in using Google, the first step is to edit your account information to be accurate</li>
                   <li>To post a ride:
                     <ol>
-                      <li> Either click "Use GPS", enter starting location address in the query, or manually enter a pair of start coordinates </li>
-                      <li> Enter an end location address in the query, or manually enter a pair of end coordinates </li>
+                      <li> Either click "Use GPS", enter starting location address in the query, or manually enter an address</li>
+                      <li> Enter an end location address in the query</li>
                       <li> Click "Get Route" to display the desired route on the map </li>
                       <li> Select a date and time for the ride </li>
+                      <li> Select a price per seat and payment method for the ride </li>
                       <li> Click "Post Ride" to finalize ride data </li>
                     </ol>
                   </li>
                   <li>
                     To join a ride, simply click the join ride button for the desired listing below!
                   </li>
+                  <li>
+                    To rate a driver, simply click the rate driver button for the desired driver listing below!
+                    <ul>
+                      <li> Note: You can only rate a driver once </li>
+                      </ul>
+                  </li>
                 </ol>
                 
-                <a href="/editAccount.html "> <button>Edit Account Information</button> </a>
-                <a href="/profilePage.html"><button> View Profile </button></a>
+                <a href="/editAccount.html "> <button id="editAccountButton">Edit Account Information</button> </a>
+                <a href="/profilePage.html"><button id="viewProfileButton"> View Profile </button></a>
 
  
                 <h3>Post a ride below:</h3>
                 <br/> <!-- Functional Search Boxes -->
                 <div id="addRoute"></div>
                 <br/>
-                <button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
-                <input type="text" id="startAddress" placeholder="Enter Start Address" >
-                <input type="text" id="endAddress" placeholder="Enter End Address">
+                <!-- <button id="useGPS" onclick="getLocationGPS();">Use GPS</button> -->
+                <!-- <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
+                <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address"> -->
                 <form id="geolocation"> 
-                    <button id="getButton" type="button">Get Route</button>
+                    <!-- <button id="getButton" type="button">Get Route</button> -->
                 </form>   
  
                 <form id="addride" action="/data" method="POST">
+                <button type=button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
+                <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
+                <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address">
+                <br/><br/>
+                <button id="getButton" type="button" form="geolocation">Get Route</button>
+                <br/><br/>
                     <div id="topInfo">
                         <p>Start Lat: </p><textarea id="lat" name="lat" class="taSize"></textarea>
                         <p>End Lat: </p><textarea id="endlat" name="endlat" class="taSize"></textarea>
-                        <p>Distance: </p><p id="distance"></p>
+                        <p>Distance: </p><textarea name="distance" id="distance" class="taSize"></textarea>
                     </div>
 
                     <div id="bottomInfo">
                         <p>Start Long: </p><textarea id="lng" name="lng" class="taSize"></textarea>
                         <p>End Long: </p><textarea id="endlng" name="endlng" class="taSize"></textarea>
-                        <p>Estimated Time: </p><p id="eta"></p>
+                        <p>Estimated Time: </p><textarea name="eta" id="eta" class="taSize"></textarea>
                     </div>
                     <br/><br/>
 
@@ -139,6 +152,7 @@
           <th>Driver Info</th>
           <th>From</th>
           <th>To</th>
+          <th>Distance</th>
           <th>Ride Date</th>
           <th>Price($)</th>
           <th>Payment Method</th>
@@ -146,12 +160,13 @@
           <th>Capacity</th>
         </tr>
       </table>
-      <h3> My Rides: </h3>
+      <h3> My Current Rides: </h3>
       <table style="width:100%" id="myrides">
         <tr>
           <th>Driver Info</th>
           <th>From</th>
           <th>To</th>
+          <th>Distance</th>
           <th>Ride Date</th>
           <th>Price($)</th>
           <th>Payment Method</th>

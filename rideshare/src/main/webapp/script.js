@@ -14,7 +14,7 @@
 
 function getMessages() {
   const commentCount = document.getElementById('maxcomments');
-  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   console.log(commentCount.name)
   fetch('/data?type=table&maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
@@ -53,7 +53,7 @@ function loadEntries() {
     const entryListElement = document.getElementById('myrides');
     entries.forEach((entry) => {
       console.log(entry.name)
-      var temp = createEntryElement(entry);
+      var temp = createEntryElementNoJoin(entry);
       getRating(entry).then(rating =>  {
         console.log(rating);
         temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
@@ -80,7 +80,7 @@ function checkExists() {
   const startlat = document.getElementById('closestartlat');
   const startlng = document.getElementById('closestartlng');
   const maxdistance = document.getElementById('maxdistance');
-  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
   var hold = [];
   fetch('/data?type=table&sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
@@ -147,6 +147,80 @@ function reverseDisplay(geocoder, start, id) {
     });
 }
 
+function createEntryElementNoJoin(entry) {
+  const entryElement = document.createElement('tr');
+  entryElement.className = 'entry collection-item';
+
+  const nameElement = document.createElement('td');
+  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
+
+  const startElement = document.createElement('td');
+  startElement.id = entry.id + "start2";
+  var geocoder = new google.maps.Geocoder;
+  start = {
+              lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
+              lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
+            }
+  reverseDisplay(geocoder, start, entry.id + "start2");
+  startElement.innerText = entry.start;
+
+  const endElement = document.createElement('td');
+  endElement.id = entry.id + "end2";
+  end = {
+              lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
+              lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
+            }
+  reverseDisplay(geocoder, end, entry.id + "end2");
+  endElement.innerText = entry.end;
+
+  const capacityElement = document.createElement('td');
+  capacityElement.innerText = entry.capacity;
+
+  const currentRidersElement = document.createElement('td');
+  currentRidersElement.innerText = entry.currentRiders;
+
+  var leaveRideButtonElement = document.createElement('button');
+  leaveRideButtonElement.innerText = 'Leave Ride!';
+  leaveRideButtonElement.style.float = "right";
+  leaveRideButtonElement.style.backgroundColor = "#8b0000";
+  leaveRideButtonElement.addEventListener('click', () => {
+    leaveRide(entry);
+  });
+
+  var rateButtonElement = document.createElement('button');
+  rateButtonElement.innerText = 'Rate Driver';
+  rateButtonElement.style.float = "right";
+  rateButtonElement.addEventListener('click', () => {
+    revealRate(entry);
+    window.location = "#ratingdiv"
+  });
+
+  var dateElement = document.createElement('td');
+  dateElement.innerHTML = entry.ridedate + "<br/>" + entry.ridetime;
+
+  var distanceTimeElement = document.createElement('td');
+  distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
+
+  var priceElement = document.createElement('td');
+  priceElement.innerHTML = "$" + entry.price;
+
+  var paymentMethodElement = document.createElement('td');
+  paymentMethodElement.innerHTML = entry.paymentMethod;
+  
+  entryElement.appendChild(nameElement);
+  entryElement.appendChild(startElement);
+  entryElement.appendChild(endElement);
+  entryElement.appendChild(distanceTimeElement);
+  entryElement.appendChild(dateElement);
+  entryElement.appendChild(priceElement);
+  entryElement.appendChild(paymentMethodElement);
+  entryElement.appendChild(currentRidersElement);
+  entryElement.appendChild(capacityElement);
+  entryElement.appendChild(leaveRideButtonElement);
+  entryElement.appendChild(rateButtonElement);
+  return entryElement;
+}
+
 
 function createEntryElement(entry) {
   const entryElement = document.createElement('tr');
@@ -156,23 +230,25 @@ function createEntryElement(entry) {
   nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
 
   const startElement = document.createElement('td');
-  startElement.id = entry.id + "start";
-  var geocoder = new google.maps.Geocoder;
-  start = {
-              lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
-              lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
-            }
-  reverseDisplay(geocoder, start, entry.id + "start");
-  startElement.innerText = entry.start;
+  // startElement.id = entry.id + "start";
+  // var geocoder = new google.maps.Geocoder;
+  // start = {
+  //             lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
+  //             lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, start, entry.id + "start");
+  // startElement.innerText = entry.start;
+  startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
 
   const endElement = document.createElement('td');
-  endElement.id = entry.id + "end";
-  end = {
-              lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
-              lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
-            }
-  reverseDisplay(geocoder, end, entry.id + "end");
-  endElement.innerText = entry.end;
+  // endElement.id = entry.id + "end";
+  // end = {
+  //             lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
+  //             lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, end, entry.id + "end");
+  // endElement.innerText = entry.end;
+  endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
 
   const capacityElement = document.createElement('td');
   capacityElement.innerText = entry.capacity;
@@ -183,6 +259,7 @@ function createEntryElement(entry) {
   var joinRideButtonElement = document.createElement('button');
   joinRideButtonElement.innerText = 'Join Ride!';
   joinRideButtonElement.style.float = "right";
+  joinRideButtonElement.style.backgroundColor = "#272e91";
   joinRideButtonElement.addEventListener('click', () => {
     joinRide(entry);
   });
@@ -204,9 +281,13 @@ function createEntryElement(entry) {
   var paymentMethodElement = document.createElement('td');
   paymentMethodElement.innerHTML = entry.paymentMethod;
   
+  var distanceTimeElement = document.createElement('td');
+  distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
+  
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
   entryElement.appendChild(endElement);
+  entryElement.appendChild(distanceTimeElement);
   entryElement.appendChild(dateElement);
   entryElement.appendChild(priceElement);
   entryElement.appendChild(paymentMethodElement);
@@ -235,6 +316,13 @@ function joinRide(entry) {
   location.reload();
 }
 
+function leaveRide(entry) {
+  const params = new URLSearchParams();
+  params.append('id', entry.id);
+  fetch('/leaveride', {method: 'POST', body: params});
+  location.reload();
+}
+
 function rateDriver() {
   const params = new URLSearchParams();
   params.append('driverId', document.getElementById("profileId").innerHTML);
@@ -257,8 +345,15 @@ function loadUser(){
       document.getElementById("LoginUsingGoogle").innerHTML = "<i>" + txt + "</i>";
     } else {
       loginForm.style.display = "none";
+      rideshare.style.display = "block";
       document.getElementById("logout").innerHTML = "<i>" + txt + "</i>";
     }});
+}
+function guestMode() {
+    var loginForm = document.getElementById("loginForm");    
+    var rideshare = document.getElementById("rideshareApp");
+    loginForm.style.display = "none";
+    rideshare.style.display = "block";
 }
 
 function loadProfile(){
@@ -278,16 +373,6 @@ function loadProfile(){
       });
 }
 
-// function fetchBlobstoreUrlAndShowForm() {
-//   fetch('/blobstore-upload-url').then((response) => {
-//         return response.text();
-//       })
-//       .then((imageUploadUrl) => {
-//         const messageForm = document.getElementById('my-form');
-//         messageForm.action = imageUploadUrl;
-//         messageForm.classList.remove('hidden');
-//       });
-// }
 //Create Route from Start to Destination
 var start = {}
 //Get location
