@@ -19,6 +19,8 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -139,6 +141,22 @@ public class DataServlet extends HttpServlet {
           query = new Query("Ride").addSort("ridedate", SortDirection.DESCENDING);  
         } else if (sort.equals("price")){
           query = new Query("Ride").addSort("price", SortDirection.ASCENDING);
+        } else if (sort.equals("enddistance")) {
+          GeoPt end = new GeoPt(Float.parseFloat(request.getParameter("closeendlat")), Float.parseFloat(request.getParameter("closeendlng")));
+          double maxdistanceend = Double.parseDouble(request.getParameter("maxdistanceend"));
+          StContainsFilter endRadiusFilter = new StContainsFilter("end", new Query.GeoRegion.Circle(end, maxdistanceend));
+          query = new Query("Ride").setFilter(endRadiusFilter);
+        } else if (sort.equals("bothdistance")) {
+          GeoPt start = new GeoPt(Float.parseFloat(request.getParameter("startlat")), Float.parseFloat(request.getParameter("startlng")));
+          double maxdistance = Double.parseDouble(request.getParameter("maxdistance"));
+          StContainsFilter radiusFilter = new StContainsFilter("start", new Query.GeoRegion.Circle(start, maxdistance));
+
+          GeoPt end = new GeoPt(Float.parseFloat(request.getParameter("closeendlat")), Float.parseFloat(request.getParameter("closeendlng")));
+          double maxdistanceend = Double.parseDouble(request.getParameter("maxdistanceend"));
+          StContainsFilter endRadiusFilter = new StContainsFilter("end", new Query.GeoRegion.Circle(end, maxdistanceend));
+
+          CompositeFilter both = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(radiusFilter, endRadiusFilter));
+          query = new Query("Ride").setFilter(both);
         } else {
           query = new Query("Ride").addSort("name", SortDirection.ASCENDING);
         }
