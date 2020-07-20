@@ -402,6 +402,8 @@ function revealRate(entry) {
   document.getElementById("ratingbox").innerHTML = 
   "<h3> Move slider accordingly (farthest left = 1, farthest right = 5)</h3>" +
   "<div class=\"slidecontainer\"><input type=\"range\" min=\"1\" max=\"5\" value=\"3\" class=\"slider\" id=\"ratingtext\"></div>";
+  document.getElementById("reviewbox").innerHTML = "<h4>Leave a review (optional) </h4>" + "<textarea id=\"review\" width=\"80%\" height=\"200px\"></textarea>" + "<br/" + 
+  "<label><input id=\"displayname\" name=\"displayname\" type=\"checkbox\" class=\"filled-in\" checked=\"checked\" />" + "<span>Display name next to review</span>" + "</label>";
 
 // <input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\">";
   document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
@@ -425,6 +427,7 @@ function rateDriver() {
   const params = new URLSearchParams();
   params.append('driverId', document.getElementById("profileId").innerHTML);
   params.append('rating', document.getElementById("ratingtext").value);
+  params.append('review', document.getElementById("review").value)
   fetch('/ratedriver', {method: 'POST', body: params});
   location.reload();
 

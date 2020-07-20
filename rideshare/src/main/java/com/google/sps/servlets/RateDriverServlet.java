@@ -47,6 +47,7 @@ public class RateDriverServlet extends HttpServlet {
       Entity profileEntity = datastore.get(profileEntityKey);
       
       ArrayList<String> usersRated = (ArrayList<String>) profileEntity.getProperty("usersRated");
+      ArrayList<String> reviews = (ArrayList<String>) profileEntity.getProperty("reviews");
       if (usersRated.contains(currentUserId)) {
         throw new Error("You can only rate a single driver once");
       } else{
@@ -56,8 +57,14 @@ public class RateDriverServlet extends HttpServlet {
         long newnumratings = numratings + 1;
         double newrating = (Double.parseDouble(request.getParameter("rating")) + (rating * numratings)) / newnumratings;
 
+        // if there is no review, don't add it
+        if (!request.getParameter("review").equals(null) && !request.getParameter("review").equals("")) {
+          reviews.add(request.getParameter("review"));
+        }
+
         profileEntity.setProperty("rating", newrating);
         profileEntity.setProperty("numratings", newnumratings);
+        profileEntity.setProperty("reviews", reviews);
         usersRated.add(currentUserId);
         profileEntity.setProperty("usersRated", usersRated);
         datastore.put(profileEntity);
