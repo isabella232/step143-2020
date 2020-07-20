@@ -1,17 +1,3 @@
-// Copyright 2019 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     https://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package com.google.sps.servlets;
 import com.google.gson.Gson;
 import com.google.appengine.api.blobstore.BlobInfo;
@@ -60,8 +46,9 @@ public class EditAccountServlet extends HttpServlet {
     public long numratings;
     public ArrayList<String> usersRated;
     public ArrayList<Long> myRides;
+    public String uploadUrl;
     
-    public Profile(String name, long capacity, String driverEmail, String driverId, double rating, long numratings, ArrayList<String> usersRated, ArrayList<Long> myRides) {
+    public Profile(String name, long capacity, String driverEmail, String driverId, double rating, long numratings, ArrayList<String> usersRated, ArrayList<Long> myRides, String uploadUrl) {
       this.name = name;
       this.capacity = capacity;
       this.driverId = driverId;
@@ -70,6 +57,7 @@ public class EditAccountServlet extends HttpServlet {
       this.numratings = numratings;
       this.usersRated = usersRated;
       this.myRides = myRides;
+      this.uploadUrl = uploadUrl;
     }
 
     public String getName() {
@@ -114,8 +102,9 @@ public class EditAccountServlet extends HttpServlet {
         long numratings = (long) profileEntity.getProperty("numratings");
         ArrayList<String> usersRated = (ArrayList<String>) profileEntity.getProperty("usersRated");
         ArrayList<Long> myRides = (ArrayList<Long>) profileEntity.getProperty("myRides");
+        String uploadUrl = (String) profileEntity.getProperty("uploadUrl");
 
-        Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId, rating, numratings, usersRated, myRides);
+        Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId, rating, numratings, usersRated, myRides, uploadUrl);
         profileDetails.add(temp);
         Gson gson = new Gson();
         String json = gson.toJson(profileDetails);
@@ -128,46 +117,51 @@ public class EditAccountServlet extends HttpServlet {
   // A simple HTTP handler to extract text input from submitted web form and respond that context back to the user.
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    String name = request.getParameter("name");
-    name = name.substring(0,1).toUpperCase() + name.substring(1);
-    long capacity = Long.parseLong(request.getParameter("capacity"));
-    String driverEmail = userService.getCurrentUser().getEmail();
-    String driverId = userService.getCurrentUser().getUserId();
-    String uploadUrl = request.getParameter("uploadUrl");
-    // String uploadUrl = blobstoreService.createUploadUrl("/my-form-handler"); For future image uploads 
-
-
-    ArrayList<String> usersRated = new ArrayList<String>();
-    usersRated.add("");
-    ArrayList<String> myRides = new ArrayList<String>();
-    myRides.add("");
-
-    Entity entryEntity = new Entity("Profile", driverId);
-    entryEntity.setProperty("name", name);
-    entryEntity.setProperty("capacity", capacity);
-    entryEntity.setProperty("driverId", driverId);
-    entryEntity.setProperty("driverEmail", driverEmail);
-    entryEntity.setProperty("rating", 0.0);
-    entryEntity.setProperty("numratings", 0);
-    entryEntity.setProperty("uploadUrl", uploadUrl);
-    entryEntity.setProperty("usersRated", usersRated);
-    entryEntity.setProperty("myRides", myRides);
-    
-    datastore.put(entryEntity);
-    response.sendRedirect("/index.html");
-
     try {
+      String name = request.getParameter("name");
+      name = name.substring(0,1).toUpperCase() + name.substring(1);
+      long capacity = Long.parseLong(request.getParameter("capacity"));
+      String driverEmail = userService.getCurrentUser().getEmail();
+      String driverId = userService.getCurrentUser().getUserId();
+      String uploadUrl = request.getParameter("uploadUrl");
+
       Key profileEntityKey = KeyFactory.createKey("Profile", driverId);
       Entity profileEntity = datastore.get(profileEntityKey);
 
       profileEntity.setProperty("name", name);
       profileEntity.setProperty("capacity", capacity);
+      profileEntity.setProperty("uploadUrl", uploadUrl);
 
       datastore.put(profileEntity);
       response.sendRedirect("/index.html");
 
 
     } catch (EntityNotFoundException e) {
+      String name = request.getParameter("name");
+      name = name.substring(0,1).toUpperCase() + name.substring(1);
+      long capacity = Long.parseLong(request.getParameter("capacity"));
+      String driverEmail = userService.getCurrentUser().getEmail();
+      String driverId = userService.getCurrentUser().getUserId();
+      String uploadUrl = request.getParameter("uploadUrl");
+
+      ArrayList<String> usersRated = new ArrayList<String>();
+      usersRated.add("");
+      ArrayList<String> myRides = new ArrayList<String>();
+      myRides.add("");
+
+      Entity entryEntity = new Entity("Profile", driverId);
+      entryEntity.setProperty("name", name);
+      entryEntity.setProperty("capacity", capacity);
+      entryEntity.setProperty("driverId", driverId);
+      entryEntity.setProperty("driverEmail", driverEmail);
+      entryEntity.setProperty("rating", 0.0);
+      entryEntity.setProperty("numratings", 0);
+      entryEntity.setProperty("uploadUrl", uploadUrl);
+      entryEntity.setProperty("usersRated", usersRated);
+      entryEntity.setProperty("myRides", myRides);
+      datastore.put(entryEntity);
+
+      response.sendRedirect("/index.html");
     } 
     
   }

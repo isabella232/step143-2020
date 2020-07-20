@@ -15,14 +15,14 @@
     <body onload = "loadEntries(); loadUser();">
         
         <div class="loginForm">  
-            <form id="loginForm" class="loginForm-content container">
+            <div id="loginForm" class="loginForm-content container">
                 <h1 style="text-align:center;">Welcome to Rideshare</h1>
     
                 <div id="LoginUsingGoogle"></div>
-                <button onclick="guestMode()">Guest Mode</button>
+                <a href="/GuestPage.html"><button class="guestButton" id="guestLoginPage"> Guest Mode </button></a>
  
                 <div class="container" style="background-color:#grey"></div>
-            </form>
+            </div>
         </div>
 
         <div id= "rideshareApp">    
@@ -54,7 +54,7 @@
                   </li>
                 </ol>
                 
-                <a href="/editAccount.html "> <button id="editAccountButton">Edit Account Information</button> </a>
+                <a href="/editAccount.html"> <button id="editAccountButton">Edit Account Information</button> </a>
                 <a href="/profilePage.html"><button id="viewProfileButton"> View Profile </button></a>
 
  
@@ -127,6 +127,8 @@
                         <option value="20">20</option>
                     </select>
                 </form>
+
+                <div id="sortMap"></div>
                 <br/>
 
       <p> Note: About 1 degree at the equator is 111,319.5 meters </p>
@@ -134,16 +136,22 @@
       <form>
           <textarea id="closestartlat" name="closestartlat" placeholder="Enter Starting Latitude" style="height:25px; width:200px"></textarea>
           <textarea id="closestartlng" name="closestartlng" placeholder="Enter Starting Longitude" style="height:25px; width:200px"></textarea>
+          <div id="sortByAddress">
+            <h5 id="searchboxInfo">Search by location: </h5>
+            <input type="text" id="sortRidesBox" name="sortRidesSearchbox" placeholder="Enter Address">
+          </div>
           <textarea id="maxdistance" name = "maxdistance" placeholder="Enter Max Distance from Start Point (Meters)" style="height: 50px; width:200px"></textarea>
             <label>Sort:</label>
-              <select onchange="sortRides()" id="sort" name="sort" required style="width:20%">
+              <select id="sort" name="sort" onchange="sortRides()" required style="width:20%">
                 <option value="" disabled selected>Choose</option>
                 <option value="alphabetical">By name alphabetical (A-Z)</option>
                 <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
                 <option value="startdistance">Closest (Start Location)</option>
                 <option value="date">Soonest Dates</option>
                 <option value="fardate">Latest Dates</option>
+                <option value="price">Price(Low to High)</option>
               </select>
+
       </form>
       <!-- <button onclick="appendRatings();"> See Ratings </button> -->
       <br/>
@@ -160,10 +168,23 @@
           <th>Capacity</th>
         </tr>
       </table>
-      <h3> My Current Rides: </h3>
+      <h3> My Current Rides (as a Rider): </h3>
       <table style="width:100%" id="myrides">
         <tr>
           <th>Driver Info</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Distance</th>
+          <th>Ride Date</th>
+          <th>Price($)</th>
+          <th>Payment Method</th>
+          <th>Current # of Riders</th>
+          <th>Capacity</th>
+        </tr>
+      </table>
+      <h3> Rides I'm Driving: </h3>
+      <table style="width:100%" id="driverrides">
+        <tr>
           <th>From</th>
           <th>To</th>
           <th>Distance</th>

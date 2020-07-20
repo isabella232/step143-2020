@@ -1,14 +1,25 @@
-/* html, body, #content {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    } */
-
 #content {
   margin-left: auto;
   margin-right: auto;
   width: 960px;
 }
+
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+  float: left;
+  padding: 10px;
+}
+
+.guestButton{
+    background-color: blue;
+}
+
 .slidecontainer {
   width: 100%; /* Width of the outside container */
 }
@@ -51,15 +62,6 @@
 body {
     /* margin: 0; */
     font-family: Verdana, Tahoma, sans-serif;
-}
-
-
-#map {
-    float: right;
-    border: thin solid black;
-    /* margin-right: 5%; */
-  	height: 300px;
-    width: 300px;
 }
 
 #geolocation {
@@ -202,4 +204,19 @@ button:hover {
 
 #endAddress {
     margin-bottom: -10%;
+}
+
+#closestartlat, #closestartlng {
+    visibility: hidden;
+    position: fixed;
+    margin-bottom: -15%;
+}
+
+#sortByAddress {
+    display: flex;
+}
+
+#sortRidesBox {
+    width: 80%;
+    margin-left: 1%;
 }
