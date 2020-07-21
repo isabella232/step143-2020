@@ -35,7 +35,8 @@ public class LoginStatusServlet extends HttpServlet {
       String urlToRedirectToAfterUserLogsIn = "/";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
-      response.getWriter().println("</br> <p>Login using <a href=\"" + loginUrl + "\">Google</a>.</p>");
+      response.getWriter().println(" <a href=\"" + loginUrl + "\"> <button> Login Using Google </button> </a>");
+
     }
   }
 }

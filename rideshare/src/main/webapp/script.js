@@ -440,8 +440,15 @@ function loadUser(){
       document.getElementById("LoginUsingGoogle").innerHTML = "<i>" + txt + "</i>";
     } else {
       loginForm.style.display = "none";
+      rideshare.style.display = "block";
       document.getElementById("logout").innerHTML = "<i>" + txt + "</i>";
     }});
+}
+function guestMode() {
+    var loginForm = document.getElementById("loginForm");    
+    var rideshare = document.getElementById("rideshareApp");
+    loginForm.style.display = "none";
+    rideshare.style.display = "block";
 }
 
 function loadProfile(){
@@ -451,26 +458,9 @@ function loadProfile(){
         console.log(txt)
         loginElement.innerHTML = txt;
         document.getElementById("profile").innerHTML = "<i>" + txt + "</i>";
-    })
-    .then((imageUploadUrl) => {
-        const imageUpload = document.getElementById('test');
-        console.log(imageUploadUrl)
-        imageUpload.action = imageUploadUrl;
-        document.getElementById("test").innerHTML = "<i>" + imageUploadUrl + "</i>";
-
-      });
+    });
 }
 
-// function fetchBlobstoreUrlAndShowForm() {
-//   fetch('/blobstore-upload-url').then((response) => {
-//         return response.text();
-//       })
-//       .then((imageUploadUrl) => {
-//         const messageForm = document.getElementById('my-form');
-//         messageForm.action = imageUploadUrl;
-//         messageForm.classList.remove('hidden');
-//       });
-// }
 //Create Route from Start to Destination
 var start = {}
 //Get location

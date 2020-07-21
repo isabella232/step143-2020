@@ -13,16 +13,16 @@
     </head>
  
     <body onload = "loadEntries(); loadUser();">
+        
         <div class="loginForm">  
-            <form id="loginForm" class="loginForm-content container">
-                <h2 text-align="center">Welcome to Rideshare</h2>
+            <div id="loginForm" class="loginForm-content container">
+                <h1 style="text-align:center;">Welcome to Rideshare</h1>
     
                 <div id="LoginUsingGoogle"></div>
+                <a href="/GuestPage.html"><button class="guestButton" id="guestLoginPage"> Guest Mode </button></a>
  
-                <div class="container" style="background-color:#grey">
-          
-                </div>
-            </form>
+                <div class="container" style="background-color:#grey"></div>
+            </div>
         </div>
 
         <div id= "rideshareApp">    
@@ -54,8 +54,8 @@
                   </li>
                 </ol>
                 
-                <a href="/editAccount.html "> <button>Edit Account Information</button> </a>
-                <a href="/profilePage.html"><button> View Profile </button></a>
+                <a href="/editAccount.html"> <button id="editAccountButton">Edit Account Information</button> </a>
+                <a href="/profilePage.html"><button id="viewProfileButton"> View Profile </button></a>
 
  
                 <div id="rideHeading">

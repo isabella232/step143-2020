@@ -3,6 +3,23 @@
   margin-right: auto;
   width: 960px;
 }
+
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+  float: left;
+  padding: 10px;
+}
+
+.guestButton{
+    background-color: blue;
+}
+
 .slidecontainer {
   width: 100%; /* Width of the outside container */
 }
@@ -129,6 +146,13 @@ button:hover {
   background-color: #f44336;
 }
 
+#rideshareApp{
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 960px;
+
+}
 /* The login form (display) */
 .loginForm {
   display: block; /* shown by default */
