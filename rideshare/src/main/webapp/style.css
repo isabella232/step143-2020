@@ -161,14 +161,23 @@ button:hover {
 }
 
 /*LatLng boxes */
-#topInfo {
-    display: flex;
-    justify-content: space-evenly;
+#info {
+    visibility: hidden;
+    position: fixed;
+    margin-bottom: -20%;
 }
 
-#bottomInfo {
-    display: flex;
-    justify-content: space-evenly;
+#rideInfoTop {
+    margin-top: -15%;
+    display: inline-block;
+    width: 100%;
+    margin-left: 20%;
+}
+
+#rideInfoBottom {
+    display: inline-block;
+    width: 100%;
+    margin-left: 16%;
 }
 
 .taSize {
@@ -208,4 +217,8 @@ button:hover {
 #rideHeading {
     display: flex;
     justify-content: space-around;
+}
+
+#getButton {
+    margin-bottom: -5%;
 }
