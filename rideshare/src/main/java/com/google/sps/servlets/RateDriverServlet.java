@@ -34,6 +34,27 @@ import java.util.*;
 /** Servlet responsible for deleting tasks. */
 @WebServlet("/ratedriver")
 public class RateDriverServlet extends HttpServlet {
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String driverId = request.getParameter("driverId").trim();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    UserService userService = UserServiceFactory.getUserService();
+    String currentUserId = userService.getCurrentUser().getUserId();
+
+    try {
+      Key profileEntityKey = KeyFactory.createKey("Profile", driverId);
+      Entity profileEntity = datastore.get(profileEntityKey);
+      
+      ArrayList<String> usersRated = (ArrayList<String>) profileEntity.getProperty("usersRated");
+
+      if (usersRated.contains(currentUserId)) {
+        response.getWriter().println("You have already rated this user!");
+      }
+   
+    } catch (EntityNotFoundException e) {
+      System.out.println("ERROR");
+    } 
+  }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
