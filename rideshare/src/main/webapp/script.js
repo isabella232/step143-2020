@@ -444,6 +444,8 @@ function loadUser(){
       loginForm.style.display = "block";
       rideshare.style.display = "none";
       document.getElementById("LoginUsingGoogle").innerHTML = "<i>" + txt + "</i>";
+    } else if (txt.includes("NONEXISTENTERROR")) {
+      location.assign("/editAccount.html");
     } else {
       loginForm.style.display = "none";
       document.getElementById("logout").innerHTML = "<i>" + txt + "</i>";

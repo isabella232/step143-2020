@@ -8,6 +8,9 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,12 +28,21 @@ public class LoginStatusServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       String userEmail = userService.getCurrentUser().getEmail();
       String urlToRedirectToAfterUserLogsOut = "/";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
-      response.getWriter().println("<p>Hello " + userEmail + "!</p>");
-      response.getWriter().println(" <a href=\"" + logoutUrl + "\"> <button> Logout </button> </a> ");
+      try {
+        String userId = userService.getCurrentUser().getUserId();
+        Key profileEntityKey = KeyFactory.createKey("Profile", userId);
+        Entity profileEntity = datastore.get(profileEntityKey);
+
+        response.getWriter().println("<p>Hello " + userEmail + "!</p>");
+        response.getWriter().println(" <a href=\"" + logoutUrl + "\"> <button> Logout </button> </a> ");
+      } catch (EntityNotFoundException e) {
+        response.getWriter().println("NONEXISTENTERROR");
+      } 
     } else {
       String urlToRedirectToAfterUserLogsIn = "/";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);

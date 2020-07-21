@@ -239,7 +239,7 @@ public class DataServlet extends HttpServlet {
           allRides.add(ride);
        }
        } catch (EntityNotFoundException e) {
-      throw new Error("Entity not found updating myRides");
+      System.out.println("Entity not found updating myRides");
       }
     } else {
       try{
@@ -274,7 +274,7 @@ public class DataServlet extends HttpServlet {
           allRides.add(ride);
        }
        } catch (EntityNotFoundException e) {
-      throw new Error("Entity not found updating driverrides");
+        System.out.println("Entity not found updating driverrides");
       }
     }
       
