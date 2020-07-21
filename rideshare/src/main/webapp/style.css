@@ -152,6 +152,7 @@ button:hover {
 #useGPS {
     width: 25%;
     display: inline-block;
+    margin-top: 5%;
 }
 
 #startAddress {
@@ -195,4 +196,16 @@ button:hover {
 #sortRidesBox {
     width: 80%;
     margin-left: 1%;
+}
+
+#directions {
+    float: right;
+    width: 45%;
+    height: 500px;
+    overflow: scroll;
+}
+
+#rideHeading {
+    display: flex;
+    justify-content: space-around;
 }

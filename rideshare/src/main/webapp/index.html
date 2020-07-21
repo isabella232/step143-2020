@@ -58,9 +58,13 @@
                 <a href="/profilePage.html"><button> View Profile </button></a>
 
  
-                <h3>Post a ride below:</h3>
+                <div id="rideHeading">
+                    <h3>Post a ride below:</h3>
+                    <h3>Directions:</h3>
+                </div>
                 <br/> <!-- Functional Search Boxes -->
-                <div id="addRoute"></div>
+                <div id="addRoute" style="margin-left: 0%; float: left;"></div>
+                <div id="directions"></div>
                 <br/>
                 <!-- <button id="useGPS" onclick="getLocationGPS();">Use GPS</button> -->
                 <!-- <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
@@ -70,12 +74,12 @@
                 </form>   
  
                 <form id="addride" action="/data" method="POST">
-                <button type=button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
-                <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
-                <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address">
-                <br/><br/>
-                <button id="getButton" type="button" form="geolocation">Get Route</button>
-                <br/><br/>
+                    <button type=button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
+                    <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
+                    <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address">
+                    <br/><br/>
+                    <button id="getButton" type="button" form="geolocation">Get Route</button>
+                    <br/><br/>
                     <div id="topInfo">
                         <p>Start Lat: </p><textarea id="lat" name="lat" class="taSize"></textarea>
                         <p>End Lat: </p><textarea id="endlat" name="endlat" class="taSize"></textarea>
