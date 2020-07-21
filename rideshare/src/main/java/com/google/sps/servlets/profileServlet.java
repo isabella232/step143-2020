@@ -75,6 +75,8 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
         Long capacity = (Long) profileEntity.getProperty("capacity");
         String uploadUrl = (String) profileEntity.getProperty("uploadUrl");
 
+
+
         response.setContentType("text/html;");
         if (profileEntity.getProperty("name").equals(null)) {
             response.getWriter().println("<h6>If nothing is visible, try updating your " + "<a href=\"" + "/editAccount.html" + "\"> <p> information </p> </a><h6>");
@@ -88,9 +90,28 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
                 }
             response.getWriter().println("<p>ProfileId #"+ profileId +"</p>");
             response.getWriter().println("<p>" + userEmail + "!</p>");
-            response.getWriter().println("<p>welcome to your profile page "+ name +".</p>");
-            response.getWriter().println("<p>your current car capacity is " + capacity + "!</p>");
+            response.getWriter().println("<p>Welcome to your profile page "+ name +".</p>");
+            response.getWriter().println("<p>Your current car capacity is " + capacity + "!</p>");
             response.getWriter().println("<p>" + uploadUrl + "</p>");
+
+            response.getWriter().println("<h3>" + "Reviews for driver:" + "</h3>");
+
+            ArrayList<String> totalreviews = (ArrayList<String>) profileEntity.getProperty("reviews");
+            ArrayList<String> totalnames = (ArrayList<String>) profileEntity.getProperty("reviewnames");
+
+            for(int i = 1; i < totalreviews.size(); i++) {
+              String temp = totalreviews.get(i);
+              String identifier = temp.substring(0, 5);
+              String reviewername;
+              if (identifier.equals("4NON")) {
+                reviewername = "Anonymous";
+                temp = temp.substring(4);
+              } else {
+                reviewername = totalnames.get(i);
+                temp = temp.substring(4);
+              }
+              response.getWriter().println("<br/><p>" + temp + "<br/>" + reviewername + "</h3>");
+            }
 
         }
     }catch (EntityNotFoundException e) {} 

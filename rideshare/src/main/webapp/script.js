@@ -427,7 +427,9 @@ function rateDriver() {
   const params = new URLSearchParams();
   params.append('driverId', document.getElementById("profileId").innerHTML);
   params.append('rating', document.getElementById("ratingtext").value);
-  params.append('review', document.getElementById("review").value)
+  params.append('review', document.getElementById("review").value);
+  console.log(document.getElementById("displayname").value);
+  params.append('displayname', document.getElementById("displayname").value);
   fetch('/ratedriver', {method: 'POST', body: params});
   location.reload();
 
