@@ -93,11 +93,14 @@ function checkExists() {
   const sort = document.getElementById('sort');
   const startlat = document.getElementById('closestartlat');
   const startlng = document.getElementById('closestartlng');
+  const closeendlat = document.getElementById('closeendlat');
+  const closeendlng = document.getElementById('closeendlng');
   const maxdistance = document.getElementById('maxdistance');
+  const maxdistanceend = document.getElementById('maxdistanceend');
   document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
   var hold = [];
-  fetch('/data?type=table&sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value).then(response => response.json()).then((entries) => {
+  fetch('/data?type=table&sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value + "&maxdistanceend=" + maxdistanceend.value + "&closeendlat=" + closeendlat.value + "&closeendlng=" + closeendlng.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list');
     entries.forEach((entry) => {
      //var temp = createEntryElement(entry);
@@ -399,6 +402,8 @@ function revealRate(entry) {
   document.getElementById("ratingbox").innerHTML = 
   "<h3> Move slider accordingly (farthest left = 1, farthest right = 5)</h3>" +
   "<div class=\"slidecontainer\"><input type=\"range\" min=\"1\" max=\"5\" value=\"3\" class=\"slider\" id=\"ratingtext\"></div>";
+  document.getElementById("reviewbox").innerHTML = "<h4>Leave a review (optional) </h4>" + "<textarea id=\"review\" width=\"80%\" height=\"200px\"></textarea>" + "<br/" + 
+  "<label><input id=\"displayname\" name=\"displayname\" type=\"checkbox\" class=\"filled-in\" checked=\"checked\" />" + "<span>Display name next to review</span>" + "</label>";
 
 // <input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\">";
   document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
@@ -422,6 +427,7 @@ function rateDriver() {
   const params = new URLSearchParams();
   params.append('driverId', document.getElementById("profileId").innerHTML);
   params.append('rating', document.getElementById("ratingtext").value);
+  params.append('review', document.getElementById("review").value)
   fetch('/ratedriver', {method: 'POST', body: params});
   location.reload();
 
@@ -438,6 +444,8 @@ function loadUser(){
       loginForm.style.display = "block";
       rideshare.style.display = "none";
       document.getElementById("LoginUsingGoogle").innerHTML = "<i>" + txt + "</i>";
+    } else if (txt.includes("NONEXISTENTERROR")) {
+      location.assign("/editAccount.html");
     } else {
       loginForm.style.display = "none";
       rideshare.style.display = "block";
@@ -610,6 +618,7 @@ function autoComplete() {
     startSearchBox = new google.maps.places.SearchBox(document.getElementById("startAddress"));
     endSearchBox = new google.maps.places.SearchBox(document.getElementById("endAddress"));
     sortRidesSearchBox = new google.maps.places.SearchBox(document.getElementById("sortRidesBox"));
+    sortRidesEndSearchBox = new google.maps.places.SearchBox(document.getElementById("sortRidesEndBox"));
 
     // Bias the SearchBox results towards current map's viewport.
     map.addListener("bounds_changed", function() {
@@ -633,6 +642,18 @@ function autoComplete() {
             if (status === "OK") {
                 document.getElementById("closestartlat").value = results[0].geometry.location.lat();
                 document.getElementById("closestartlng").value = results[0].geometry.location.lng();
+            }
+        })
+    })
+
+    sortRidesEndSearchBox.addListener("places_changed", function() {
+        geocoder.geocode({
+            'address': document.getElementById("sortRidesEndBox").value
+        }, 
+        function(results, status) {
+            if (status === "OK") {
+                document.getElementById("closeendlat").value = results[0].geometry.location.lat();
+                document.getElementById("closeendlng").value = results[0].geometry.location.lng();
             }
         })
     })

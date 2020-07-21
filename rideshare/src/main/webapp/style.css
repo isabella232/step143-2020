@@ -216,17 +216,17 @@ button:hover {
     margin-bottom: -10%;
 }
 
-#closestartlat, #closestartlng {
+#closestartlat, #closestartlng, #closeendlat, #closeendlng{
     visibility: hidden;
     position: fixed;
     margin-bottom: -15%;
 }
 
-#sortByAddress {
+#sortByAddress, #sortByEndAddress{
     display: flex;
 }
 
-#sortRidesBox {
+#sortRidesBox, #sortRidesEndBox {
     width: 80%;
     margin-left: 1%;
 }
