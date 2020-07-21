@@ -58,63 +58,93 @@ public class Profile {
   UserService userService = UserServiceFactory.getUserService();
   BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
-
+@Override
 public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     String userEmail = userService.getCurrentUser().getEmail();
     String profileId = userService.getCurrentUser().getUserId();
     // String uploadUrl = blobstoreService.createUploadUrl("/my-form-handler");
+    if ((request.getParameter("seereviews")).equals("1")) {
 
-    
-    try{
-        response.setContentType("text/html;");
-
-        Key profileKey = KeyFactory.createKey("Profile", profileId);
+      try {
+        System.out.println((String) request.getParameter("driverId"));
+        Key profileKey = KeyFactory.createKey("Profile", (String) request.getParameter("driverId"));
         Entity profileEntity = datastore.get(profileKey);
-        String name = (String) profileEntity.getProperty("name");
-        Long capacity = (Long) profileEntity.getProperty("capacity");
-        String uploadUrl = (String) profileEntity.getProperty("uploadUrl");
-
-
-
         response.setContentType("text/html;");
-        if (profileEntity.getProperty("name").equals(null)) {
-            response.getWriter().println("<h6>If nothing is visible, try updating your " + "<a href=\"" + "/editAccount.html" + "\"> <p> information </p> </a><h6>");
-        } else {
-            response.getWriter().println("<h1>" + name + "</h1> </hr>");
-            
-            if (profileEntity.getProperty("uploadUrl").equals(null)) {
-                response.getWriter().println("<img src='" + "https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png" + "' alt='image' class='rounded' style='width:250px' /> </br>");
-                } else {
-                    response.getWriter().println("<img src='" + uploadUrl + "' alt='image' class='rounded' style='width:250px' /> </br>");
-                }
-            response.getWriter().println("<p>ProfileId #"+ profileId +"</p>");
-            response.getWriter().println("<p>" + userEmail + "!</p>");
-            response.getWriter().println("<p>Welcome to your profile page "+ name +".</p>");
-            response.getWriter().println("<p>Your current car capacity is " + capacity + "!</p>");
-            response.getWriter().println("<p>" + uploadUrl + "</p>");
+        response.getWriter().println("<h2>" + "Reviews for <i>" + profileEntity.getProperty("name") + "</i>:" + "</h2>");
+        ArrayList<String> totalreviews = (ArrayList<String>) profileEntity.getProperty("reviews");
+        ArrayList<String> totalnames = (ArrayList<String>) profileEntity.getProperty("reviewnames");
 
-            response.getWriter().println("<h3>" + "Reviews for driver:" + "</h3>");
+        System.out.println(totalnames);
 
-            ArrayList<String> totalreviews = (ArrayList<String>) profileEntity.getProperty("reviews");
-            ArrayList<String> totalnames = (ArrayList<String>) profileEntity.getProperty("reviewnames");
-
-            for(int i = 1; i < totalreviews.size(); i++) {
-              String temp = totalreviews.get(i);
-              String identifier = temp.substring(0, 5);
-              String reviewername;
-              if (identifier.equals("4NON")) {
-                reviewername = "Anonymous";
-                temp = temp.substring(4);
-              } else {
-                reviewername = totalnames.get(i);
-                temp = temp.substring(4);
-              }
-              response.getWriter().println("<br/><p>" + temp + "<br/>" + reviewername + "</h3>");
-            }
-
+        for(int i = 1; i < totalreviews.size(); i++) {
+          String temp = totalreviews.get(i);
+          String identifier = temp.substring(0, 4);
+          String reviewername;
+          if (identifier.equals("4NON")) {
+            reviewername = "Anonymous";
+            temp = temp.substring(4);
+          } else {
+            reviewername = totalnames.get(i);
+            temp = temp.substring(4);
+          }
+          response.getWriter().println("<p>" + "<b>Review " + i + ":</b>" + "<br/>" + "\"" + temp + "\"" + "<br/>" + "--" + reviewername + "</p>");
         }
-    }catch (EntityNotFoundException e) {} 
+        if (totalreviews.size() == 1) {
+          response.getWriter().println("<p> There are no reviews for this user yet</p>");
+        }
+      } catch (EntityNotFoundException e) {}
+    } else {
+        try{
+          response.setContentType("text/html;");
+
+          Key profileKey = KeyFactory.createKey("Profile", profileId);
+          Entity profileEntity = datastore.get(profileKey);
+          String name = (String) profileEntity.getProperty("name");
+          Long capacity = (Long) profileEntity.getProperty("capacity");
+          String uploadUrl = (String) profileEntity.getProperty("uploadUrl");
+
+
+
+          response.setContentType("text/html;");
+          if (profileEntity.getProperty("name").equals(null)) {
+              response.getWriter().println("<h6>If nothing is visible, try updating your " + "<a href=\"" + "/editAccount.html" + "\"> <p> information </p> </a><h6>");
+          } else {
+              response.getWriter().println("<h1>" + name + "</h1> </hr>");
+              
+              if (profileEntity.getProperty("uploadUrl").equals(null)) {
+                  response.getWriter().println("<img src='" + "https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png" + "' alt='image' class='rounded' style='width:250px' /> </br>");
+                  } else {
+                      response.getWriter().println("<img src='" + uploadUrl + "' alt='image' class='rounded' style='width:250px' /> </br>");
+                  }
+              response.getWriter().println("<p>ProfileId #"+ profileId +"</p>");
+              response.getWriter().println("<p>" + userEmail + "!</p>");
+              response.getWriter().println("<p>Welcome to your profile page "+ name +".</p>");
+              response.getWriter().println("<p>Your current car capacity is " + capacity + "!</p>");
+              response.getWriter().println("<p>" + uploadUrl + "</p>");
+
+              response.getWriter().println("<h3>" + "Reviews for driver:" + "</h3>");
+
+              ArrayList<String> totalreviews = (ArrayList<String>) profileEntity.getProperty("reviews");
+              ArrayList<String> totalnames = (ArrayList<String>) profileEntity.getProperty("reviewnames");
+
+              for(int i = 1; i < totalreviews.size(); i++) {
+                String temp = totalreviews.get(i);
+                String identifier = temp.substring(0, 5);
+                String reviewername;
+                if (identifier.equals("4NON")) {
+                  reviewername = "Anonymous";
+                  temp = temp.substring(4);
+                } else {
+                  reviewername = totalnames.get(i);
+                  temp = temp.substring(4);
+                }
+                response.getWriter().println("<br/><p>" + temp + "<br/>" + reviewername + "</h3>");
+              }
+
+          }
+      } catch (EntityNotFoundException e) {} 
+    }
   }
 
 }

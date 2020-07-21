@@ -84,7 +84,8 @@ public class RateDriverServlet extends HttpServlet {
 
         // if there is no review, don't add it
         if (!request.getParameter("review").equals(null) && !request.getParameter("review").equals("")) {
-          if (request.getParameter("displayname").equals(null) || request.getParameter("displayname").equals("off")) {
+          System.out.println(request.getParameter("displayname"));
+          if (request.getParameter("displayname").equals("false")) {
             reviews.add("4NON" + request.getParameter("review"));
             reviewnames.add("?");
           } else {
