@@ -152,6 +152,7 @@ button:hover {
 #useGPS {
     width: 25%;
     display: inline-block;
+    margin-top: 5%;
 }
 
 #startAddress {
@@ -160,14 +161,23 @@ button:hover {
 }
 
 /*LatLng boxes */
-#topInfo {
-    display: flex;
-    justify-content: space-evenly;
+#info {
+    visibility: hidden;
+    position: fixed;
+    margin-bottom: -20%;
 }
 
-#bottomInfo {
-    display: flex;
-    justify-content: space-evenly;
+#rideInfoTop {
+    margin-top: -15%;
+    display: inline-block;
+    width: 100%;
+    margin-left: 20%;
+}
+
+#rideInfoBottom {
+    display: inline-block;
+    width: 100%;
+    margin-left: 16%;
 }
 
 .taSize {
@@ -195,4 +205,20 @@ button:hover {
 #sortRidesBox {
     width: 80%;
     margin-left: 1%;
+}
+
+#directions {
+    float: right;
+    width: 45%;
+    height: 500px;
+    overflow: scroll;
+}
+
+#rideHeading {
+    display: flex;
+    justify-content: space-around;
+}
+
+#getButton {
+    margin-bottom: -5%;
 }

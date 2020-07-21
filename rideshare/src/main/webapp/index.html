@@ -58,9 +58,13 @@
                 <a href="/profilePage.html"><button> View Profile </button></a>
 
  
-                <h3>Post a ride below:</h3>
+                <div id="rideHeading">
+                    <h3>Post a ride below:</h3>
+                    <h3>Directions:</h3>
+                </div>
                 <br/> <!-- Functional Search Boxes -->
-                <div id="addRoute"></div>
+                <div id="addRoute" style="margin-left: 0%; float: left;"></div>
+                <div id="directions"></div>
                 <br/>
                 <!-- <button id="useGPS" onclick="getLocationGPS();">Use GPS</button> -->
                 <!-- <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
@@ -70,49 +74,42 @@
                 </form>   
  
                 <form id="addride" action="/data" method="POST">
-                <button type=button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
-                <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
-                <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address">
-                <br/><br/>
-                <button id="getButton" type="button" form="geolocation">Get Route</button>
-                <br/><br/>
-                    <div id="topInfo">
+                    <button type=button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
+                    <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
+                    <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address">
+                    <br/><br/>
+                    <button id="getButton" type="button" form="geolocation">Get Route</button>
+                    <br/><br/>
+                    <div id="info">
                         <p>Start Lat: </p><textarea id="lat" name="lat" class="taSize"></textarea>
                         <p>End Lat: </p><textarea id="endlat" name="endlat" class="taSize"></textarea>
                         <p>Distance: </p><textarea name="distance" id="distance" class="taSize"></textarea>
-                    </div>
 
-                    <div id="bottomInfo">
                         <p>Start Long: </p><textarea id="lng" name="lng" class="taSize"></textarea>
                         <p>End Long: </p><textarea id="endlng" name="endlng" class="taSize"></textarea>
                         <p>Estimated Time: </p><textarea name="eta" id="eta" class="taSize"></textarea>
                     </div>
                     <br/><br/>
 
-                    <label for="ridedate">Date</label>
-                    <input required type="date" id="ridedate" name="ridedate">
+                    <div id="rideInfoTop">
+                        <h4 style="float: left;">Date: <input required type="date" id="ridedate" name="ridedate"></h4>
 
-                    <br/><br/>
+                        <h4 style="margin-left: 30%;">Select a time: <input required type="time" id="ridetime" name="ridetime"></h4>
+                    </div>
 
-                    <label for="appt">Select a time:</label>
-                    <input required type="time" id="ridetime" name="ridetime">
+                    <div id="rideInfoBottom">
+                        <h4 style="float: left; margin-right: -9.2%;">Price per seat ($): <input required type="number" id="price" name="price" min="0" style="width:20%"></h4>
 
-                    <br/><br/>
-
-                    <label for "price"> Select a price per seat ($): </label>
-                    <input required type="number" id="price" name="price" min="0">
-
-                    <br/><br/>
-
-                    <label>Payment method:</label>
-                    <select id="paymentMethod" name="paymentMethod" required style="width:20%">
-                      <option value="" disabled selected>Choose</option>
-                      <option value="Cash">Cash</option>
-                      <option value="Paypal">Paypal</option>
-                      <option value="Venmo">Venmo</option>
-                      <option value="Check">Check</option>
-                    </select>
-
+                        <h4 style="">Payment method:
+                            <select id="paymentMethod" name="paymentMethod" required style="width:20%">
+                                <option value="" disabled selected>Choose</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Paypal">Paypal</option>
+                                <option value="Venmo">Venmo</option>
+                                <option value="Check">Check</option>
+                            </select>
+                        </h4>
+                    </div>
                     <button class="button" type="submit"/> Post Ride </button>       
                 </form>
                 <br/><br/>
