@@ -139,6 +139,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
                   reviewername = totalnames.get(i);
                   temp = temp.substring(4);
                 }
+
                 response.getWriter().println("<br/><p>" + temp + "<br/>" + reviewername + "</h3>");
               }
 

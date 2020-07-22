@@ -3,6 +3,23 @@
   margin-right: auto;
   width: 960px;
 }
+
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+  float: left;
+  padding: 10px;
+}
+
+.guestButton{
+    background-color: blue;
+}
+
 .slidecontainer {
   width: 100%; /* Width of the outside container */
 }
@@ -129,6 +146,13 @@ button:hover {
   background-color: #f44336;
 }
 
+#rideshareApp{
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 960px;
+
+}
 /* The login form (display) */
 .loginForm {
   display: block; /* shown by default */
@@ -152,6 +176,7 @@ button:hover {
 #useGPS {
     width: 25%;
     display: inline-block;
+    margin-top: 5%;
 }
 
 #startAddress {
@@ -160,14 +185,23 @@ button:hover {
 }
 
 /*LatLng boxes */
-#topInfo {
-    display: flex;
-    justify-content: space-evenly;
+#info {
+    visibility: hidden;
+    position: fixed;
+    margin-bottom: -20%;
 }
 
-#bottomInfo {
-    display: flex;
-    justify-content: space-evenly;
+#rideInfoTop {
+    margin-top: -15%;
+    display: inline-block;
+    width: 100%;
+    margin-left: 20%;
+}
+
+#rideInfoBottom {
+    display: inline-block;
+    width: 100%;
+    margin-left: 16%;
 }
 
 .taSize {
@@ -195,4 +229,20 @@ button:hover {
 #sortRidesBox, #sortRidesEndBox {
     width: 80%;
     margin-left: 1%;
+}
+
+#directions {
+    float: right;
+    width: 45%;
+    height: 500px;
+    overflow: scroll;
+}
+
+#rideHeading {
+    display: flex;
+    justify-content: space-around;
+}
+
+#getButton {
+    margin-bottom: -5%;
 }
