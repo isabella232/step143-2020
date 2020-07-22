@@ -494,6 +494,7 @@ function initMap(){
     })
     geocoder = new google.maps.Geocoder();
     directionsRenderer.setMap(map);
+    directionsRenderer.setPanel(document.getElementById("directions"));
         
     document.getElementById("getButton").addEventListener("click", function() {
         removeMarkers();
@@ -716,54 +717,4 @@ function getDistance() {
         }
 }
 
-//Track live location
-const createMap = ({ lat, lng }) => {
-  return new google.maps.Map(document.getElementById('testMap'), {
-    center: { lat, lng },
-    zoom: 15
-  })
-}
-
-const createMarker = ({ map, position }) => {
-  return new google.maps.Marker({ map, position });
-}
-
-const trackLocation = ({ onSuccess, onError = () => { } }) => {
-  if (navigator.geolocation === false) {
-    return alert('Geolocation is not supported for this Browser/OS.');
-  }
-
-  return navigator.geolocation.watchPosition(onSuccess, onError, {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-  })
-}
-
-const getPositionErrorMessage = errMessage => {
-  switch (errMessage) {
-    case 1:
-      return 'Permission denied.';
-    case 2:
-      return 'Position unavailable.';
-    case 3:
-      return 'Timeout reached.';
-    default:
-      return null;
-  }
-}
-
-function trackingMap() {
-  const initialPosition = { lat: 59.325, lng: 18.069 };
-  const trackmap = createMap(initialPosition);
-  const trackmarker = createMarker({ trackmap, position: initialPosition });
-
-  trackLocation({
-    onSuccess: ({ coords: { latitude: lat, longitude: lng } }) => {
-      trackmarker.setPosition({ lat, lng });
-      trackmap.panTo({ lat, lng });
-    },
-    onError: err =>
-      alert(getPositionErrorMessage(err.errMessage))
-  })
-}
+//Display Directions
