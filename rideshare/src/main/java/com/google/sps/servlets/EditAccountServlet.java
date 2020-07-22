@@ -48,8 +48,9 @@ public class EditAccountServlet extends HttpServlet {
     public ArrayList<Long> myRides;
     public String uploadUrl;
     public ArrayList<String> reviews;
+    public ArrayList<String> reviewnames;
     
-    public Profile(String name, long capacity, String driverEmail, String driverId, double rating, long numratings, ArrayList<String> usersRated, ArrayList<Long> myRides, String uploadUrl, ArrayList<String> reviews) {
+    public Profile(String name, long capacity, String driverEmail, String driverId, double rating, long numratings, ArrayList<String> usersRated, ArrayList<Long> myRides, String uploadUrl, ArrayList<String> reviews, ArrayList<String> reviewnames) {
       this.name = name;
       this.capacity = capacity;
       this.driverId = driverId;
@@ -60,6 +61,7 @@ public class EditAccountServlet extends HttpServlet {
       this.myRides = myRides;
       this.uploadUrl = uploadUrl;
       this.reviews = reviews;
+      this.reviewnames = reviewnames;
     }
 
     public String getName() {
@@ -106,8 +108,9 @@ public class EditAccountServlet extends HttpServlet {
         ArrayList<Long> myRides = (ArrayList<Long>) profileEntity.getProperty("myRides");
         String uploadUrl = (String) profileEntity.getProperty("uploadUrl");
         ArrayList<String> reviews = (ArrayList<String>) profileEntity.getProperty("reviews");
+        ArrayList<String> reviewnames = (ArrayList<String>) profileEntity.getProperty("reviewnames");
 
-        Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId, rating, numratings, usersRated, myRides, uploadUrl, reviews);
+        Profile temp = new Profile((String) profileEntity.getProperty("name"), (long) profileEntity.getProperty("capacity"), driverEmail, profileId, rating, numratings, usersRated, myRides, uploadUrl, reviews, reviewnames);
         profileDetails.add(temp);
         Gson gson = new Gson();
         String json = gson.toJson(profileDetails);
@@ -153,6 +156,8 @@ public class EditAccountServlet extends HttpServlet {
       myRides.add("");
       ArrayList<String> reviews = new ArrayList<String>();
       reviews.add("");
+      ArrayList<String> reviewnames = new ArrayList<String>();
+      reviewnames.add("");
 
       Entity entryEntity = new Entity("Profile", driverId);
       entryEntity.setProperty("name", name);
@@ -165,6 +170,7 @@ public class EditAccountServlet extends HttpServlet {
       entryEntity.setProperty("usersRated", usersRated);
       entryEntity.setProperty("myRides", myRides);
       entryEntity.setProperty("reviews", reviews);
+      entryEntity.setProperty("reviewnames", reviewnames);
       datastore.put(entryEntity);
 
       response.sendRedirect("/index.html");

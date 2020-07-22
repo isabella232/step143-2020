@@ -319,13 +319,33 @@ function createEntryElementNoJoin(entry) {
   return entryElement;
 }
 
+function getReviews(entry) {
+  console.log(typeof entry.driverId);
+  fetch("/profile?seereviews=1&driverId=" + entry.driverId).then(response => response.text())
+    .then((txt) => {
+        document.getElementById("seereviews").innerHTML = txt;
+        window.location = "#seereviews"
+    })
+}
+
 
 function createEntryElement(entry) {
   const entryElement = document.createElement('tr');
   entryElement.className = 'entry collection-item';
 
   const nameElement = document.createElement('td');
-  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")";
+  console.log(typeof entry.driverId);
+
+  var showButtonElement = document.createElement('button');
+  showButtonElement.innerText = 'See Reviews';
+  showButtonElement.style.backgroundColor = "#976bb6";
+  showButtonElement.addEventListener('click', () => {
+    getReviews(entry);
+    window.location = "#seereviews";
+  });
+  // <br/><button height=\"20px\" onclick=\"getReviews(" + "n" + entry.driverId + ")\">See Reviews</button>";
+  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")" + "<br/>";
+
 
   const startElement = document.createElement('td');
   // startElement.id = entry.id + "start";
@@ -381,6 +401,7 @@ function createEntryElement(entry) {
   
   var distanceTimeElement = document.createElement('td');
   distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
+
   
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
@@ -393,20 +414,34 @@ function createEntryElement(entry) {
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(joinRideButtonElement);
   entryElement.appendChild(rateButtonElement);
+  entryElement.appendChild(showButtonElement);
   return entryElement;
 }
 
 function revealRate(entry) {
-  document.getElementById("profilename").innerHTML = "Your rating for: " + 
-  "<i>" + entry.name  + "</i>" + "<p> Driver ID: " + "<span id=\"profileId\">" + entry.driverId + "</span>" + "</p>" + "</i>";
-  document.getElementById("ratingbox").innerHTML = 
-  "<h3> Move slider accordingly (farthest left = 1, farthest right = 5)</h3>" +
-  "<div class=\"slidecontainer\"><input type=\"range\" min=\"1\" max=\"5\" value=\"3\" class=\"slider\" id=\"ratingtext\"></div>";
-  document.getElementById("reviewbox").innerHTML = "<h4>Leave a review (optional) </h4>" + "<textarea id=\"review\" width=\"80%\" height=\"200px\"></textarea>" + "<br/" + 
-  "<label><input id=\"displayname\" name=\"displayname\" type=\"checkbox\" class=\"filled-in\" checked=\"checked\" />" + "<span>Display name next to review</span>" + "</label>";
+  var flag = 0;
+  fetch('/ratedriver?driverId=' + entry.driverId).then(response => response.text())
+    .then((txt) => {
+        const alreadyrated = document.getElementById('alreadyrated');
+        alreadyrated.innerHTML = txt;
+        if (txt.includes("already")) {
+          flag = 1;
+        }
+        if (flag === 0) {
+            document.getElementById("profilename").innerHTML = "Your rating for: " + 
+            "<i>" + entry.name  + "</i>" + "<p> Driver ID: " + "<span id=\"profileId\">" + entry.driverId + "</span>" + "</p>" + "</i>";
+            document.getElementById("ratingbox").innerHTML = 
+            "<h3> Move slider accordingly (farthest left = 1, farthest right = 5)</h3>" +
+            "<div class=\"slidecontainer\"><input type=\"range\" min=\"1\" max=\"5\" value=\"3\" class=\"slider\" id=\"ratingtext\"></div>";
+            document.getElementById("reviewbox").innerHTML = "<h4>Leave a review (optional) </h4>" + "<textarea id=\"review\" width=\"80%\" height=\"200px\"></textarea>" + "<br/" + 
+            "<label><input id=\"displayname\" name=\"displayname\" type=\"checkbox\" class=\"filled-in\" checked=\"checked\" />" + "<span>Display name next to review</span>" + "</label>";
 
-// <input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\">";
-  document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
+          // <input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\">";
+            document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
+            
+        }
+        window.location = "#ratingdiv"
+    });
 }
 
 function joinRide(entry) {
@@ -427,7 +462,8 @@ function rateDriver() {
   const params = new URLSearchParams();
   params.append('driverId', document.getElementById("profileId").innerHTML);
   params.append('rating', document.getElementById("ratingtext").value);
-  params.append('review', document.getElementById("review").value)
+  params.append('review', document.getElementById("review").value);
+  params.append('displayname', document.getElementById("displayname").checked);
   fetch('/ratedriver', {method: 'POST', body: params});
   location.reload();
 
