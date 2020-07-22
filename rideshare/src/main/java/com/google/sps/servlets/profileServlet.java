@@ -64,7 +64,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
     String userEmail = userService.getCurrentUser().getEmail();
     String profileId = userService.getCurrentUser().getUserId();
     // String uploadUrl = blobstoreService.createUploadUrl("/my-form-handler");
-    if ((request.getParameter("seereviews")).equals("1")) {
+    if (!request.getParameter("seereviews").equals(null) && (request.getParameter("seereviews")).equals("1")) {
 
       try {
         System.out.println((String) request.getParameter("driverId"));
