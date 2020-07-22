@@ -184,7 +184,8 @@ function createEntryElementRemove(entry) {
   //           }
   // reverseDisplay(geocoder, start, entry.id + "start");
   // startElement.innerText = entry.start;
-  startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
+  // startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
+  startElement.innerHTML = entry.startAddress
 
   const endElement = document.createElement('td');
   // endElement.id = entry.id + "end";
@@ -194,7 +195,8 @@ function createEntryElementRemove(entry) {
   //           }
   // reverseDisplay(geocoder, end, entry.id + "end");
   // endElement.innerText = entry.end;
-  endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
+  // endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
+  endElement.innerHTML = entry.endAddress
 
   const capacityElement = document.createElement('td');
   capacityElement.innerText = entry.capacity;
@@ -259,7 +261,8 @@ function createEntryElementNoJoin(entry) {
   //           }
   // reverseDisplay(geocoder, start, entry.id + "start");
   // startElement.innerText = entry.start;
-  startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
+  // startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
+  startElement.innerHTML = entry.startAddress
 
   const endElement = document.createElement('td');
   // endElement.id = entry.id + "end";
@@ -269,7 +272,8 @@ function createEntryElementNoJoin(entry) {
   //           }
   // reverseDisplay(geocoder, end, entry.id + "end");
   // endElement.innerText = entry.end;
-  endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
+  // endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
+  endElement.innerHTML = entry.endAddress
 
   const capacityElement = document.createElement('td');
   capacityElement.innerText = entry.capacity;
@@ -356,7 +360,8 @@ function createEntryElement(entry) {
   //           }
   // reverseDisplay(geocoder, start, entry.id + "start");
   // startElement.innerText = entry.start;
-  startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
+  // startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
+  startElement.innerHTML = entry.startAddress
 
   const endElement = document.createElement('td');
   // endElement.id = entry.id + "end";
@@ -366,7 +371,8 @@ function createEntryElement(entry) {
   //           }
   // reverseDisplay(geocoder, end, entry.id + "end");
   // endElement.innerText = entry.end;
-  endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
+  // endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
+  endElement.innerHTML = entry.endAddress
 
   const capacityElement = document.createElement('td');
   capacityElement.innerText = entry.capacity;
@@ -496,7 +502,7 @@ function guestMode() {
 }
 
 function loadProfile(){
-    fetch('/profile').then(response => response.text())
+    fetch('/profile?seereviews=0').then(response => response.text())
     .then((txt) => {
         const loginElement = document.getElementById('profile');
         console.log(txt)
