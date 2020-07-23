@@ -164,25 +164,26 @@ function sortRidesGuest() {
   document.getElementById('entry-list-guest').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
   var hold = [];
-  fetch('/data?type=table&sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value + "&maxdistanceend=" + maxdistanceend.value + "&closeendlat=" + closeendlat.value + "&closeendlng=" + closeendlng.value).then(response => response.json()).then((entries) => {
+  fetch('/data?type=table&sort=' + sort.value).then(response => response.json()).then((entries) => {
     const entryListElement = document.getElementById('entry-list-guest');
     entries.forEach((entry) => {
-     //var temp = createEntryElement(entry);
+      var temp = createEntryElementGuest(entry);
       console.log(entry.name);
-      hold.push(entry);
+      // hold.push(entry);
         // .then(rating =>  {
         // temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
         // entryListElement.appendChild(temp);
+        entryListElement.appendChild(temp);
       });
     console.log(hold);
-    hold.reduce((p, fn) => { 
-      return p.then(() => {
-        return getRating(fn).then(rating =>  {
-          temp = createEntryElementGuest(fn);
-          temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
-          entryListElement.appendChild(temp);
-      })});
-    }, Promise.resolve());
+    // hold.reduce((p, fn) => { 
+    //   return p.then(() => {
+    //     return getRating(fn).then(rating =>  {
+    //       temp = createEntryElementGuest(fn);
+    //       temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+    //       entryListElement.appendChild(temp);
+    //   })});
+    // }, Promise.resolve());
   });
 }
 
@@ -358,6 +359,15 @@ function createEntryElementRemove(entry) {
 
   var paymentMethodElement = document.createElement('td');
   paymentMethodElement.innerHTML = entry.paymentMethod;
+
+  var showRideElement = document.createElement("button");
+  showRideElement.innerText = "Show Route";
+  showRideElement.style.float = "right";
+  showRideElement.style.backgroundColor = "#388E8E";
+  showRideElement.addEventListener('click', () => {
+    showRideRoute(entry.start, entry.end);
+    window.location = "#rideHeading"
+  });
   
   entryElement.appendChild(startElement);
   entryElement.appendChild(endElement);
@@ -440,7 +450,7 @@ function createEntryElementNoJoin(entry) {
   var showRideElement = document.createElement("button");
   showRideElement.innerText = "Show Route";
   showRideElement.style.float = "right";
-  showRideElement.style.backgroundColor = "#c25907";
+  showRideElement.style.backgroundColor = "#388E8E";
   showRideElement.addEventListener('click', () => {
     showRideRoute(entry.start, entry.end);
     window.location = "#rideHeading"
@@ -492,7 +502,7 @@ function createEntryElement(entry) {
   var showRideElement = document.createElement("button");
   showRideElement.innerText = "Show Route";
   showRideElement.style.float = "right";
-  showRideElement.style.backgroundColor = "#c25907";
+  showRideElement.style.backgroundColor = "#388E8E";
   showRideElement.addEventListener('click', () => {
     showRideRoute(entry.start, entry.end);
     window.location = "#rideHeading"
@@ -560,7 +570,7 @@ function createEntryElement(entry) {
   var showRideElement = document.createElement("button");
   showRideElement.innerText = "Show Route";
   showRideElement.style.float = "right";
-  showRideElement.style.backgroundColor = "#c25907";
+  showRideElement.style.backgroundColor = "#388E8E";
   showRideElement.addEventListener('click', () => {
     showRideRoute(entry.start, entry.end);
     window.location = "#rideHeading"
