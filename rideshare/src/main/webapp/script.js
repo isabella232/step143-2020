@@ -242,6 +242,7 @@ function createEntryElementRemove(entry) {
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(removeRideButtonElement);
   entryElement.appendChild(rateButtonElement);
+  entryElement.appendChild(showRideElement);
   return entryElement;
 }
 
@@ -308,6 +309,16 @@ function createEntryElementNoJoin(entry) {
 
   var paymentMethodElement = document.createElement('td');
   paymentMethodElement.innerHTML = entry.paymentMethod;
+
+  var showRideElement = document.createElement("button");
+  showRideElement.innerText = "Show Route";
+  showRideElement.style.float = "right";
+  showRideElement.style.backgroundColor = "#c25907";
+  showRideElement.addEventListener('click', () => {
+    showRideRoute(entry.start, entry.end);
+    window.location = "#rideHeading"
+  });
+  
   
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
@@ -319,6 +330,7 @@ function createEntryElementNoJoin(entry) {
   entryElement.appendChild(currentRidersElement);
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(leaveRideButtonElement);
+  entryElement.appendChild(showRideElement);
   entryElement.appendChild(rateButtonElement);
   return entryElement;
 }
@@ -349,6 +361,16 @@ function createEntryElement(entry) {
   });
   // <br/><button height=\"20px\" onclick=\"getReviews(" + "n" + entry.driverId + ")\">See Reviews</button>";
   nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")" + "<br/>";
+
+  var showRideElement = document.createElement("button");
+  showRideElement.innerText = "Show Route";
+  showRideElement.style.float = "right";
+  showRideElement.style.backgroundColor = "#c25907";
+  showRideElement.addEventListener('click', () => {
+    showRideRoute(entry.start, entry.end);
+    window.location = "#rideHeading"
+  });
+  
 
 
   const startElement = document.createElement('td');
@@ -408,6 +430,14 @@ function createEntryElement(entry) {
   var distanceTimeElement = document.createElement('td');
   distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
 
+  var showRideElement = document.createElement("button");
+  showRideElement.innerText = "Show Route";
+  showRideElement.style.float = "right";
+  showRideElement.style.backgroundColor = "#c25907";
+  showRideElement.addEventListener('click', () => {
+    showRideRoute(entry.start, entry.end);
+    window.location = "#rideHeading"
+  });
   
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
@@ -421,6 +451,7 @@ function createEntryElement(entry) {
   entryElement.appendChild(joinRideButtonElement);
   entryElement.appendChild(rateButtonElement);
   entryElement.appendChild(showButtonElement);
+  entryElement.appendChild(showRideElement);
   return entryElement;
 }
 
