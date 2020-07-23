@@ -511,9 +511,8 @@ function loadProfile(){
     });
 }
 
-//Create Route from Start to Destination
+//Create Map and Routes
 var start = {}
-//Get location
 var map;
 var sortMap;
 var marker;
@@ -756,28 +755,44 @@ function getDistance() {
             destinations: [destination],
             travelMode: 'DRIVING',
             unitSystem: google.maps.UnitSystem.IMPERIAL
-        }, callback)
+        }, callback
+    )
 
-        function callback(response, status) {
-            if (status == 'OK') {
-                var origins = response.originAddresses;
-                var destinations = response.destinationAddresses;
+    function callback(response, status) {
+        if (status == 'OK') {
+            var origins = response.originAddresses;
+            var destinations = response.destinationAddresses;
 
-                var distanceTag = document.getElementById("distance");
-                var etaTag = document.getElementById("eta");
+            var distanceTag = document.getElementById("distance");
+            var etaTag = document.getElementById("eta");
 
-                distanceTag.innerHTML = "";
-                etaTag.innerHTML = "";
+            distanceTag.innerHTML = "";
+            etaTag.innerHTML = "";
 
-                for (var i = 0; i < origins.length; i++) {
-                    var results = response.rows[i].elements;
-                    for (var j = 0; j < results.length; j++) {
-                        distanceTag.innerHTML += results[j].distance.text;
-                        etaTag.innerHTML += results[j].duration.text;
-                    }
+            for (var i = 0; i < origins.length; i++) {
+                var results = response.rows[i].elements;
+                for (var j = 0; j < results.length; j++) {
+                    distanceTag.innerHTML += results[j].distance.text;
+                    etaTag.innerHTML += results[j].duration.text;
                 }
             }
         }
+    }
 }
 
-//Display Directions
+//Show Route for Posted Ride
+function showRideRoute(origin, destination){ //Pass start and end coordinates to this function
+    removeMarkers();
+    directionsService.route(
+        {
+            origin: origin,
+            destination: destination,
+            travelMode: 'DRIVING'
+        },
+        function(response, status) {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(response);
+            }
+        }
+    )
+}
