@@ -86,10 +86,10 @@ public class RateDriverServlet extends HttpServlet {
         if (!request.getParameter("review").equals(null) && !request.getParameter("review").equals("")) {
           System.out.println(request.getParameter("displayname"));
           if (request.getParameter("displayname").equals("false")) {
-            reviews.add("4NON" + request.getParameter("review"));
+            reviews.add("4NON" + request.getParameter("date") + request.getParameter("review"));
             reviewnames.add("?");
           } else {
-            reviews.add("R3AL" + request.getParameter("review"));
+            reviews.add("R3AL" + request.getParameter("date") + request.getParameter("review"));
             reviewnames.add((String) currentUserEntity.getProperty("name"));
           }
         }
