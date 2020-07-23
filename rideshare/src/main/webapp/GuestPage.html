@@ -16,11 +16,11 @@
     <div id= "guestApp">    
         <div id="content">
             <h1>Rideshare App</h1>            
-        <ul>
-            <li><a href="/index.html "> <button class="guestButton" id="exitGuestMode">Exit Guest Mode</button> </a></li>
-        </ul> 
+        
+            <a href="/index.html "> <button class="guestButton" id="exitGuestMode">Exit Guest Mode</button> </a></li>
+       
 
-            <h3>Guest may only view rides, Login to Post and Join rides.</h3>
+            <h3>Guests may only view rides, Login to Post and Join Rides, as well as gain access to several other features!</h3>
 
             <h3> Search for rides below: </h3>
             <form>
@@ -33,13 +33,12 @@
                 </select>
             </form>
 
-            <div id="sortMap"></div>
             <br/>
 
 
       <form>
             <label>Sort:</label>
-              <select id="sort" name="sort" onchange="sortRidesGuest()" required style="width:20%">
+              <select id="sort-guest" name="sort-guest" onchange="sortRidesGuest()" required style="width:20%">
                 <option value="" disabled selected>Choose</option>
                 <option value="alphabetical">By name alphabetical (A-Z)</option>
                 <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>

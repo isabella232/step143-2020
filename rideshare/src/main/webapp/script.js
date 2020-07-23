@@ -21,11 +21,12 @@ function getMessages() {
     entries.forEach((entry) => {
       console.log(entry.name)
       var temp = createEntryElement(entry);
-      getRating(entry).then(rating =>  {
-        console.log(rating);
-        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
-        entryListElement.appendChild(temp);
-      });
+      // getRating(entry).then(rating =>  {
+      //   console.log(rating);
+      //   temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+      //   entryListElement.appendChild(temp);
+      // });
+      entryListElement.appendChild(temp);
     })
   });
 }
@@ -39,11 +40,12 @@ function getMessagesGuest() {
     entries.forEach((entry) => {
       console.log(entry.name)
       var temp = createEntryElementGuest(entry);
-      getRating(entry).then(rating =>  {
-        console.log(rating);
-        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
-        entryListElement.appendChild(temp);
-      });
+      // getRating(entry).then(rating =>  {
+      //   console.log(rating);
+      //   temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+      //   
+      // });
+      entryListElement.appendChild(temp);
     })
   });
 }
@@ -55,11 +57,12 @@ function loadEntriesGuest() {
       
       console.log(entry.name)
       var temp = createEntryElementGuest(entry);
-      getRating(entry).then(rating =>  {
-        console.log(rating);
-        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
-        entryListElement.appendChild(temp);
-      });
+      // getRating(entry).then(rating =>  {
+      //   console.log(rating);
+      //   temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+      //   entryListElement.appendChild(temp);
+      // });
+      entryListElement.appendChild(temp);
     })
   });
 }
@@ -157,7 +160,7 @@ function checkExists() {
 }
 
 function sortRidesGuest() {
-  const sort = document.getElementById('sort');
+  const sort = document.getElementById('sort-guest');
   document.getElementById('entry-list-guest').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
   // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
   var hold = [];
