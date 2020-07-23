@@ -470,6 +470,10 @@ function rateDriver() {
   params.append('rating', document.getElementById("ratingtext").value);
   params.append('review', document.getElementById("review").value);
   params.append('displayname', document.getElementById("displayname").checked);
+
+  var d = new Date(Date.now());
+  var n = d.toDateString();
+  params.append('date', n);
   fetch('/ratedriver', {method: 'POST', body: params});
   location.reload();
 
