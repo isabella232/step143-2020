@@ -30,6 +30,40 @@ function getMessages() {
   });
 }
 
+function getMessagesGuest() {
+  const commentCount = document.getElementById('maxcomments');
+  document.getElementById('entry-list-guest').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  console.log(commentCount.name)
+  fetch('/data?type=table&maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list-guest');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      var temp = createEntryElementGuest(entry);
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
+      });
+    })
+  });
+}
+function loadEntriesGuest() {
+  //console.log(commentCount.value)
+  const entryListElement = document.getElementById('entry-list-guest');
+  fetch('/data?type=table').then(response => response.json()).then((entries) => {
+    entries.forEach((entry) => {
+      
+      console.log(entry.name)
+      var temp = createEntryElementGuest(entry);
+      getRating(entry).then(rating =>  {
+        console.log(rating);
+        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        entryListElement.appendChild(temp);
+      });
+    })
+  });
+}
+
 function loadEntries() {
   const commentCount = document.getElementById('maxcomments');
   //console.log(commentCount.value)
@@ -122,6 +156,33 @@ function checkExists() {
   });
 }
 
+function sortRidesGuest() {
+  const sort = document.getElementById('sort');
+  document.getElementById('entry-list-guest').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
+  var hold = [];
+  fetch('/data?type=table&sort=' + sort.value + "&startlat=" + startlat.value + "&startlng=" + startlng.value + "&maxdistance=" + maxdistance.value + "&maxdistanceend=" + maxdistanceend.value + "&closeendlat=" + closeendlat.value + "&closeendlng=" + closeendlng.value).then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list-guest');
+    entries.forEach((entry) => {
+     //var temp = createEntryElement(entry);
+      console.log(entry.name);
+      hold.push(entry);
+        // .then(rating =>  {
+        // temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        // entryListElement.appendChild(temp);
+      });
+    console.log(hold);
+    hold.reduce((p, fn) => { 
+      return p.then(() => {
+        return getRating(fn).then(rating =>  {
+          temp = createEntryElementGuest(fn);
+          temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+          entryListElement.appendChild(temp);
+      })});
+    }, Promise.resolve());
+  });
+}
+
 function appendRatings() {
   var table = document.getElementById("entry-list");
   for (var i = 1; i < table.rows.length; i++) {
@@ -169,6 +230,69 @@ function removeRide(entry) {
   params.append('id', entry.id);
   fetch('/deleteride', {method: 'POST', body: params});
   location.reload();
+}
+
+function createEntryElementGuest(entry) {
+  const entryElement = document.createElement('tr');
+  entryElement.className = 'entry collection-item';
+
+  const nameElement = document.createElement('td');
+  console.log(typeof entry.driverId);
+  // <br/><button height=\"20px\" onclick=\"getReviews(" + "n" + entry.driverId + ")\">See Reviews</button>";
+  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")" + "<br/>";
+
+  const startElement = document.createElement('td');
+  // startElement.id = entry.id + "start";
+  // var geocoder = new google.maps.Geocoder;
+  // start = {
+  //             lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
+  //             lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, start, entry.id + "start");
+  // startElement.innerText = entry.start;
+  // startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
+  startElement.innerHTML = entry.startAddress
+
+  const endElement = document.createElement('td');
+  // endElement.id = entry.id + "end";
+  // end = {
+  //             lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
+  //             lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, end, entry.id + "end");
+  // endElement.innerText = entry.end;
+  // endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
+  endElement.innerHTML = entry.endAddress
+
+  const capacityElement = document.createElement('td');
+  capacityElement.innerText = entry.capacity;
+
+  const currentRidersElement = document.createElement('td');
+  currentRidersElement.innerText = entry.currentRiders;
+
+
+  var dateElement = document.createElement('td');
+  dateElement.innerHTML = entry.ridedate + "<br/>" + entry.ridetime;
+
+  var priceElement = document.createElement('td');
+  priceElement.innerHTML = "$" + entry.price;
+
+  var paymentMethodElement = document.createElement('td');
+  paymentMethodElement.innerHTML = entry.paymentMethod;
+  
+  var distanceTimeElement = document.createElement('td');
+  distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
+
+  entryElement.appendChild(nameElement);
+  entryElement.appendChild(startElement);
+  entryElement.appendChild(endElement);
+  entryElement.appendChild(distanceTimeElement);
+  entryElement.appendChild(dateElement);
+  entryElement.appendChild(priceElement);
+  entryElement.appendChild(paymentMethodElement);
+  entryElement.appendChild(currentRidersElement);
+  entryElement.appendChild(capacityElement);
+  return entryElement;
 }
 
 function createEntryElementRemove(entry) {

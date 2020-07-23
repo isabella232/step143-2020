@@ -12,59 +12,20 @@
     </style>
 </head>
 
-<body onload = "loadEntries();loadUser();">
+<body onload = "loadEntriesGuest();">
     <div id= "guestApp">    
         <div id="content">
             <h1>Rideshare App</h1>            
         <ul>
             <li><a href="/index.html "> <button class="guestButton" id="exitGuestMode">Exit Guest Mode</button> </a></li>
-            <li><div id="LoginUsingGoogle"></div></li>
         </ul> 
 
             <h3>Guest may only view rides, Login to Post and Join rides.</h3>
-            <h3>Post a ride below:</h3>
-            <br/> <!-- Functional Search Boxes -->
-            <div id="addRoute"></div>
-            <br/>
-            <form id="geolocation"></form>   
-
-            <form id="addride" action="/data" method="POST">
-            <button type=button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
-            <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
-            <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address">
-            <br/><br/>
-            <button id="getButton" type="button" form="geolocation">Get Route</button>
-            <br/><br/>
-              
-                <div id="info">
-                        <p>Start Lat: </p><textarea id="lat" name="lat" class="taSize"></textarea>
-                        <p>End Lat: </p><textarea id="endlat" name="endlat" class="taSize"></textarea>
-                        <p>Distance: </p><textarea name="distance" id="distance" class="taSize"></textarea>
-
-                        <p>Start Long: </p><textarea id="lng" name="lng" class="taSize"></textarea>
-                        <p>End Long: </p><textarea id="endlng" name="endlng" class="taSize"></textarea>
-                        <p>Estimated Time: </p><textarea name="eta" id="eta" class="taSize"></textarea>
-                    </div>
-              
-                <div id="topInfo">
-                    <p>Start Lat: </p><textarea id="lat" name="lat" class="taSize"></textarea>
-                    <p>End Lat: </p><textarea id="endlat" name="endlat" class="taSize"></textarea>
-                    <p>Distance: </p><textarea name="distance" id="distance" class="taSize"></textarea>
-                </div>
-
-                <div id="bottomInfo">
-                    <p>Start Long: </p><textarea id="lng" name="lng" class="taSize"></textarea>
-                    <p>End Long: </p><textarea id="endlng" name="endlng" class="taSize"></textarea>
-                    <p>Estimated Time: </p><textarea name="eta" id="eta" class="taSize"></textarea>
-                </div>
-            </form>
-
-            <br/><hr/>
 
             <h3> Search for rides below: </h3>
             <form>
                 <label>Max # of rides:</label>
-                <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
+                <select onchange="getMessagesGuest()" id="maxcomments" name="maxcomments" required style="width:15%">
                     <option value="" disabled selected>Choose</option>
                     <option value="5">5</option>
                     <option value="10">10</option>
@@ -75,22 +36,13 @@
             <div id="sortMap"></div>
             <br/>
 
-      <p> Note: About 1 degree at the equator is 111,319.5 meters </p>
 
       <form>
-          <textarea id="closestartlat" name="closestartlat" placeholder="Enter Starting Latitude" style="height:25px; width:200px"></textarea>
-          <textarea id="closestartlng" name="closestartlng" placeholder="Enter Starting Longitude" style="height:25px; width:200px"></textarea>
-          <div id="sortByAddress">
-            <h5 id="searchboxInfo">Search by location: </h5>
-            <input type="text" id="sortRidesBox" name="sortRidesSearchbox" placeholder="Enter Address">
-          </div>
-          <textarea id="maxdistance" name = "maxdistance" placeholder="Enter Max Distance from Start Point (Meters)" style="height: 50px; width:200px"></textarea>
             <label>Sort:</label>
-              <select id="sort" name="sort" onchange="sortRides()" required style="width:20%">
+              <select id="sort" name="sort" onchange="sortRidesGuest()" required style="width:20%">
                 <option value="" disabled selected>Choose</option>
                 <option value="alphabetical">By name alphabetical (A-Z)</option>
                 <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
-                <option value="startdistance">Closest (Start Location)</option>
                 <option value="date">Soonest Dates</option>
                 <option value="fardate">Latest Dates</option>
                 <option value="price">Price(Low to High)</option>
@@ -99,7 +51,7 @@
       </form>
       <!-- <button onclick="appendRatings();"> See Ratings </button> -->
       <br/>
-      <table style="width:100%" id="entry-list">
+      <table style="width:100%" id="entry-list-guest">
         <tr>
           <th>Driver Info</th>
           <th>From</th>
@@ -112,11 +64,6 @@
           <th>Capacity</th>
         </tr>
       </table>
-      <h2 id="ratingdiv"> Rate a driver </h2>
-      <p> Click a rate driver button on any ride to rate your experience </p>
-      <h4 id="profilename"></h4>
-      <p id="ratingbox"></p>
-      <p id="submitrating"></p>
     </div>
    </div>
   </body>
