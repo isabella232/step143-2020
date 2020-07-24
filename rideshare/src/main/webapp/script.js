@@ -143,9 +143,7 @@ function checkExists() {
      //var temp = createEntryElement(entry);
       console.log(entry.name);
       hold.push(entry);
-        // .then(rating =>  {
-        // temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
-        // entryListElement.appendChild(temp);
+        
       });
     console.log(hold);
     hold.reduce((p, fn) => { 
