@@ -4,7 +4,7 @@
   width: 960px;
 }
 
-ul {
+/* ul{
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -14,7 +14,7 @@ ul {
 li {
   float: left;
   padding: 10px;
-}
+} */
 
 .guestButton{
     background-color: blue;
@@ -245,4 +245,67 @@ button:hover {
 
 #getButton {
     margin-bottom: -5%;
+}
+
+#menu {
+    background-color: #4CAF50;
+    font-weight: bold;
+    display: inline;
+    margin-left: -0.5%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-right: 1%;
+    border-radius: 20px;
+    box-shadow: 5px 5px 8px grey;
+}
+
+#menu li {
+    display: inline;
+}
+
+#menu li a {
+    width: 13%;
+    text-decoration: none;
+    color: black;
+    padding: 15px 0;
+    padding-left: 2%;
+    padding-right: 2%;
+    transition: 0.3s ease;
+}
+
+#menu li a:link {
+    color: white;
+}
+
+#menu li a:visited {
+    color: white;
+}
+
+#menu li a:hover {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    color: black;
+    padding: 10px 0;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+#logout a {
+    margin-left: -2%;
+    border-right: none;
+}
+
+#logout p {
+    display: inline;
+    margin-right: 62%;
+    margin-left: -85%;
+    color: white;
+}
+
+.menuItem {
+    margin-left: 20%;
+}
+
+#homeLink {
+    margin-left: 11%;
 }

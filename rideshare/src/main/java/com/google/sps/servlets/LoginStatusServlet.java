@@ -39,7 +39,7 @@ public class LoginStatusServlet extends HttpServlet {
         Entity profileEntity = datastore.get(profileEntityKey);
 
         response.getWriter().println("<p>Hello " + userEmail + "!</p>");
-        response.getWriter().println(" <a href=\"" + logoutUrl + "\"> <button> Logout </button> </a> ");
+        response.getWriter().println(" <a href=\"" + logoutUrl + "\">Logout</a> ");
       } catch (EntityNotFoundException e) {
         response.getWriter().println("NONEXISTENTERROR");
       } 

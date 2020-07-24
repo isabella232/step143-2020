@@ -81,14 +81,17 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
           String temp = totalreviews.get(i);
           String identifier = temp.substring(0, 4);
           String reviewername;
+          String date;
           if (identifier.equals("4NON")) {
             reviewername = "Anonymous";
-            temp = temp.substring(4);
+            date = temp.substring(4, 19);
+            temp = temp.substring(19);
           } else {
             reviewername = totalnames.get(i);
-            temp = temp.substring(4);
+            date = temp.substring(4, 19);
+            temp = temp.substring(19);
           }
-          response.getWriter().println("<p>" + "<b>Review " + i + ":</b>" + "<br/>" + "\"" + temp + "\"" + "<br/>" + "--" + reviewername + "</p>");
+          response.getWriter().println("<p>" + "<b>Review " + i + ":</b>" + " " + date + "<br/>" + "\"" + temp + "\"" + "<br/>" + "--" + reviewername + "</p>");
         }
         if (totalreviews.size() == 1) {
           response.getWriter().println("<p> There are no reviews for this user yet</p>");
@@ -128,20 +131,23 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
               ArrayList<String> totalreviews = (ArrayList<String>) profileEntity.getProperty("reviews");
               ArrayList<String> totalnames = (ArrayList<String>) profileEntity.getProperty("reviewnames");
 
-              for(int i = 1; i < totalreviews.size(); i++) {
-                String temp = totalreviews.get(i);
-                String identifier = temp.substring(0, 5);
-                String reviewername;
-                if (identifier.equals("4NON")) {
-                  reviewername = "Anonymous";
-                  temp = temp.substring(4);
-                } else {
-                  reviewername = totalnames.get(i);
-                  temp = temp.substring(4);
-                }
+              // for(int i = 1; i < totalreviews.size(); i++) {
+              //   String temp = totalreviews.get(i);
+              //   String identifier = temp.substring(0, 5);
+              //   String reviewername;
+              //   String date;
+              //   if (identifier.equals("4NON")) {
+              //     reviewername = "Anonymous";
+              //     date = temp.substring(-15);
+              //     temp = temp.substring(4,-15);
+              //   } else {
+              //     reviewername = totalnames.get(i);
+              //     date = temp.substring(-15);
+              //     temp = temp.substring(4,-15);
+              //   }
 
-                response.getWriter().println("<br/><p>" + temp + "<br/>" + reviewername + "</h3>");
-              }
+              //   response.getWriter().println("<br/>" + date + "<br/><p>" + temp + "<br/>" + reviewername + "</h3>");
+              // }
 
           }
       } catch (EntityNotFoundException e) {} 
