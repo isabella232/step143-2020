@@ -6,9 +6,9 @@
     <title>Rideshare Webapp</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=initMap&libraries=places" async defer></script>        
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=initMapGuest&libraries=places" async defer></script>        
     <style>
-        #addRoute {border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
+        #addRouteGuest{border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
     </style>
 </head>
 
@@ -20,7 +20,15 @@
             <a href="/index.html "> <button class="guestButton" id="exitGuestMode">Exit Guest Mode</button> </a></li>
        
 
-            <h4>Guests may only view rides. Login to Post and Join Rides, as well as gain access to several other features!</h4>
+            <p>Guests may only view rides. Login to Post and Join Rides, as well as gain access to several other features!</p>
+
+            <div id="rideHeadingGuest">
+                    <h3>Click "Show Route" to view route on map</h3>
+                    <h3>Directions:</h3>
+            </div>
+
+            <div id="addRouteGuest" style="margin-left: 0%; float: left;"></div>
+            <div id="directionsGuest"></div>
 
             <h3> Search for rides below: </h3>
             <form>

@@ -286,6 +286,14 @@ function createEntryElementGuest(entry) {
   
   var distanceTimeElement = document.createElement('td');
   distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
+  var showRideElement = document.createElement("button");
+  showRideElement.innerText = "Show Route";
+  showRideElement.style.float = "right";
+  showRideElement.style.backgroundColor = "#388E8E";
+  showRideElement.addEventListener('click', () => {
+    showRideRouteGuest(entry.start, entry.end);
+    window.location = "#rideHeadingGuest"
+  });
 
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
@@ -296,6 +304,7 @@ function createEntryElementGuest(entry) {
   entryElement.appendChild(paymentMethodElement);
   entryElement.appendChild(currentRidersElement);
   entryElement.appendChild(capacityElement);
+  entryElement.appendChild(showRideElement);
   return entryElement;
 }
 
@@ -698,6 +707,30 @@ var sortRidesSearchBox;
 var geocoder;
 var directionsRenderer;
 var directionsService;
+var directionsRendererGuest;
+var directionsServiceGuest;
+
+function initMapGuest(){
+    directionsServiceGuest = new google.maps.DirectionsService();
+    directionsRendererGuest = new google.maps.DirectionsRenderer();
+    var mapCenter = new google.maps.LatLng(39.089581, -101.396101);
+
+    map = new google.maps.Map(document.getElementById('addRouteGuest'), {
+        zoom: 7, 
+        center: mapCenter
+    })
+
+    geocoder = new google.maps.Geocoder();
+    directionsRendererGuest.setMap(map);
+    directionsRendererGuest.setPanel(document.getElementById("directionsGuest"));
+        
+    document.getElementById("getButton").addEventListener("click", function() {
+        removeMarkers();
+        calculateAndDisplayRoute(directionsServiceGuest, directionsRendererGuest);
+        getDistance();
+    })
+    autoComplete();
+}
 
 function initMap(){
     directionsService = new google.maps.DirectionsService();
@@ -964,6 +997,23 @@ function showRideRoute(origin, destination){ //Pass start and end coordinates to
         function(response, status) {
             if (status === 'OK') {
                 directionsRenderer.setDirections(response);
+            }
+        }
+    )
+}
+
+//Show Route for Posted Ride (Guests)
+function showRideRouteGuest(origin, destination){ //Pass start and end coordinates to this function
+    removeMarkers();
+    directionsServiceGuest.route(
+        {
+            origin: origin,
+            destination: destination,
+            travelMode: 'DRIVING'
+        },
+        function(response, status) {
+            if (status === 'OK') {
+                directionsRendererGuest.setDirections(response);
             }
         }
     )
