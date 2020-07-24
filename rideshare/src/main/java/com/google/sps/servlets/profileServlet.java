@@ -126,7 +126,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
               response.getWriter().println("<p>Your current car capacity is " + capacity + "!</p>");
               response.getWriter().println("<p>" + uploadUrl + "</p>");
 
-              response.getWriter().println("<h3>" + "Reviews for driver:" + "</h3>");
+              // response.getWriter().println("<h3>" + "Reviews for driver:" + "</h3>");
 
               ArrayList<String> totalreviews = (ArrayList<String>) profileEntity.getProperty("reviews");
               ArrayList<String> totalnames = (ArrayList<String>) profileEntity.getProperty("reviewnames");

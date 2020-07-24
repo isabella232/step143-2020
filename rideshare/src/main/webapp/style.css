@@ -231,14 +231,14 @@ button:hover {
     margin-left: 1%;
 }
 
-#directions {
+#directions, #directionsGuest {
     float: right;
     width: 45%;
     height: 500px;
     overflow: scroll;
 }
 
-#rideHeading {
+#rideHeading, #rideHeadingGuest {
     display: flex;
     justify-content: space-around;
 }
