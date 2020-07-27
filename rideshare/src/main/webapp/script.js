@@ -529,6 +529,10 @@ function loadProfile(){
     });
 }
 
+function ReplaceImage(){
+    document.getElementById("profilePicture").src="https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png"
+}
+
 //Create Map and Routes
 var start = {}
 var map;

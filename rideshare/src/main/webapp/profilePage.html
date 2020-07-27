@@ -1,21 +1,52 @@
 <!DOCTYPE html>
 <html>
+
+<style>
+.grid-container {
+  display: grid;
+  background-color: black;
+  padding: 5px;
+}
+.grid-item {
+  grid-template: 150px / auto auto auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  grid-gap: 10px ;
+  padding: 15px;
+  font-size: 20px;
+  text-align: left;
+}
+img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+}
+h1{
+    text-align:center;
+}
+h3{
+    color:white;
+}
+</style>
+
 <head>
     <meta charset="UTF-8" name="viewport" content="width=50%, initial-scale=1" >
     <script src="script.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
+
 <body onload="loadProfile()">
-  <div class="container background" id="content">
+  <div class="container" id="content">
     
     <a href= "/index.html"> <button> Home </button> </a>
 
     <div id="profile"></div>
-    <div id="test"></div>
 
 
     <h6 style="text-align:center;">If the page appears blank, try updating your account <a href="/editAccount.html">information</a></h6>
-
+  
+  </div>
 </body>
 </html>
