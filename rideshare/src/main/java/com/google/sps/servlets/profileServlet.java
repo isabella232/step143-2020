@@ -112,19 +112,18 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
           response.setContentType("text/html;");
           if (profileEntity.getProperty("name").equals(null)) {
               response.getWriter().println("<h6>If nothing is visible, try updating your " + "<a href=\"" + "/editAccount.html" + "\"> <p> information </p> </a><h6>");
-          } else {
+          } else {              
+              response.getWriter().println("<br/> <img id='profilePicture' src='" + uploadUrl + "' onerror='ReplaceImage()' alt='image' class='rounded'/> ");
               response.getWriter().println("<h1>" + name + "</h1> </hr>");
               
-              if (profileEntity.getProperty("uploadUrl").equals(null)) {
-                  response.getWriter().println("<img src='" + "https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png" + "' alt='image' class='rounded' style='width:250px' /> </br>");
-                  } else {
-                      response.getWriter().println("<img src='" + uploadUrl + "' alt='image' class='rounded' style='width:250px' /> </br>");
-                  }
-              response.getWriter().println("<p>ProfileId #"+ profileId +"</p>");
-              response.getWriter().println("<p>" + userEmail + "!</p>");
-              response.getWriter().println("<p>Welcome to your profile page "+ name +".</p>");
-              response.getWriter().println("<p>Your current car capacity is " + capacity + "!</p>");
-              response.getWriter().println("<p>" + uploadUrl + "</p>");
+              response.getWriter().println("<div class= 'grid-container'>");
+
+              response.getWriter().println("<div class='grid-item'> <p><b> ID#: </b>" + profileId + "</p> </div>");
+              response.getWriter().println("<div class='grid-item'> <p><b> Email: </b>" + userEmail + "</p> </div>");
+              response.getWriter().println("<div class='grid-item'> <p><b> Car Capacity: </b>" + capacity + "</p> </div>");
+
+              response.getWriter().println(" <div> <hr/>");
+              
 
               // response.getWriter().println("<h3>" + "Reviews for driver:" + "</h3>");
 

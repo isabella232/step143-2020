@@ -673,12 +673,6 @@ function loadUser(){
       document.getElementById("logout").innerHTML = txt;
     }});
 }
-function guestMode() {
-    var loginForm = document.getElementById("loginForm");    
-    var rideshare = document.getElementById("rideshareApp");
-    loginForm.style.display = "none";
-    rideshare.style.display = "block";
-}
 
 function loadProfile(){
     fetch('/profile?seereviews=0').then(response => response.text())
@@ -688,6 +682,10 @@ function loadProfile(){
         loginElement.innerHTML = txt;
         document.getElementById("profile").innerHTML = "<i>" + txt + "</i>";
     });
+}
+
+function ReplaceImage(){
+    document.getElementById("profilePicture").src="https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png"
 }
 
 //Create Map and Routes
