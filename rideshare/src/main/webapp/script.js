@@ -628,8 +628,9 @@ function revealRate(entry) {
 function joinRide(entry) {
   const params = new URLSearchParams();
   params.append('id', entry.id);
-  fetch('/joinride', {method: 'POST', body: params});
-  location.reload();
+  fetch('/joinride', {method: 'POST', body: params}).then((response) => {
+    location.reload().then(() => {window.location = "#myrides"});
+  });
 }
 
 function leaveRide(entry) {
