@@ -6,61 +6,34 @@
     <title>Rideshare Webapp</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=initMap&libraries=places" async defer></script>        
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=initMapGuest&libraries=places" async defer></script>        
     <style>
-        #addRoute {border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
+        #addRouteGuest{border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
     </style>
 </head>
- 
-<body onload = "loadGuestEntries(); loadUser();">
 
+<body onload = "loadEntriesGuest();">
     <div id= "guestApp">    
         <div id="content">
-            <h1>Rideshare App</h1>
-            <div id = "logout"></div>
-            
-            <ul>
-                <li><a href="/index.html "> <button class="guestButton" id="exitGuestMode">Exit Guest Mode</button> </a></li>
-                <li><div id="LoginUsingGoogle"></div></li>
-                </ul> 
+            <h1>Rideshare App</h1>            
+        
+            <a href="/index.html "> <button class="guestButton" id="exitGuestMode">Exit Guest Mode</button> </a></li>
+       
 
-            <div id="rideHeading">
-                <h3>Post a ride below:</h3>
-                <h3>Directions:</h3>
+            <p>Guests may only view rides. Login to Post and Join Rides, as well as gain access to several other features!</p>
+
+            <div id="rideHeadingGuest">
+                    <h3>Click "Show Route" to view route on map</h3>
+                    <h3>Directions:</h3>
             </div>
-            <br/> <!-- Functional Search Boxes -->
-            <div id="addRoute" style="margin-left: 0%; float: left;"></div>
-            <div id="directions"></div>
-            <br/>
-            
-            <form id="geolocation"> 
-                <!-- <button id="getButton" type="button">Get Route</button> -->
-            </form>   
 
-            <form id="addride" action="/data" method="POST">
-                <button type=button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
-                <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
-                <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address">
-                <br/><br/>
-                <button id="getButton" type="button" form="geolocation">Get Route</button>
-                <br/><br/>
-                <div id="info">
-                    <p>Start Lat: </p><textarea id="lat" name="lat" class="taSize"></textarea>
-                    <p>End Lat: </p><textarea id="endlat" name="endlat" class="taSize"></textarea>
-                    <p>Distance: </p><textarea name="distance" id="distance" class="taSize"></textarea>
-
-                    <p>Start Long: </p><textarea id="lng" name="lng" class="taSize"></textarea>
-                    <p>End Long: </p><textarea id="endlng" name="endlng" class="taSize"></textarea>
-                    <p>Estimated Time: </p><textarea name="eta" id="eta" class="taSize"></textarea>
-                </div>  
-            </form>
-            
-            <br/><br/>
+            <div id="addRouteGuest" style="margin-left: 0%; float: left;"></div>
+            <div id="directionsGuest"></div>
 
             <h3> Search for rides below: </h3>
             <form>
                 <label>Max # of rides:</label>
-                <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
+                <select onchange="getMessagesGuest()" id="maxcomments" name="maxcomments" required style="width:15%">
                     <option value="" disabled selected>Choose</option>
                     <option value="5">5</option>
                     <option value="10">10</option>
@@ -68,45 +41,23 @@
                 </select>
             </form>
 
-            <div id="sortMap"></div>
             <br/>
 
-    <!-- <p> Note: About 1 degree at the equator is 111,319.5 meters </p> -->
+        <form>
+            <label>Sort:</label>
+              <select id="sort-guest" name="sort-guest" onchange="sortRidesGuest()" required style="width:20%">
+                <option value="" disabled selected>Choose</option>
+                <option value="alphabetical">By name alphabetical (A-Z)</option>
+                <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
+                <option value="date">Soonest Dates</option>
+                <option value="fardate">Latest Dates</option>
+                <option value="price">Price(Low to High)</option>
+              </select>
 
-    <form>
-        <textarea id="closestartlat" name="closestartlat" placeholder="Enter Starting Latitude" style="height:25px; width:200px"></textarea>
-        <textarea id="closestartlng" name="closestartlng" placeholder="Enter Starting Longitude" style="height:25px; width:200px"></textarea>
-        <textarea id="closeendlat" name="closeendlat" placeholder="Enter Ending Latitude" style="height:25px; width:200px"></textarea>
-        <textarea id="closeendlng" name="closeendlng" placeholder="Enter Ending Longitude" style="height:25px; width:200px"></textarea>
-        <div id="sortByAddress">
-        <h5 id="searchboxInfo">Desired start location: </h5>
-        <input type="text" id="sortRidesBox" name="sortRidesSearchbox" placeholder="Enter Address">
-        </div>
-        <textarea id="maxdistance" name = "maxdistance" placeholder="Enter Max Distance from away Start Point (Meters)" style="height: 50px; width:200px"></textarea>
-        <div id="sortByEndAddress">
-        <h5 id="searchboxEndInfo">Desired end location: </h5>
-        <input type="text" id="sortRidesEndBox" name="sortRidesEndSearchbox" placeholder="Enter Address">
-        </div>
-        <textarea id="maxdistanceend" name = "maxdistanceend" placeholder="Enter Max Distance from away End Point (Meters)" style="height: 50px; width:200px"></textarea>
-        <br/>
-        <label>Sort:</label>
-            <select id="sort" name="sort" onchange="sortRides()" required style="width:20%">
-            <option value="" disabled selected>Choose</option>
-            <option value="alphabetical">By name alphabetical (A-Z)</option>
-            <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
-            <option value="startdistance">Within chosen distance of start location</option>
-            <option value="enddistance">Within chosen distance of end location</option>
-            <option value="bothdistance">Within chosen distance of both start and end locations</option>
-            <option value="date">Soonest Dates</option>
-            <option value="fardate">Latest Dates</option>
-            <option value="price">Price(Low to High)</option>
-            </select>
-    </form>
-      
+        </form>
       <!-- <button onclick="appendRatings();"> See Ratings </button> -->
       <br/>
-      <h2> Rides </h2>
-      <table style="width:100%" id="guest-entry-list">
+      <table style="width:100%" id="entry-list-guest">
         <tr>
           <th>Driver Info</th>
           <th>From</th>
@@ -119,14 +70,6 @@
           <th>Capacity</th>
         </tr>
       </table>
-
-      <h4 id="profilename"></h4>
-      <p id="ratingbox"></p>
-      <p id="reviewbox"></p>
-      <p id="submitrating"></p>
-      <p id="alreadyrated"></p>
-      <br/>
-      <div id="seereviews"></div>
     </div>
    </div>
   </body>

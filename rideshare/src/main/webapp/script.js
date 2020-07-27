@@ -21,11 +21,48 @@ function getMessages() {
     entries.forEach((entry) => {
       console.log(entry.name)
       var temp = createEntryElement(entry);
-      getRating(entry).then(rating =>  {
-        console.log(rating);
-        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
-        entryListElement.appendChild(temp);
-      });
+      // getRating(entry).then(rating =>  {
+      //   console.log(rating);
+      //   temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+      //   entryListElement.appendChild(temp);
+      // });
+      entryListElement.appendChild(temp);
+    })
+  });
+}
+
+function getMessagesGuest() {
+  const commentCount = document.getElementById('maxcomments');
+  document.getElementById('entry-list-guest').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  console.log(commentCount.name)
+  fetch('/data?type=table&maxcomments=' + commentCount.value).then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list-guest');
+    entries.forEach((entry) => {
+      console.log(entry.name)
+      var temp = createEntryElementGuest(entry);
+      // getRating(entry).then(rating =>  {
+      //   console.log(rating);
+      //   temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+      //   
+      // });
+      entryListElement.appendChild(temp);
+    })
+  });
+}
+function loadEntriesGuest() {
+  //console.log(commentCount.value)
+  const entryListElement = document.getElementById('entry-list-guest');
+  fetch('/data?type=table').then(response => response.json()).then((entries) => {
+    entries.forEach((entry) => {
+      
+      console.log(entry.name)
+      var temp = createEntryElementGuest(entry);
+      // getRating(entry).then(rating =>  {
+      //   console.log(rating);
+      //   temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+      //   entryListElement.appendChild(temp);
+      // });
+      entryListElement.appendChild(temp);
     })
   });
 }
@@ -126,9 +163,7 @@ function checkExists() {
      //var temp = createEntryElement(entry);
       console.log(entry.name);
       hold.push(entry);
-        // .then(rating =>  {
-        // temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
-        // entryListElement.appendChild(temp);
+        
       });
     console.log(hold);
     hold.reduce((p, fn) => { 
@@ -139,6 +174,34 @@ function checkExists() {
           entryListElement.appendChild(temp);
       })});
     }, Promise.resolve());
+  });
+}
+
+function sortRidesGuest() {
+  const sort = document.getElementById('sort-guest');
+  document.getElementById('entry-list-guest').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
+  // + "&startlat=" + startlat.value + "&startlng=" + startlng.value
+  var hold = [];
+  fetch('/data?type=table&sort=' + sort.value).then(response => response.json()).then((entries) => {
+    const entryListElement = document.getElementById('entry-list-guest');
+    entries.forEach((entry) => {
+      var temp = createEntryElementGuest(entry);
+      console.log(entry.name);
+      // hold.push(entry);
+        // .then(rating =>  {
+        // temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+        // entryListElement.appendChild(temp);
+        entryListElement.appendChild(temp);
+      });
+    console.log(hold);
+    // hold.reduce((p, fn) => { 
+    //   return p.then(() => {
+    //     return getRating(fn).then(rating =>  {
+    //       temp = createEntryElementGuest(fn);
+    //       temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
+    //       entryListElement.appendChild(temp);
+    //   })});
+    // }, Promise.resolve());
   });
 }
 
@@ -189,6 +252,78 @@ function removeRide(entry) {
   params.append('id', entry.id);
   fetch('/deleteride', {method: 'POST', body: params});
   location.reload();
+}
+
+function createEntryElementGuest(entry) {
+  const entryElement = document.createElement('tr');
+  entryElement.className = 'entry collection-item';
+
+  const nameElement = document.createElement('td');
+  console.log(typeof entry.driverId);
+  // <br/><button height=\"20px\" onclick=\"getReviews(" + "n" + entry.driverId + ")\">See Reviews</button>";
+  nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")" + "<br/>";
+
+  const startElement = document.createElement('td');
+  // startElement.id = entry.id + "start";
+  // var geocoder = new google.maps.Geocoder;
+  // start = {
+  //             lat: Number(entry.start.substr(0, entry.start.indexOf(','))),
+  //             lng: Number(entry.start.substr(entry.start.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, start, entry.id + "start");
+  // startElement.innerText = entry.start;
+  // startElement.innerHTML = entry.startAddress + "<br/><br/>" + entry.start;
+  startElement.innerHTML = entry.startAddress
+
+  const endElement = document.createElement('td');
+  // endElement.id = entry.id + "end";
+  // end = {
+  //             lat: Number(entry.end.substr(0, entry.end.indexOf(','))),
+  //             lng: Number(entry.end.substr(entry.end.indexOf(',') + 1))
+  //           }
+  // reverseDisplay(geocoder, end, entry.id + "end");
+  // endElement.innerText = entry.end;
+  // endElement.innerHTML = entry.endAddress + "<br/><br/>" + entry.end;
+  endElement.innerHTML = entry.endAddress
+
+  const capacityElement = document.createElement('td');
+  capacityElement.innerText = entry.capacity;
+
+  const currentRidersElement = document.createElement('td');
+  currentRidersElement.innerText = entry.currentRiders;
+
+
+  var dateElement = document.createElement('td');
+  dateElement.innerHTML = entry.ridedate + "<br/>" + entry.ridetime;
+
+  var priceElement = document.createElement('td');
+  priceElement.innerHTML = "$" + entry.price;
+
+  var paymentMethodElement = document.createElement('td');
+  paymentMethodElement.innerHTML = entry.paymentMethod;
+  
+  var distanceTimeElement = document.createElement('td');
+  distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
+  var showRideElement = document.createElement("button");
+  showRideElement.innerText = "Show Route";
+  showRideElement.style.float = "right";
+  showRideElement.style.backgroundColor = "#388E8E";
+  showRideElement.addEventListener('click', () => {
+    showRideRouteGuest(entry.start, entry.end);
+    window.location = "#rideHeadingGuest"
+  });
+
+  entryElement.appendChild(nameElement);
+  entryElement.appendChild(startElement);
+  entryElement.appendChild(endElement);
+  entryElement.appendChild(distanceTimeElement);
+  entryElement.appendChild(dateElement);
+  entryElement.appendChild(priceElement);
+  entryElement.appendChild(paymentMethodElement);
+  entryElement.appendChild(currentRidersElement);
+  entryElement.appendChild(capacityElement);
+  entryElement.appendChild(showRideElement);
+  return entryElement;
 }
 
 function createEntryElementRemove(entry) {
@@ -251,6 +386,15 @@ function createEntryElementRemove(entry) {
 
   var paymentMethodElement = document.createElement('td');
   paymentMethodElement.innerHTML = entry.paymentMethod;
+
+  var showRideElement = document.createElement("button");
+  showRideElement.innerText = "Show Route";
+  showRideElement.style.float = "right";
+  showRideElement.style.backgroundColor = "#388E8E";
+  showRideElement.addEventListener('click', () => {
+    showRideRoute(entry.start, entry.end);
+    window.location = "#rideHeading"
+  });
   
   entryElement.appendChild(startElement);
   entryElement.appendChild(endElement);
@@ -262,6 +406,7 @@ function createEntryElementRemove(entry) {
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(removeRideButtonElement);
   entryElement.appendChild(rateButtonElement);
+  entryElement.appendChild(showRideElement);
   return entryElement;
 }
 
@@ -328,6 +473,16 @@ function createEntryElementNoJoin(entry) {
 
   var paymentMethodElement = document.createElement('td');
   paymentMethodElement.innerHTML = entry.paymentMethod;
+
+  var showRideElement = document.createElement("button");
+  showRideElement.innerText = "Show Route";
+  showRideElement.style.float = "right";
+  showRideElement.style.backgroundColor = "#388E8E";
+  showRideElement.addEventListener('click', () => {
+    showRideRoute(entry.start, entry.end);
+    window.location = "#rideHeading"
+  });
+  
   
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
@@ -339,6 +494,7 @@ function createEntryElementNoJoin(entry) {
   entryElement.appendChild(currentRidersElement);
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(leaveRideButtonElement);
+  entryElement.appendChild(showRideElement);
   entryElement.appendChild(rateButtonElement);
   return entryElement;
 }
@@ -369,6 +525,16 @@ function createEntryElement(entry) {
   });
   // <br/><button height=\"20px\" onclick=\"getReviews(" + "n" + entry.driverId + ")\">See Reviews</button>";
   nameElement.innerHTML = entry.name + "<br/>" + "(" + entry.driverEmail + ")" + "<br/>";
+
+  var showRideElement = document.createElement("button");
+  showRideElement.innerText = "Show Route";
+  showRideElement.style.float = "right";
+  showRideElement.style.backgroundColor = "#388E8E";
+  showRideElement.addEventListener('click', () => {
+    showRideRoute(entry.start, entry.end);
+    window.location = "#rideHeading"
+  });
+  
 
 
   const startElement = document.createElement('td');
@@ -428,6 +594,14 @@ function createEntryElement(entry) {
   var distanceTimeElement = document.createElement('td');
   distanceTimeElement.innerHTML = entry.distance + "<br/>" + "(" + entry.eta + ")";
 
+  var showRideElement = document.createElement("button");
+  showRideElement.innerText = "Show Route";
+  showRideElement.style.float = "right";
+  showRideElement.style.backgroundColor = "#388E8E";
+  showRideElement.addEventListener('click', () => {
+    showRideRoute(entry.start, entry.end);
+    window.location = "#rideHeading"
+  });
   
   entryElement.appendChild(nameElement);
   entryElement.appendChild(startElement);
@@ -441,6 +615,7 @@ function createEntryElement(entry) {
   entryElement.appendChild(joinRideButtonElement);
   entryElement.appendChild(rateButtonElement);
   entryElement.appendChild(showButtonElement);
+  entryElement.appendChild(showRideElement);
   return entryElement;
 }
 
@@ -515,7 +690,7 @@ function loadUser(){
     } else {
       loginForm.style.display = "none";
       rideshare.style.display = "block";
-      document.getElementById("logout").innerHTML = "<i>" + txt + "</i>";
+      document.getElementById("logout").innerHTML = txt;
     }});
 }
 
@@ -548,6 +723,30 @@ var sortRidesSearchBox;
 var geocoder;
 var directionsRenderer;
 var directionsService;
+var directionsRendererGuest;
+var directionsServiceGuest;
+
+function initMapGuest(){
+    directionsServiceGuest = new google.maps.DirectionsService();
+    directionsRendererGuest = new google.maps.DirectionsRenderer();
+    var mapCenter = new google.maps.LatLng(39.089581, -101.396101);
+
+    map = new google.maps.Map(document.getElementById('addRouteGuest'), {
+        zoom: 7, 
+        center: mapCenter
+    })
+
+    geocoder = new google.maps.Geocoder();
+    directionsRendererGuest.setMap(map);
+    directionsRendererGuest.setPanel(document.getElementById("directionsGuest"));
+        
+    document.getElementById("getButton").addEventListener("click", function() {
+        removeMarkers();
+        calculateAndDisplayRoute(directionsServiceGuest, directionsRendererGuest);
+        getDistance();
+    })
+    autoComplete();
+}
 
 function initMap(){
     directionsService = new google.maps.DirectionsService();
@@ -814,6 +1013,23 @@ function showRideRoute(origin, destination){ //Pass start and end coordinates to
         function(response, status) {
             if (status === 'OK') {
                 directionsRenderer.setDirections(response);
+            }
+        }
+    )
+}
+
+//Show Route for Posted Ride (Guests)
+function showRideRouteGuest(origin, destination){ //Pass start and end coordinates to this function
+    removeMarkers();
+    directionsServiceGuest.route(
+        {
+            origin: origin,
+            destination: destination,
+            travelMode: 'DRIVING'
+        },
+        function(response, status) {
+            if (status === 'OK') {
+                directionsRendererGuest.setDirections(response);
             }
         }
     )
