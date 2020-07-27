@@ -136,9 +136,9 @@ public class DataServlet extends HttpServlet {
         } else if (sort.equals("reverse-alphabetical")){
           query = new Query("Ride").addSort("name", SortDirection.DESCENDING);
         } else if (sort.equals("date")) {
-          query = new Query("Ride").addSort("ridedate", SortDirection.ASCENDING);
+          query = new Query("Ride").addSort("dateandtime", SortDirection.ASCENDING);
         } else if (sort.equals("fardate")) {
-          query = new Query("Ride").addSort("ridedate", SortDirection.DESCENDING);  
+          query = new Query("Ride").addSort("dateandtime", SortDirection.DESCENDING);  
         } else if (sort.equals("price")){
           query = new Query("Ride").addSort("price", SortDirection.ASCENDING);
         } else if (sort.equals("enddistance")) {
@@ -331,6 +331,7 @@ public class DataServlet extends HttpServlet {
       entryEntity.setProperty("end", end);
       entryEntity.setProperty("ridedate", ridedate);
       entryEntity.setProperty("ridetime", ridetime);
+      entryEntity.setProperty("dateandtime", ridedate + ridetime);
       entryEntity.setProperty("price", price);
       entryEntity.setProperty("paymentMethod", paymentMethod);
       entryEntity.setProperty("startAddress", startAddress);
