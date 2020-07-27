@@ -4,18 +4,6 @@
   width: 960px;
 }
 
-/* ul{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-li {
-  float: left;
-  padding: 10px;
-} */
-
 .guestButton{
     background-color: blue;
 }
@@ -131,7 +119,7 @@ button:hover {
 }
 
 .rounded{
-    border-radius:30%;
+    border-radius:50%;
 }
 /* Set a grey background color and center the text of the "sign in" section */
 .signin {
