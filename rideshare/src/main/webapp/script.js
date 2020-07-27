@@ -67,26 +67,6 @@ function loadEntriesGuest() {
   });
 }
 
-function loadGuestEntries() {
-  const commentCount = document.getElementById('maxcomments');
-  //console.log(commentCount.value)
-  fetch('/data?type=table').then(response => response.json()).then((entries) => {
-    const entryListElement = document.getElementById('guest-entry-list');
-    entries.forEach((entry) => {
-      console.log(entry.name)
-      var temp = createEntryElement(entry);
-      // temp.cells[0] = temp.cells[0] + getRating(entry).then(function(result) {
-      //   return result
-      // })
-      getRating(entry).then(rating =>  {
-        console.log(rating);
-        temp.cells[0].innerHTML = temp.cells[0].innerHTML + "<br/><br/>" + rating[0].toFixed(2) + " / " + "5.00" + "<br/>" + "(" + rating[1] + " ratings)";
-        entryListElement.appendChild(temp);
-      });  
-    })
-  });
-}
-
 function loadEntries() {
   const commentCount = document.getElementById('maxcomments');
   //console.log(commentCount.value)
