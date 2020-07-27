@@ -670,7 +670,9 @@ function loadUser(){
     } else {
       loginForm.style.display = "none";
       rideshare.style.display = "block";
-      document.getElementById("logout").innerHTML = txt;
+      var userSplit = txt.split("!");
+      document.getElementById("userEmail").innerHTML = userSplit[0];
+      document.getElementById("logout").innerHTML = userSplit[1];
     }});
 }
 

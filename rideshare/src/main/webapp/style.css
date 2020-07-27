@@ -238,11 +238,8 @@ button:hover {
 #menu {
     background-color: #4CAF50;
     font-weight: bold;
-    display: inline;
-    margin-left: -0.5%;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    padding-right: 1%;
+    margin-left: -1%;
+    padding: 2%;
     border-radius: 20px;
     box-shadow: 5px 5px 8px grey;
 }
@@ -252,7 +249,6 @@ button:hover {
 }
 
 #menu li a {
-    width: 13%;
     text-decoration: none;
     color: black;
     padding: 15px 0;
@@ -279,21 +275,19 @@ button:hover {
 }
 
 #logout a {
-    margin-left: -2%;
     border-right: none;
 }
 
 #logout p {
-    display: inline;
-    margin-right: 62%;
-    margin-left: -85%;
+    display: inherit;
+}
+
+#userEmail {
     color: white;
 }
 
-.menuItem {
-    margin-left: 20%;
-}
-
-#homeLink {
-    margin-left: 11%;
+#menuItem {
+    margin-left: 42%;
+    margin-top: -2%;
+    margin-right: -10%;
 }
