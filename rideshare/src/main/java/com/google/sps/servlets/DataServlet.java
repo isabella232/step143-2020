@@ -170,6 +170,9 @@ public class DataServlet extends HttpServlet {
 
       
         for (Entity entity : results.asIterable()) {
+          if (maxcount == 0){
+            break;
+          }
           long id = entity.getKey().getId();
 
           Entity profEntity = datastore.get(KeyFactory.createKey("Ride", id));
