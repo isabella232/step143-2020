@@ -670,7 +670,7 @@ function loadUser(){
     } else {
       loginForm.style.display = "none";
       rideshare.style.display = "block";
-      document.getElementById("logout").innerHTML = "<i>" + txt + "</i>";
+      document.getElementById("logout").innerHTML = txt;
     }});
 }
 function guestMode() {
