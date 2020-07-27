@@ -63,9 +63,9 @@ public class JoinRideServlet extends HttpServlet {
         newMyRides.add(id);
         profileEntity.setProperty("myRides", newMyRides);
         datastore.put(profileEntity);
-        response.sendRedirect("/index.html");
+        // response.sendRedirect("/index.html");
       } else {
-        response.sendRedirect("/index.html");
+        // response.sendRedirect("/index.html");
       }
     } catch (EntityNotFoundException e) {
 

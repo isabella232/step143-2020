@@ -39,7 +39,7 @@
                     </div>
                 </ul>
                 <p style="margin-top: 5%">Welcome to our Rideshare App intended for college students who desire a more streamlined process of finding a carpool ride!</p>
-
+                <p id="notify"> </p>
                 <div id="rideHeading">
                     <h3>Post a ride below:</h3>
                     <h3>Directions:</h3>
@@ -101,6 +101,7 @@
                     <label>Max # of rides:</label>
                     <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
                         <option value="" disabled selected>Choose</option>
+                         <option value="0">Hide All</option>
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="20">20</option>

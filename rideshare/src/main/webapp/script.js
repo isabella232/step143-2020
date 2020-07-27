@@ -551,7 +551,8 @@ function createEntryElement(entry) {
   joinRideButtonElement.style.float = "right";
   joinRideButtonElement.style.backgroundColor = "#272e91";
   joinRideButtonElement.addEventListener('click', () => {
-    joinRide(entry);
+    joinRide(entry)
+    document.getElementById("notify").innerHTML = "You have successfully joined ride " + entry.id;
   });
 
   var rateButtonElement = document.createElement('button');
@@ -628,8 +629,12 @@ function revealRate(entry) {
 function joinRide(entry) {
   const params = new URLSearchParams();
   params.append('id', entry.id);
-  fetch('/joinride', {method: 'POST', body: params});
-  location.reload();
+  fetch('/joinride', {method: 'POST', body: params}).then(() => {
+    // location.reload().then(() => {
+    //   document.getElementById("notify").innerHTML = "You have successfully joined ride " + entry.id;
+    //   window.
+    location.reload();
+  });
 }
 
 function leaveRide(entry) {
