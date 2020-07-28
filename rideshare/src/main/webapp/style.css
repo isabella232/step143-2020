@@ -144,6 +144,7 @@ button:hover {
 /* The login form (display) */
 .loginForm {
   display: block; /* shown by default */
+  visibility: hidden;
   /* position: fixed; Stay in place */
   z-index: 1; /* Sit on top */
   width: 100%; /* Full width */
@@ -211,12 +212,12 @@ button:hover {
 }
 
 #sortByAddress, #sortByEndAddress{
-    display: flex;
+    display: inline;
 }
 
-#sortRidesBox, #sortRidesEndBox {
-    width: 80%;
-    margin-left: 1%;
+#sortRidesEndBox {
+    width: 59%;
+    margin-left: -1%;
 }
 
 #directions, #directionsGuest {
@@ -290,4 +291,59 @@ button:hover {
     margin-left: 42%;
     margin-top: -2%;
     margin-right: -10%;
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    margin: 0;
+    display: inline;
+    border: 1px solid #ccc;
+    padding: 2%;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons */
+.tab button {
+    background-color: inherit;
+    width: 31.5%;
+    margin: 0;
+    padding: 2%;
+    padding-top: 2.35%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+    color: black;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style tab content */ 
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+#sortRidesBox {
+    width: 59%;
+    margin-left: -1%;
+}
+
+#searchboxInfo, #searchboxEndInfo {
+    width: 20%;
+    float: left;
+}
+
+#sortByAddress, sortByEndAddress {
+    height: 50px;
+    width: 20%;
 }
