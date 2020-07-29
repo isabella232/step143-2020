@@ -47,8 +47,8 @@ public class RateDriverServlet extends HttpServlet {
       
       ArrayList<String> usersRated = (ArrayList<String>) profileEntity.getProperty("usersRated");
 
-      if (usersRated.contains(currentUserId)) {
-        response.getWriter().println("You have already rated this user!");
+      if (usersRated.contains(currentUserId) || currentUserId.equals(driverId)) {
+        response.getWriter().println("You have already rated this user or are the driver of this ride!");
       }
    
     } catch (EntityNotFoundException e) {

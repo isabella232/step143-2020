@@ -385,7 +385,7 @@ function createEntryElementRemove(entry) {
   entryElement.appendChild(currentRidersElement);
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(removeRideButtonElement);
-  entryElement.appendChild(rateButtonElement);
+  // entryElement.appendChild(rateButtonElement);
   entryElement.appendChild(showRideElement);
   return entryElement;
 }
@@ -567,7 +567,7 @@ function createEntryElement(entry) {
   dateElement.innerHTML = entry.ridedate + "<br/>" + entry.ridetime;
 
   var priceElement = document.createElement('td');
-  priceElement.innerHTML = "$" + entry.price;
+  priceElement.innerHTML = "$" + entry.price.toString();
 
   var paymentMethodElement = document.createElement('td');
   paymentMethodElement.innerHTML = entry.paymentMethod;
@@ -615,15 +615,22 @@ function revealRate(entry) {
             document.getElementById("ratingbox").innerHTML = 
             "<h3> Move slider accordingly (farthest left = 1, farthest right = 5)</h3>" +
             "<div class=\"slidecontainer\"><input type=\"range\" min=\"1\" max=\"5\" value=\"3\" class=\"slider\" id=\"ratingtext\"></div>";
-            document.getElementById("reviewbox").innerHTML = "<h4>Leave a review (optional) </h4>" + "<textarea id=\"review\" width=\"80%\" height=\"200px\"></textarea>" + "<br/" + 
+            document.getElementById("reviewbox").innerHTML = "<h4>Leave a review (optional) </h4>" + "<textarea id=\"review\" style=\"width:80%\" height=\"200px\"></textarea>" + "<br/" + 
             "<label><input id=\"displayname\" name=\"displayname\" type=\"checkbox\" class=\"filled-in\" checked=\"checked\" />" + "<span>Display name next to review</span>" + "</label>";
 
           // <input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\">";
             document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
-            
+            document.getElementById("cancelrating").innerHTML = "<button style=\"background-color:#CF5300\" onclick=\"cancelRating()\">Cancel Rating</button>"; 
         }
         window.location = "#ratingdiv"
     });
+}
+function cancelRating() {
+  document.getElementById("profilename").innerHTML = "";
+  document.getElementById("ratingbox").innerHTML = "";
+  document.getElementById("reviewbox").innerHTML = "";
+  document.getElementById("submitrating").innerHTML = ""; 
+  document.getElementById("cancelrating").innerHTML = "";
 }
 
 function joinRide(entry) {
