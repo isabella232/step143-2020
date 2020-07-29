@@ -667,7 +667,7 @@ function loadUser(){
     var loginForm = document.getElementById("loginForm");
     var rideshare = document.getElementById("rideshareApp");
     if (txt.includes("Login")) {
-      loginForm.style.display = "block";
+      loginForm.style.visibility = "visible";
       rideshare.style.display = "none";
       document.getElementById("LoginUsingGoogle").innerHTML = "<i>" + txt + "</i>";
     } else if (txt.includes("NONEXISTENTERROR")) {
@@ -1020,4 +1020,26 @@ function showRideRouteGuest(origin, destination){ //Pass start and end coordinat
             }
         }
     )
+}
+
+function openTab(evt, tabName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(tabName).style.display = "block";
+  document.getElementById('sortSection').style.display = "block";
+  evt.currentTarget.className += " active";
 }

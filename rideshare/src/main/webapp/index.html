@@ -48,12 +48,6 @@
                 <div id="addRoute" style="margin-left: 0%; float: left;"></div>
                 <div id="directions"></div>
                 <br/>
-                <!-- <button id="useGPS" onclick="getLocationGPS();">Use GPS</button> -->
-                <!-- <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
-                <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address"> -->
-                <form id="geolocation"> 
-                    <!-- <button id="getButton" type="button">Get Route</button> -->
-                </form>   
  
                 <form id="addride" action="/data" method="POST">
                     <button type=button id="useGPS" onclick="getLocationGPS();">Use GPS</button>
@@ -95,107 +89,125 @@
                     <button class="button" type="submit"/> Post Ride </button>       
                 </form>
                 <br/><br/>
- 
-                <h3> Search for rides below: </h3>
-                <form>
-                    <label>Max # of rides:</label>
-                    <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
-                        <option value="" disabled selected>Choose</option>
-                         <option value="0">Hide All</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                    </select>
-                </form>
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event,'allRides')">All Rides</button>
+                    <button class="tablinks" onclick="openTab(event,'currentRides')">My Rides as a Rider</button>
+                    <button class="tablinks" onclick="openTab(event,'driverRides')">My Rides as a Driver</button>
+                </div>
 
-                <div id="sortMap"></div>
+                <div id="sortSection" class="tabcontent">
+                    <h3> Search for rides below: </h3>
+                    <form>
+                        <label>Max # of rides:</label>
+                        <select onchange="getMessages()" id="maxcomments" name="maxcomments" required style="width:15%">
+                            <option value="" disabled selected>Choose</option>
+                            <option value="0">Hide All</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                        </select>
+
+                        <label>Sort:</label>
+                        <select id="sort" name="sort" onchange="sortRides()" required style="width:20%">
+                            <option value="" disabled selected>Choose</option>
+                            <option value="alphabetical">By name alphabetical (A-Z)</option>
+                            <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
+                            <option value="startdistance">Within chosen distance of start location</option>
+                            <option value="enddistance">Within chosen distance of end location</option>
+                            <option value="bothdistance">Within chosen distance of both start and end locations</option>
+                            <option value="date">Soonest Dates</option>
+                            <option value="fardate">Latest Dates</option>
+                            <option value="price">Price(Low to High)</option>
+                        </select>
+                    </form>
+
+                    <div id="sortMap"></div>
+                    <br/>
+
+                    <form>
+                        <textarea id="closestartlat" name="closestartlat" placeholder="Enter Starting Latitude" style="height:25px; width:200px"></textarea>
+                        <textarea id="closestartlng" name="closestartlng" placeholder="Enter Starting Longitude" style="height:25px; width:200px"></textarea>
+                        <textarea id="closeendlat" name="closeendlat" placeholder="Enter Ending Latitude" style="height:25px; width:200px"></textarea>
+                        <textarea id="closeendlng" name="closeendlng" placeholder="Enter Ending Longitude" style="height:25px; width:200px"></textarea>
+                        <div id="sortByAddress">
+                            <h5 id="searchboxInfo">Desired start location: </h5>
+                            <input type="text" id="sortRidesBox" class="sortBoxes" name="sortRidesSearchbox" placeholder="Enter Address">
+                        <textarea id="maxdistance" name = "maxdistance" placeholder="Enter Max Distance from away Start Point (Meters)" style="height: 50px; width:200px; margin-top: 0.2%; float: right;"></textarea>
+                        </div>
+                        
+                        <div id="sortByEndAddress">
+                            <h5 id="searchboxEndInfo">Desired end location: </h5>
+                            <input type="text" id="sortRidesEndBox" class="sortBoxes" name="sortRidesEndSearchbox" placeholder="Enter Address">
+                        <textarea id="maxdistanceend" name = "maxdistanceend" placeholder="Enter Max Distance from away End Point (Meters)" style="height: 50px; width:200px; margin-top: 0.2%; float: right;"></textarea>
+                        </div>
+                        <br/>
+                        
+                    </form>
+                </div>
+
+                <div id="allRides" class="tabcontent">
+                    <h2> Rides </h2>
+                    <table style="width:100%" id="entry-list">
+                        <tr>
+                            <th>Driver Info</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Distance</th>
+                            <th>Ride Date</th>
+                            <th>Price($)</th>
+                            <th>Payment Method</th>
+                            <th>Current # of Riders</th>
+                            <th>Capacity</th>
+                            <th></th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="currentRides" class="tabcontent">
+                    <h3> My Current Rides (as a Rider): </h3>
+                    <table style="width:100%" id="myrides">
+                        <tr>
+                            <th>Driver Info</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Distance</th>
+                            <th>Ride Date</th>
+                            <th>Price($)</th>
+                            <th>Payment Method</th>
+                            <th>Current # of Riders</th>
+                            <th>Capacity</th>
+                            <th></th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="driverRides" class="tabcontent">
+                    <h3> Rides I'm Driving: </h3>
+                    <table style="width:100%" id="driverrides">
+                        <tr>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Distance</th>
+                            <th>Ride Date</th>
+                            <th>Price($)</th>
+                            <th>Payment Method</th>
+                            <th>Current # of Riders</th>
+                            <th>Capacity</th>
+                            <th></th>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2 id="ratingdiv"> Rate a driver </h2>
+                <p> Click a <i>Rate Driver</i> button on any ride to rate your experience </p>
+                <h4 id="profilename"></h4>
+                <p id="ratingbox"></p>
+                <p id="reviewbox"></p>
+                <p id="submitrating"></p>
+                <p id="alreadyrated"></p>
                 <br/>
-
-      <!-- <p> Note: About 1 degree at the equator is 111,319.5 meters </p> -->
-
-      <form>
-          <textarea id="closestartlat" name="closestartlat" placeholder="Enter Starting Latitude" style="height:25px; width:200px"></textarea>
-          <textarea id="closestartlng" name="closestartlng" placeholder="Enter Starting Longitude" style="height:25px; width:200px"></textarea>
-          <textarea id="closeendlat" name="closeendlat" placeholder="Enter Ending Latitude" style="height:25px; width:200px"></textarea>
-          <textarea id="closeendlng" name="closeendlng" placeholder="Enter Ending Longitude" style="height:25px; width:200px"></textarea>
-          <div id="sortByAddress">
-            <h5 id="searchboxInfo">Desired start location: </h5>
-            <input type="text" id="sortRidesBox" name="sortRidesSearchbox" placeholder="Enter Address">
-          </div>
-          <textarea id="maxdistance" name = "maxdistance" placeholder="Enter Max Distance from away Start Point (Meters)" style="height: 50px; width:200px"></textarea>
-          <div id="sortByEndAddress">
-            <h5 id="searchboxEndInfo">Desired end location: </h5>
-            <input type="text" id="sortRidesEndBox" name="sortRidesEndSearchbox" placeholder="Enter Address">
-          </div>
-          <textarea id="maxdistanceend" name = "maxdistanceend" placeholder="Enter Max Distance from away End Point (Meters)" style="height: 50px; width:200px"></textarea>
-          <br/>
-            <label>Sort:</label>
-              <select id="sort" name="sort" onchange="sortRides()" required style="width:20%">
-                <option value="" disabled selected>Choose</option>
-                <option value="alphabetical">By name alphabetical (A-Z)</option>
-                <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
-                <option value="startdistance">Within chosen distance of start location</option>
-                <option value="enddistance">Within chosen distance of end location</option>
-                <option value="bothdistance">Within chosen distance of both start and end locations</option>
-                <option value="date">Soonest Dates</option>
-                <option value="fardate">Latest Dates</option>
-                <option value="price">Price(Low to High)</option>
-              </select>
-
-      </form>
-      <!-- <button onclick="appendRatings();"> See Ratings </button> -->
-      <br/>
-      <h2> Rides </h2>
-      <table style="width:100%" id="entry-list">
-        <tr>
-          <th>Driver Info</th>
-          <th>From</th>
-          <th>To</th>
-          <th>Distance</th>
-          <th>Ride Date</th>
-          <th>Price($)</th>
-          <th>Payment Method</th>
-          <th>Current # of Riders</th>
-          <th>Capacity</th>
-        </tr>
-      </table>
-      <h3> My Current Rides (as a Rider): </h3>
-      <table style="width:100%" id="myrides">
-        <tr>
-          <th>Driver Info</th>
-          <th>From</th>
-          <th>To</th>
-          <th>Distance</th>
-          <th>Ride Date</th>
-          <th>Price($)</th>
-          <th>Payment Method</th>
-          <th>Current # of Riders</th>
-          <th>Capacity</th>
-        </tr>
-      </table>
-      <h3> Rides I'm Driving: </h3>
-      <table style="width:100%" id="driverrides">
-        <tr>
-          <th>From</th>
-          <th>To</th>
-          <th>Distance</th>
-          <th>Ride Date</th>
-          <th>Price($)</th>
-          <th>Payment Method</th>
-          <th>Current # of Riders</th>
-          <th>Capacity</th>
-        </tr>
-      </table>
-      <h2 id="ratingdiv"> Rate a driver </h2>
-      <p> Click a <i>Rate Driver</i> button on any ride to rate your experience </p>
-      <h4 id="profilename"></h4>
-      <p id="ratingbox"></p>
-      <p id="reviewbox"></p>
-      <p id="submitrating"></p>
-      <p id="alreadyrated"></p>
-      <br/>
-      <div id="seereviews"></div>
-    </div>
-   </div>
-  </body>
+                <div id="seereviews"></div>
+            </div>
+        </div>
+    </body>
 </html>
