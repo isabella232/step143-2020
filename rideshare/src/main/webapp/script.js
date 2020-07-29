@@ -385,7 +385,7 @@ function createEntryElementRemove(entry) {
   entryElement.appendChild(currentRidersElement);
   entryElement.appendChild(capacityElement);
   entryElement.appendChild(removeRideButtonElement);
-  entryElement.appendChild(rateButtonElement);
+  // entryElement.appendChild(rateButtonElement);
   entryElement.appendChild(showRideElement);
   return entryElement;
 }
@@ -620,10 +620,17 @@ function revealRate(entry) {
 
           // <input type=\"number\" min=\"1\" max=\"5\" id=\"ratingtext\" placeholder=\"Enter float val from 1 to 5\" style=\"height:25px; width:250px\">";
             document.getElementById("submitrating").innerHTML = "<button onclick=\"rateDriver()\">Submit Rating</button>"; 
-            
+            document.getElementById("cancelrating").innerHTML = "<button style=\"background-color:#CF5300\" onclick=\"cancelRating()\">Cancel Rating</button>"; 
         }
         window.location = "#ratingdiv"
     });
+}
+function cancelRating() {
+  document.getElementById("profilename").innerHTML = "";
+  document.getElementById("ratingbox").innerHTML = "";
+  document.getElementById("reviewbox").innerHTML = "";
+  document.getElementById("submitrating").innerHTML = ""; 
+  document.getElementById("cancelrating").innerHTML = "";
 }
 
 function joinRide(entry) {
