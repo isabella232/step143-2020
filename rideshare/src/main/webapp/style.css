@@ -48,8 +48,7 @@
 }
 
 body {
-    /* margin: 0; */
-    font-family: Verdana, Tahoma, sans-serif;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
 #geolocation {
@@ -57,15 +56,15 @@ body {
 }
 
 table {
-  font-family: arial, sans-serif;
+  font-family: 'Trebuchet MS', Helvetica, sans-serif;
   border-collapse: collapse;
-  width: 100%;
+  width: 102%;
+  margin-left: -1.2%;
 }
 
 td, th {
-  /* border: 1px solid #dddddd; */
-  text-align: left;
-  padding: 8px;
+  text-align: center;
+  padding: 0px 22px 0px 0px;
 }
 
 tr:nth-child(even) {
@@ -239,6 +238,7 @@ button:hover {
 #menu {
     background-color: #4CAF50;
     font-weight: bold;
+    font-size: large;
     margin-left: -1%;
     padding: 2%;
     border-radius: 20px;
@@ -301,28 +301,34 @@ button:hover {
     border: 1px solid #ccc;
     padding: 2%;
     background-color: #f1f1f1;
+    font-size: large;
 }
 
 /* Style the buttons */
 .tab button {
     background-color: inherit;
-    width: 31.5%;
+    width: 31.55%;
     margin: 0;
     padding: 2%;
-    padding-top: 2.35%;
+    padding-top: 2.49%;
     border: none;
     outline: none;
     cursor: pointer;
     transition: 0.3s;
     color: black;
+    font-weight: bold;
 }
 
 .tab button:hover {
-    background-color: #ddd;
+    background-color: #4CAF50;
+    color: white;
+    opacity: 0.9;
 }
 
 .tab button.active {
-    background-color: #ccc;
+    background-color: #4CAF50;
+    color: white;
+    opacity: 0.9;
 }
 
 /* Style tab content */ 
@@ -346,4 +352,46 @@ button:hover {
 #sortByAddress, sortByEndAddress {
     height: 50px;
     width: 20%;
+}
+
+#sortSection {
+    font-size: large;
+}
+
+table button {
+    padding: 12px 20px;
+    margin: 0;
+    font-family: "Trebuchet MS";
+    background-color: #C0E3C1;
+    border: solid black 1px;
+    color: black;
+}
+
+table button:hover {
+    color: white;
+    background-color: #4CAF50;
+    border: solid black 1px;
+}
+
+tr.tHeading {
+    background-color: #4CAF50;
+    border-bottom: solid black 3px;
+}
+
+tr {
+    border-bottom: solid black 2px;
+}
+
+#allRides {
+    display: block;
+}
+
+#entry-list-guest button {
+    margin-top: 35%;
+}
+
+#guestSort {
+    clear: both;
+    display: flex;
+    justify-content: space-evenly;
 }

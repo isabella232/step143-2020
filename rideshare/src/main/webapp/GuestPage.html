@@ -9,6 +9,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=initMapGuest&libraries=places" async defer></script>        
     <style>
         #addRouteGuest{border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
+        body {text-align: center;}
     </style>
 </head>
 
@@ -30,47 +31,48 @@
             <div id="addRouteGuest" style="margin-left: 0%; float: left;"></div>
             <div id="directionsGuest"></div>
 
-            <h3> Search for rides below: </h3>
-            <form>
-                <label>Max # of rides:</label>
-                <select onchange="getMessagesGuest()" id="maxcomments" name="maxcomments" required style="width:15%">
-                    <option value="" disabled selected>Choose</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                </select>
-            </form>
+            <div id="guestSort">
+                <h3 style="width: 33%;"> Search for rides below: </h3>
+                <form style="width: 33%; margin-top: 2%;">
+                    <label>Max # of rides:</label>
+                    <select onchange="getMessagesGuest()" id="maxcomments" name="maxcomments" required style="width:30%">
+                        <option value="" disabled selected>Choose</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                </form>
+                <br/>
 
+                <form style="width: 33%; margin-top: 2%;">
+                    <label>Sort:</label>
+                    <select id="sort-guest" name="sort-guest" onchange="sortRidesGuest()" required style="width:30%">
+                        <option value="" disabled selected>Choose</option>
+                        <option value="alphabetical">By name alphabetical (A-Z)</option>
+                        <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
+                        <option value="date">Soonest Dates</option>
+                        <option value="fardate">Latest Dates</option>
+                        <option value="price">Price(Low to High)</option>
+                    </select>
+                </form>
             <br/>
+            </div>
 
-        <form>
-            <label>Sort:</label>
-              <select id="sort-guest" name="sort-guest" onchange="sortRidesGuest()" required style="width:20%">
-                <option value="" disabled selected>Choose</option>
-                <option value="alphabetical">By name alphabetical (A-Z)</option>
-                <option value="reverse-alphabetical">By name alphabetical (Z-A)</option>
-                <option value="date">Soonest Dates</option>
-                <option value="fardate">Latest Dates</option>
-                <option value="price">Price(Low to High)</option>
-              </select>
-
-        </form>
-      <!-- <button onclick="appendRatings();"> See Ratings </button> -->
-      <br/>
-      <table style="width:100%" id="entry-list-guest">
-        <tr>
-          <th>Driver Info</th>
-          <th>From</th>
-          <th>To</th>
-          <th>Distance</th>
-          <th>Ride Date</th>
-          <th>Price($)</th>
-          <th>Payment Method</th>
-          <th>Current # of Riders</th>
-          <th>Capacity</th>
-        </tr>
-      </table>
+            <table id="entry-list-guest">
+                <tr class="tHeading">
+                    <th>Driver Info</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Distance</th>
+                    <th>Ride Date</th>
+                    <th>Price($)</th>
+                    <th>Payment Method</th>
+                    <th>Current # of Riders</th>
+                    <th>Capacity</th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
     </div>
-   </div>
   </body>
 </html>
