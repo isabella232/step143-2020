@@ -56,7 +56,7 @@ public class DataServlet extends HttpServlet {
     public String end;
     public String ridedate;
     public String ridetime;
-    public String price;
+    public long price;
     public String paymentMethod;
     public String startAddress;
     public String endAddress;
@@ -74,7 +74,7 @@ public class DataServlet extends HttpServlet {
     }
 
     public Ride(long id, String name, long capacity, long currentRiders, String driverEmail, 
-    String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end, String ridedate, String ridetime, String price,
+    String driverId, ArrayList<String> riderList, GeoPt start, GeoPt end, String ridedate, String ridetime, long price,
     String paymentMethod, String startAddress, String endAddress, String distance, String eta) {
       this.id = id;
       this.name = name;
@@ -189,7 +189,7 @@ public class DataServlet extends HttpServlet {
           GeoPt end = (GeoPt) entity.getProperty("end");
           String ridedate = (String) entity.getProperty("ridedate");
           String ridetime = (String) entity.getProperty("ridetime");
-          String price = (String) entity.getProperty("price");
+          long price = (long) entity.getProperty("price");
           String paymentMethod = (String) entity.getProperty("paymentMethod");
           String startAddress = (String) entity.getProperty("startAddress");
           String endAddress = (String) entity.getProperty("endAddress");
@@ -231,7 +231,7 @@ public class DataServlet extends HttpServlet {
           GeoPt end = (GeoPt) entity.getProperty("end");
           String ridedate = (String) entity.getProperty("ridedate");
           String ridetime = (String) entity.getProperty("ridetime");
-          String price = (String) entity.getProperty("price");
+          long price = (long) entity.getProperty("price");
           String paymentMethod = (String) entity.getProperty("paymentMethod");
           String startAddress = (String) entity.getProperty("startAddress");
           String endAddress = (String) entity.getProperty("endAddress");
@@ -266,7 +266,7 @@ public class DataServlet extends HttpServlet {
           GeoPt end = (GeoPt) entity.getProperty("end");
           String ridedate = (String) entity.getProperty("ridedate");
           String ridetime = (String) entity.getProperty("ridetime");
-          String price = (String) entity.getProperty("price");
+          long price = (long) entity.getProperty("price");
           String paymentMethod = (String) entity.getProperty("paymentMethod");
           String startAddress = (String) entity.getProperty("startAddress");
           String endAddress = (String) entity.getProperty("endAddress");
@@ -310,7 +310,7 @@ public class DataServlet extends HttpServlet {
       String ridetime = request.getParameter("ridetime");
 
 
-      String price = request.getParameter("price");
+      long price = Long.parseLong(request.getParameter("price"));
       String paymentMethod = request.getParameter("paymentMethod");
       String startAddress = request.getParameter("startAddress");
       String endAddress = request.getParameter("endAddress");

@@ -567,7 +567,7 @@ function createEntryElement(entry) {
   dateElement.innerHTML = entry.ridedate + "<br/>" + entry.ridetime;
 
   var priceElement = document.createElement('td');
-  priceElement.innerHTML = "$" + entry.price;
+  priceElement.innerHTML = "$" + entry.price.toString();
 
   var paymentMethodElement = document.createElement('td');
   paymentMethodElement.innerHTML = entry.paymentMethod;
