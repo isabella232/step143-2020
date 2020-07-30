@@ -58,13 +58,13 @@
                     <button id="getButton" type="button" form="geolocation">Get Route</button>
                     <br/><br/>
                     <div id="info">
-                        <p>Start Lat: </p><textarea id="lat" name="lat" class="taSize"></textarea>
-                        <p>End Lat: </p><textarea id="endlat" name="endlat" class="taSize"></textarea>
-                        <p>Distance: </p><textarea name="distance" id="distance" class="taSize"></textarea>
+                        <p>Start Lat: </p><textarea required id="lat" name="lat" class="taSize"></textarea>
+                        <p>End Lat: </p><textarea required id="endlat" name="endlat" class="taSize"></textarea>
+                        <p>Distance: </p><textarea required name="distance" id="distance" class="taSize"></textarea>
 
-                        <p>Start Long: </p><textarea id="lng" name="lng" class="taSize"></textarea>
-                        <p>End Long: </p><textarea id="endlng" name="endlng" class="taSize"></textarea>
-                        <p>Estimated Time: </p><textarea name="eta" id="eta" class="taSize"></textarea>
+                        <p>Start Long: </p><textarea required id="lng" name="lng" class="taSize"></textarea>
+                        <p>End Long: </p><textarea required id="endlng" name="endlng" class="taSize"></textarea>
+                        <p>Estimated Time: </p><textarea required name="eta" id="eta" class="taSize"></textarea>
                     </div>
                     <br/><br/>
 
@@ -87,7 +87,8 @@
                             </select>
                         </h4>
                     </div>
-                    <button class="button" type="submit"/> Post Ride </button>       
+                    <button class="button" type="submit"/> Post Ride </button>      
+                    <p> *If post ride is not working, make sure to click "Get Route" above</p> 
                 </form>
                 <br/><br/>
                 <div class="tab">
