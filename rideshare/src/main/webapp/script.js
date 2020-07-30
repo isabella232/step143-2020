@@ -287,7 +287,7 @@ function createEntryElementGuest(entry) {
   var showRideElement = document.createElement("button");
   showRideElement.innerText = "Show Route";
   showRideElement.style.float = "right";
-  showRideElement.style.backgroundColor = "#388E8E";
+  //showRideElement.style.backgroundColor = "#388E8E";
   showRideElement.addEventListener('click', () => {
     showRideRouteGuest(entry.start, entry.end);
     window.location = "#rideHeadingGuest"
@@ -342,7 +342,7 @@ function createEntryElementRemove(entry) {
   var removeRideButtonElement = document.createElement('button');
   removeRideButtonElement.innerText = 'Delete Ride!';
   removeRideButtonElement.style.float = "right";
-  removeRideButtonElement.style.backgroundColor = "#CF5300";
+  //removeRideButtonElement.style.backgroundColor = "#CF5300";
   removeRideButtonElement.addEventListener('click', () => {
     removeRide(entry);
   });
@@ -370,7 +370,7 @@ function createEntryElementRemove(entry) {
   var showRideElement = document.createElement("button");
   showRideElement.innerText = "Show Route";
   showRideElement.style.float = "right";
-  showRideElement.style.backgroundColor = "#388E8E";
+  //showRideElement.style.backgroundColor = "#388E8E";
   showRideElement.addEventListener('click', () => {
     showRideRoute(entry.start, entry.end);
     window.location = "#rideHeading"
@@ -429,7 +429,7 @@ function createEntryElementNoJoin(entry) {
   var leaveRideButtonElement = document.createElement('button');
   leaveRideButtonElement.innerText = 'Leave Ride!';
   leaveRideButtonElement.style.float = "right";
-  leaveRideButtonElement.style.backgroundColor = "#8b0000";
+  //leaveRideButtonElement.style.backgroundColor = "#8b0000";
   leaveRideButtonElement.addEventListener('click', () => {
     leaveRide(entry);
   });
@@ -457,7 +457,7 @@ function createEntryElementNoJoin(entry) {
   var showRideElement = document.createElement("button");
   showRideElement.innerText = "Show Route";
   showRideElement.style.float = "right";
-  showRideElement.style.backgroundColor = "#388E8E";
+  //showRideElement.style.backgroundColor = "#388E8E";
   showRideElement.addEventListener('click', () => {
     showRideRoute(entry.start, entry.end);
     window.location = "#rideHeading"
@@ -498,7 +498,7 @@ function createEntryElement(entry) {
 
   var showButtonElement = document.createElement('button');
   showButtonElement.innerText = 'See Reviews';
-  showButtonElement.style.backgroundColor = "#976bb6";
+  //showButtonElement.style.backgroundColor = "#976bb6";
   showButtonElement.addEventListener('click', () => {
     getReviews(entry);
     window.location = "#seereviews";
@@ -509,7 +509,7 @@ function createEntryElement(entry) {
   var showRideElement = document.createElement("button");
   showRideElement.innerText = "Show Route";
   showRideElement.style.float = "right";
-  showRideElement.style.backgroundColor = "#388E8E";
+  //showRideElement.style.backgroundColor = "#388E8E";
   showRideElement.addEventListener('click', () => {
     showRideRoute(entry.start, entry.end);
     window.location = "#rideHeading"
@@ -549,7 +549,7 @@ function createEntryElement(entry) {
   var joinRideButtonElement = document.createElement('button');
   joinRideButtonElement.innerText = 'Join Ride!';
   joinRideButtonElement.style.float = "right";
-  joinRideButtonElement.style.backgroundColor = "#272e91";
+  //joinRideButtonElement.style.backgroundColor = "#272e91";
   joinRideButtonElement.addEventListener('click', () => {
     joinRide(entry)
     document.getElementById("notify").innerHTML = "You have successfully joined ride " + entry.id;
@@ -578,7 +578,7 @@ function createEntryElement(entry) {
   var showRideElement = document.createElement("button");
   showRideElement.innerText = "Show Route";
   showRideElement.style.float = "right";
-  showRideElement.style.backgroundColor = "#388E8E";
+  //showRideElement.style.backgroundColor = "#388E8E";
   showRideElement.addEventListener('click', () => {
     showRideRoute(entry.start, entry.end);
     window.location = "#rideHeading"
@@ -1047,6 +1047,5 @@ function openTab(evt, tabName) {
 
   // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(tabName).style.display = "block";
-  document.getElementById('sortSection').style.display = "block";
   evt.currentTarget.className += " active";
 }
