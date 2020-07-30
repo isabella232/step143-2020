@@ -38,7 +38,7 @@
                         <li id = "logout"></li>
                     </div>
                 </ul>
-                <p style="margin-top: 5%">Welcome to our Rideshare App intended for college students who desire a more streamlined process of finding a carpool ride!</p>
+                <p style="margin-top: 5%; text-align: center;">Welcome to our Rideshare App intended for college students who desire a more streamlined process of finding a carpool ride!</p>
                 <p id="notify"> </p>
                 <div id="rideHeading">
                     <h3>Post a ride below:</h3>
@@ -91,7 +91,7 @@
                 <br/><br/>
                 <div class="tab">
                     <button class="tablinks" onclick="openTab(event,'allRides')">All Rides</button>
-                    <button class="tablinks" onclick="openTab(event,'currentRides')">My Rides as a Rider</button>
+                    <button id="tabsBorders" class="tablinks" onclick="openTab(event,'currentRides')">My Rides as a Rider</button>
                     <button class="tablinks" onclick="openTab(event,'driverRides')">My Rides as a Driver</button>
                 </div>
 
@@ -123,6 +123,8 @@
                             </select>
                             </label>
                         </form>
+
+                        <p style="text-align:center;"> Note: To sort by start and/or end location, user must input into text boxes below</p>
 
                         <div id="sortMap"></div>
                         <br/>
@@ -196,12 +198,13 @@
                     </table>
                 </div>
 
-                <h2 id="ratingdiv"> Rate a driver </h2>
-                <p> Click a <i>Rate Driver</i> button on any ride to rate your experience </p>
+                <h2 id="ratingdiv" style="text-align: center;"> Rate a driver </h2>
+                <p style="text-align: center;"> Click a <i>Rate Driver</i> button on any ride to rate your experience </p>
                 <h4 id="profilename"></h4>
                 <p id="ratingbox"></p>
                 <p id="reviewbox"></p>
                 <p id="submitrating"></p>
+                <p id="cancelrating"></p>
                 <p id="alreadyrated"></p>
                 <br/>
                 <div id="seereviews"></div>

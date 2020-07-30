@@ -105,12 +105,14 @@ input[type=text], input[type=password] {
 button {
   background-color: #4CAF50;
   color: white;
+  font-weight: bold;
   padding: 16px 20px;
   margin: 8px 0;
   border: none;
   cursor: pointer;
   width: 100%;
   opacity: 0.9;
+  box-shadow: 3px 3px 5px grey;
 }
 
 button:hover {
@@ -183,13 +185,13 @@ button:hover {
     margin-top: -15%;
     display: inline-block;
     width: 100%;
-    margin-left: 20%;
+    margin-left: 25%;
 }
 
 #rideInfoBottom {
     display: inline-block;
     width: 100%;
-    margin-left: 16%;
+    margin-left: 22%;
 }
 
 .taSize {
@@ -302,6 +304,8 @@ button:hover {
     padding: 2%;
     background-color: #f1f1f1;
     font-size: large;
+    box-shadow: 1px 1px 3px grey;
+
 }
 
 /* Style the buttons */
@@ -317,6 +321,8 @@ button:hover {
     transition: 0.3s;
     color: black;
     font-weight: bold;
+    box-shadow: none;
+
 }
 
 .tab button:hover {
@@ -365,6 +371,8 @@ table button {
     background-color: #C0E3C1;
     border: solid black 1px;
     color: black;
+    box-shadow: none;
+
 }
 
 table button:hover {
@@ -387,11 +395,21 @@ tr {
 }
 
 #entry-list-guest button {
-    margin-top: 35%;
+    margin: 20%;
+    margin-right: 0;
 }
 
 #guestSort {
     clear: both;
     display: flex;
     justify-content: space-evenly;
+}
+
+#tabsBorders {
+    border-right: solid black 1px;
+    border-left: solid black 1px;
+}
+
+th {
+    text-decoration: underline;
 }
