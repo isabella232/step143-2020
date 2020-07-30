@@ -54,6 +54,7 @@
                     <input type="text" id="startAddress" name="startAddress" placeholder="Enter Start Address" >
                     <input type="text" id="endAddress" name="endAddress" placeholder="Enter End Address">
                     <br/><br/>
+                    <p> *Click "Get Route" only once start and end addresses have been entered </p>
                     <button id="getButton" type="button" form="geolocation">Get Route</button>
                     <br/><br/>
                     <div id="info">
@@ -90,7 +91,7 @@
                 </form>
                 <br/><br/>
                 <div class="tab">
-                    <button class="tablinks" onclick="openTab(event,'allRides')">All Rides</button>
+                    <button class="tablinks active" onclick="openTab(event,'allRides')">All Rides</button>
                     <button id="tabsBorders" class="tablinks" onclick="openTab(event,'currentRides')">My Rides as a Rider</button>
                     <button class="tablinks" onclick="openTab(event,'driverRides')">My Rides as a Driver</button>
                 </div>
