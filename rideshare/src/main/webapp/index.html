@@ -5,14 +5,15 @@
         <meta name="viewport" content="width=device-width">
         <title>Rideshare Webapp</title>
         <link rel="stylesheet" href="style.css">
+        <script src="config.js"></script>
         <script src="script.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=initMap&libraries=places" async defer></script>        
+        <script id="mapAPI" async defer></script>        
         <style>
             #addRoute {border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
         </style>
     </head>
  
-    <body onload = "loadEntries(); loadUser();">
+    <body onload = "loadEntries(); loadUser(); loadAPI();">
         
         <div class="loginForm">  
             <div id="loginForm" class="loginForm-content container">

@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function loadAPI(){
+    config();
+}
+
 function getMessages() {
   const commentCount = document.getElementById('maxcomments');
   document.getElementById('entry-list').innerHTML = "<tr><th>Driver Info</th><th>From</th><th>To</th><th>Distance</th><th>Ride Date</th><th>Price($)</th><th>Payment Method</th><th>Current # of Riders</th><th>Capacity</th></tr>";
