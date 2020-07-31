@@ -1,5 +1,8 @@
 
 function config(){
     document.getElementById("mapAPI").src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=initMap&libraries=places"
+}
 
+function configGuest(){
+    document.getElementById("mapAPIguest").src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=initMapGuest&libraries=places"      
 }
