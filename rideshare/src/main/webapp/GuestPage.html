@@ -6,13 +6,14 @@
     <title>Rideshare Webapp</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARPxINyKUXQkjeJNPxpHceSK9_W_XlHoA&callback=initMapGuest&libraries=places" async defer></script>        
+    <script src="config.js"></script>
+    <script id="mapAPIguest" async defer></script>        
     <style>
         #addRouteGuest{border: thin solid black; height: 500px; width: 500px; margin-left: 10%;}
     </style>
 </head>
 
-<body onload = "loadEntriesGuest();">
+<body onload = "loadEntriesGuest();loadAPIguest();">
     <div id= "guestApp">    
         <div id="content">
             <h1>Rideshare App</h1>            
